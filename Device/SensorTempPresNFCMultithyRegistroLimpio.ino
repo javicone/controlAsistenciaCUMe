@@ -89,12 +89,13 @@ void Hilo0code(void* pvParameters) {
   webSocket.onEvent(webSocketEvent);
   Serial.println("✅ WebSocket conectado (puro).");
 
-  //Creamos un bucle infinito dentro de este hilo y así podemos distintguir tareas de inicialización de tareas repetitivas sin meterlo en el Setup
+  //Creamos un bucle infinito dentro de este hilo y así podemos distinguir tareas de
+  //inicialización de tareas repetitivas sin meterlo en el Setup
   for (;;) {
 
     webSocket.loop();
 
-    vTaskDelay(1);  // cede brevemente la CPU al scheduler para que no se bloquee
+    vTaskDelay(10);  // cede brevemente la CPU al scheduler para que no se bloquee y reduce el uso de recursos
   }
 
 }  //Aquí acaba HiloCode0
