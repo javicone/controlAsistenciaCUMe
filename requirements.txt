@@ -1,0 +1,5 @@
+flask
+flask-jwt-extended
+websockets
+mysql-connector-python
+python-dotenv
