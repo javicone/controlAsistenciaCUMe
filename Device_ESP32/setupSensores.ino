@@ -4,7 +4,6 @@ void initSensores() {
   setupNFC();  //Inicializamos el lector NFC
   setupRadar();  //Inicializamos el radar de presencia
   setupBME();  //Inicializamos el sensor de temperatura, humedad y presión
-  lightMeter.begin();
-  Serial.println(F("BH1750 Test begin"));
+  setupLightMeter();  //Inicializamos el sensor de luz
   Serial.setDebugOutput(true);
 }

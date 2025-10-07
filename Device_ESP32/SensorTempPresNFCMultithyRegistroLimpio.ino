@@ -1,5 +1,5 @@
 /*********
- Proyecto IoT de sistema de regustro de presencia y variables ambientales con fines de registro, seguridad, control domótico...
+ Proyecto IoT de sistema de registro de presencia y variables ambientales con fines de registro, seguridad, control domótico...
 *********/
 
 //Librerías necesarias
@@ -10,7 +10,6 @@
 #include <ArduinoJson.h>
 #include <WebSocketsClient.h>
 //#include "Freenove_WS2812_Lib_for_ESP32.h"
-
 #include <Wire.h>
 #include <SPI.h>         //Librería para comunicación SPI
 #include "UNIT_PN532.h"  //Librería Modificada
@@ -19,7 +18,8 @@
 #include <BH1750.h>
 #include <ld2410.h>
 #include "pinesyvariablesauxiliares.h"
-
+#include "globals.h"
+#include "config.h"
 //Instanciamos clases que usan las librerias de los sensores
 Adafruit_BME280 bme;  // I2C
 BH1750 lightMeter;
@@ -37,25 +37,23 @@ void setup() {
 
   //Inicializamos Serial para comunicación en Arduino IDE
   Serial.begin(115200);
-
   //Inicializamos todos los sensores y actuadores que vamos a utilizar
   initSensores();
-
   //Creamos la tarea que se ejecutará en el Core 0 con prioridad 1
   xTaskCreatePinnedToCore(
-    Hilo0code, /* Task function. */
-    "Hilo0",   /* name of task. */
+    HiloComunicadorcode, /* Task function. */
+    "HiloComunicador",   /* name of task. */
     10000,     /* Stack size of task */
     NULL,      /* parameter of the task */
     1,         /* priority of the task */
-    &Hilo0,    /* Task handle to keep track of created task */
+    &HiloComunicador,    /* Task handle to keep track of created task */
     0);        /* pin task to core 0 */
   delay(500);
 }
 
-//Hilo0code: Equivale al Loop normal de .ino pero que se ejecutará en el core 0
+//HiloComunicador: Equivale al Loop normal de .ino pero que se ejecutará en el core 0
 //La idea es reservarla para comunicaciones
-void Hilo0code(void* pvParameters) {
+void HiloComunicadorcode(void* pvParameters) {
 
   // Inicialización de WiFi y nos conectamos (los datos están en pines y funciones auxiliares)
   WiFi.begin(ssid, password);
