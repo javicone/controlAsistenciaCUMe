@@ -5,4 +5,4 @@ DB_CONFIG = {
     'database': 'control_asistencia'
 }
 
-SECRET_KEY = "clave_secreta_para_jwt"
+SECRET_KEY = "asdfghjklñzxcvbnmQWERTYUIOPZXCVBNMLKJHGFDSA1234567890"

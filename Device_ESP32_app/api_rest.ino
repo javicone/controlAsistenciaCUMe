@@ -138,10 +138,28 @@ void obtenerToken() {
   int httpResponseCode = http.POST(jsonPayload);
 
   if (httpResponseCode > 0) {
-    jwtToken = http.getString();
-    Serial.println("Token obtenido: " + jwtToken);
+    String response = http.getString();
+    Serial.println("Respuesta completa: " + response);
+    
+    // Parsear JSON para extraer el token
+    StaticJsonDocument<512> doc;
+    DeserializationError error = deserializeJson(doc, response);
+    
+    if (error) {
+      Serial.print("Error parseando JSON: ");
+      Serial.println(error.f_str());
+    } else {
+      if (doc.containsKey("token")) {
+        jwtToken = doc["token"].as<String>();
+        Serial.println("✅ Token JWT obtenido correctamente");
+        Serial.println("Token: " + jwtToken.substring(0, 20) + "...");
+      } else {
+        Serial.println("❌ No se encontró el campo 'token' en la respuesta");
+      }
+    }
   } else {
-    Serial.println("Error obteniendo token");
+    Serial.print("❌ Error obteniendo token. Código: ");
+    Serial.println(httpResponseCode);
   }
 
   http.end();

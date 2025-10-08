@@ -8,9 +8,7 @@ void setupBME(){
   }
 
   Serial.println("-- Default Test --");
-}
-    Serial.println();
-      ;
-  
+  Serial.println();
 
 }
+      

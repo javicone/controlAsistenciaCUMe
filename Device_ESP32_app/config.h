@@ -1,12 +1,14 @@
-#pragma once
+
+#ifndef CONFIG_H
+#define CONFIG_H
 
 // WiFi y servidor
-const char* ssid = "APpedro";
+const char* ssid = "Nothing";
 const char* password = "12345678";
-const char* wsHost = "10.147.78.46";
+const char* wsHost = "10.39.217.94";
 const int wsPort = 5678;
 const char* wsPath = "/";
-const char* serverUrl = "http://10.147.78.46:5000";
+const char* serverUrl = "http://10.39.217.94:5000";
 const char* datos_aula = "/datos_aula";
 const char* registro = "/registro";
 
@@ -27,3 +29,5 @@ const int relayPin = 26;
 #define PN532_SCK (18)
 #define PN532_MOSI (23)
 #define PN532_SS (5)
+
+#endif // CONFIG_H

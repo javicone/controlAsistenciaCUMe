@@ -1,4 +1,7 @@
-#pragma once 
+
+#ifndef GLOBALS_H
+#define GLOBALS_H
+
 //se utiliza para evitar que el archivo de cabecera (globals.h o config.h)
 //  se incluya más de una vez durante la compilación. Esto previene errores 
 // de redefinición y conflictos, especialmente en proyectos grandes con múltiples
@@ -16,9 +19,9 @@ extern float humedad;
 extern float presion;
 extern float iluminacion;
 extern int personas;
-extern int DistanciaMovil;
+extern float DistanciaMovil; // Cambiado a float para coincidir con el uso
 extern bool radarConnected;
-extern bool status;
+extern int status; // Cambiado a int para coincidir con el uso
 
 // Tiempos y flags
 extern unsigned long delayTime;
@@ -34,3 +37,5 @@ extern uint8_t DatoRecibido[4];
 extern boolean LeeTarjeta;
 extern uint8_t uid[7];
 extern uint8_t LongitudUID;
+
+#endif // GLOBALS_H

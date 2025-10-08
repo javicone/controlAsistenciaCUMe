@@ -109,29 +109,6 @@ He revisado `Server/appV4.py`, `Server/config.py` y la estructura de `Device/` y
   - No existe `requirements.txt` (ahora añadido). Considera añadir un `README` separado para firmware con pasos de compilación y librerías necesarias.
   - Añadir `env.example` o usar variables de entorno para evitar poner secretos en `config.py`.
 
-## Próximos pasos sugeridos (opcionales, puedo hacerlo yo):
-
-1. Corregir los puntos mencionados en `appV4.py` (pequeñas modificaciones para evitar bugs y mejorar logging).
-2. Reemplazar comparación de contraseñas por hashing (añadir `bcrypt` o `argon2-cffi`) y migrar la BD para almacenar hashes.
-3. Añadir un script `run.sh` / `run.ps1` y un `docker-compose.yml` para facilitar despliegues.
-4. Documentar el firmware: dependencias de Arduino/PlatformIO y flujos principales.
-
-Si quieres, aplico ahora alguno de los siguientes cambios: (elige uno o di "déjalo así")
-- Corregir los bugs menores en `Server/appV4.py` (logging y cursor.fetchone).
-- Reforzar autenticación para usar hashes (añadir `bcrypt` y cambiar código de login).
-- Añadir `env.example` y cargar la configuración desde variables de entorno.
-
-## Contacto / Contribuir
-
-1. Haz fork/clone.
-2. Crear rama feature/bugfix.
-3. PR con descripción y pasos para probar.
-
----
-
-Archivo añadido: `requirements.txt` con las dependencias mínimas del backend.
-
-Si quieres que actualice el código (por ejemplo corregir los bugs detectados), dime cuál de las tareas anteriores prefieres y lo hago.
 
 ## propuesta refactorización del BACKEND
 

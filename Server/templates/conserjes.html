@@ -13,7 +13,7 @@
   <button class="button button-off" onclick="cerrarSesion()">Cerrar Sesión</button>
   <script>
     // Conexión WS
-    let ws = new WebSocket("ws://10.147.78.94:5678/");
+    let ws = new WebSocket("ws://10.39.217.94:5678/");
 
     ws.onopen = function() {
       console.log("✅ Conectado al WebSocket puro");
@@ -90,7 +90,7 @@
     }
 
     function cambiarRelay(aula, estado) {
-      fetch("http://10.147.78.94:5000/control_relay", {
+      fetch("http://10.39.217.94:5000/control_relay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ aula: aula, relay: estado })
