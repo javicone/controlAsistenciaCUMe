@@ -5,10 +5,10 @@
 // WiFi y servidor
 const char* ssid = "Nothing";
 const char* password = "12345678";
-const char* wsHost = "10.39.217.94";
-const int wsPort = 5678;
-const char* wsPath = "/";
-const char* serverUrl = "http://10.39.217.94:5000";
+const char* wsHost = "10.153.102.94";
+const int wsPort = 5000;
+const char* wsPath = "/ws";
+const char* serverUrl = "http://10.153.102.94:5000";
 const char* datos_aula = "/datos_aula";
 const char* registro = "/registro";
 

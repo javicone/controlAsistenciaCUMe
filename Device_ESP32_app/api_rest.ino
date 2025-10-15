@@ -24,11 +24,10 @@ void registrarAsistencia() {
 
 // Función para consultar la próxima clase desde el servidor
 void obtenerProximaClase() {
-
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
     // Construir la URL con el parámetro aula (haciendo URL encode si es necesario)
-    String url = String(serverUrl) + "/proxima_clase?aula=" + urlencode(aula);
+    String url = String(serverUrl) + "/proxima_clase_test?aula=" + urlencode(aula);
     Serial.println("Consultando: " + url);
 
     http.begin(url);
