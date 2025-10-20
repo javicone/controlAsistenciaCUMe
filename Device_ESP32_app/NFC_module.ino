@@ -1,27 +1,60 @@
+// ...existing code...
 void setupNFC() {
-  nfc.begin();  //Comienza la comunicación del PN532
-  uint32_t versiondata = nfc.getFirmwareVersion();  //Obtiene información de la placa
-  if (!versiondata) {  //Si no se encuentra comunicación con la placa --->
-    Serial.print("No se encontró la placa PN53x");
-    while (1)
-      ;  // Detener
+  Serial.println("Inicializando PN532 (SPI) con diagnóstico...");
+  boolean nfc_present;
+  // Asegúrate de inicializar SPI con los pines correctos si usas pines no por defecto
+  // SPI.begin(SCK, MISO, MOSI); // Descomenta y ajusta si usas pines distintos
+
+  // Forzar CS HIGH antes de iniciar
+  pinMode(PN532_SS, OUTPUT);
+  digitalWrite(PN532_SS, HIGH);
+  delay(10);
+
+  // Intentar inicializar varias veces
+  const int max_attempts = 4;
+  bool ok = false;
+  for (int attempt = 1; attempt <= max_attempts; ++attempt) {
+    Serial.printf("Intento PN532 #%d\n", attempt);
+    // Llamada de inicialización de la librería
+    nfc.begin();        // si tu lib no tiene begin, ajusta según la librería
+    delay(50);
+
+    // Intentar leer versión/firmware (método típico Adafruit)
+    uint32_t versiondata = 0;
+    // Si tu librería usa otro método, reemplaza esta línea
+    versiondata = nfc.getFirmwareVersion();
+
+    if (versiondata) {
+      Serial.print("PN53x detectado. Version: 0x");
+      Serial.println(versiondata, HEX);
+      // Configuración SAM (si existe)
+      #ifdef UNIT_PN532_HAS_SAMCONFIG
+      nfc.SAMConfig();
+      #endif
+      ok = true;
+      break;
+    } else {
+      Serial.println("No se encontró la placa PN53x en este intento.");
+      // togglear CS para intentar "liberar" el bus
+      digitalWrite(PN532_SS, LOW);
+      delay(10);
+      digitalWrite(PN532_SS, HIGH);
+      delay(200);
+    }
   }
-  Serial.print("Chip encontrado PN5");
-  Serial.println((versiondata >> 24) & 0xFF, HEX);  //Imprime en el serial que version de Chip es el lector
-  Serial.print("Firmware ver. ");
-  Serial.print((versiondata >> 16) & 0xFF, DEC);  // Imprime que versión de firmware tiene la placa
-  Serial.print('.');
-  Serial.println((versiondata >> 8) & 0xFF, DEC);
 
-  //Establezca el número máximo de reintentos para leer de una tarjeta.
-  //Esto evita que tengamos que esperar eternamente por una tarjeta,
-  //que es el comportamiento predeterminado del PN532.
-  nfc.setPassiveActivationRetries(0xFF);
-
-  nfc.SAMConfig();  //Configura la placa para realizar la lectura
-
-  Serial.println("Esperando una tarjeta ISO14443A ...");
+  if (!ok) {
+    Serial.println("ERROR: PN53x NO detectado tras varios intentos.");
+    Serial.print("PN532_SS definido como: ");
+    Serial.println(PN532_SS);
+    Serial.println("Verifica wiring, alimentación 3.3V y pines SPI. Comentando NFC temporalmente para continuar.");
+    // opcional: establecer flag para saltar lecturas NFC en loop
+    nfc_present = false; // declara bool nfc_present globalmente y úsalo en leerNFC()
+  } else {
+    nfc_present = true;
+  }
 }
+// ...existing code...
 
 void leerNFC() {
   //Recepción y detección de los datos de la tarjeta y almacenamiento en la variable "LeeTarjeta"

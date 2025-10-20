@@ -19,7 +19,7 @@
         function login() {
             const correo = document.getElementById("correo").value;
             const password = document.getElementById("password").value;
-            fetch("/login", {
+            fetch("/auth/login", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ correo, password })

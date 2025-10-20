@@ -1,46 +1,83 @@
 void registrarAsistencia() {
-
-  HTTPClient http;
-  http.begin(String(serverUrl) + registro);
-  http.addHeader("Content-Type", "application/json");
-  //http.addHeader("Authorization", jwtToken);
-  //String jsonPayload = "{\"uid\": \"ABC123456\", \"nombre_aula\": \"Aula 101\"}";
-  String tarjetaUID = uidToString(uid, LongitudUID);  // Función que crearemos a continuación
+  Serial.println("\n=== REGISTRO DE ASISTENCIA ===");
+  
+  WiFiClientSecure *client = new WiFiClientSecure();
+  client->setCACert(server_certificate);
+  //client->setInsecure(); // ⚠️ TEMPORAL: Desactiva validación SSL para debugging
+  
+  Serial.println("🔍 DEBUG: Validación SSL desactivada temporalmente");
+  
+  HTTPClient https;
+  String fullUrl = String(serverUrl) + registro;
+  Serial.print("📍 URL: "); Serial.println(fullUrl);
+  
+  // Timeout para evitar bloqueos
+  https.setTimeout(15000); // 15 segundos
+  
+  https.begin(*client, fullUrl);
+  https.addHeader("Content-Type", "application/json");
+  
+  String tarjetaUID = uidToString(uid, LongitudUID);
   String jsonPayload = "{\"uid\": \"" + tarjetaUID + "\", \"nombre_aula\": \"" + aula + "\"}";
-  int httpResponseCode = http.POST(jsonPayload);
+  
+  Serial.println("📤 Enviando datos de asistencia...");
+  int httpResponseCode = https.POST(jsonPayload);
+  
   if (httpResponseCode > 0) {
-    String respuesta = http.getString();
-    Serial.println("Respuesta obtenida: " + respuesta);
-    Serial.println("Asistencia registrada");
-    //digitalWrite(LED_VERDE, HIGH);
-    //delay(2000);
-    //digitalWrite(LED_VERDE, LOW);
+    String respuesta = https.getString();
+    Serial.print("✅ Respuesta HTTP "); Serial.print(httpResponseCode); Serial.println(":");
+    Serial.println(respuesta);
+    Serial.println("✅ Asistencia registrada correctamente");
   } else {
-    Serial.println("Error registrando asistencia");
+    Serial.print("❌ Error HTTP: "); Serial.println(httpResponseCode);
+    Serial.println("❌ Error registrando asistencia");
   }
 
-  http.end();
+  https.end();
+  delete client;
+  Serial.println("=================================\n");
 }
 
 // Función para consultar la próxima clase desde el servidor
 void obtenerProximaClase() {
+  Serial.println("\n📅 === CONSULTAR PRÓXIMA CLASE ===");
+  
+  // Verificar protocolo
+  String urlStr = String(serverUrl);
+  bool usingHTTPS = urlStr.startsWith("https://");
+  
+  if(usingHTTPS) {
+    Serial.println("✅ Usando HTTPS (conexión cifrada)");
+  } else {
+    Serial.println("⚠️  Usando HTTP (conexión sin cifrar)");
+  }
+  
+  WiFiClientSecure *client=new WiFiClientSecure();
+  client->setCACert(server_certificate);
+  client->setInsecure(); // ⚠️ TEMPORAL: Desactiva validación SSL para debugging
+  
+  Serial.println("🔍 DEBUG: Validación SSL desactivada temporalmente");
+  
   if (WiFi.status() == WL_CONNECTED) {
-    HTTPClient http;
+    HTTPClient https;
     // Construir la URL con el parámetro aula (haciendo URL encode si es necesario)
     String url = String(serverUrl) + "/proxima_clase_test?aula=" + urlencode(aula);
-    Serial.println("Consultando: " + url);
+    Serial.print("📍 URL: "); Serial.println(url);
 
-    http.begin(url);
-    int httpResponseCode = http.GET();
+    https.setTimeout(15000); // 15 segundos timeout
+    https.begin(*client, url);
+    Serial.println("📤 Enviando petición GET...");
+    int httpResponseCode = https.GET();
 
     if (httpResponseCode > 0) {
-      String payload = http.getString();
-      Serial.println("Respuesta: " + payload);
+      String payload = https.getString();
+      Serial.print("✅ Respuesta HTTP "); Serial.print(httpResponseCode); Serial.println(":");
+      Serial.println(payload);
 
       StaticJsonDocument<512> doc;
       DeserializationError error = deserializeJson(doc, payload);
       if (error) {
-        Serial.print("Error al parsear JSON: ");
+        Serial.print("❌ Error al parsear JSON: ");
         Serial.println(error.c_str());
       } else {
         const char* asignatura = doc["asignatura"];
@@ -80,12 +117,15 @@ void obtenerProximaClase() {
         }
       }
     } else {
-      Serial.print("Error en GET, código: ");
+      Serial.print("❌ Error HTTP GET, código: ");
       Serial.println(httpResponseCode);
     }
-    http.end();
+    https.end();
+    delete client;
+    Serial.println("====================================\n");
   } else {
-    Serial.println("Error: WiFi no conectado");
+    Serial.println("❌ WiFi no conectado");
+    Serial.println("====================================\n");
   }
 }
 
@@ -101,65 +141,44 @@ void EnviaValoresAula() {
   Serial.print(iluminacion);
   Serial.println(" lx");
 
-  Serial.println();
-
-  // Enviar los datos a través de la API REST
-  if (WiFi.status() == WL_CONNECTED) {
-    HTTPClient http;
-    http.begin(String(serverUrl) + datos_aula);
-    http.addHeader("Content-Type", "application/json");
-
-    StaticJsonDocument<200> doc;
-    doc["aula"] = aula;
-    doc["temperatura"] = temperatura;
-    doc["luz"] = iluminacion;
-    doc["personas"] = personas;
-    doc["clase_en_curso"] = clase_en_curso;
-
-    String payload;
-    serializeJson(doc, payload);
-
-    int httpResponseCode = http.POST(payload);
-    Serial.print("Código de respuesta: ");
-    Serial.println(httpResponseCode);
-
-    http.end();
+  Serial.println("\n📊 === ENVÍO DATOS DE AULA ===");
+  Serial.println("✅ WebSocket Seguro (WSS) - Conexión cifrada");
+  
+  // Verificar estado de conexiones antes de enviar
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("❌ WiFi desconectado, no se pueden enviar datos");
+    Serial.println("===============================\n");
+    return;
   }
+  
+  if (!webSocket.isConnected()) {
+    Serial.println("⚠️  WebSocket NO conectado, omitiendo envío");
+    Serial.println("💡 Tip: El WebSocket se reconectará automáticamente");
+    Serial.println("===============================\n");
+    return;
+  }
+  
+  Serial.println("✅ Conexión WebSocket activa");
+  
+  // Enviar los datos a través de WebSocket (más eficiente que HTTP POST)
+  StaticJsonDocument<256> doc;
+  doc["tipo"] = "datos_aula"; // ← Identificador para el servidor
+  doc["aula"] = aula;
+  doc["temperatura"] = temperatura;
+  doc["luz"] = iluminacion;
+  doc["personas"] = personas;
+  doc["clase_en_curso"] = clase_en_curso;
+
+  String payload;
+  serializeJson(doc, payload);
+  
+  Serial.print("📤 Enviando datos ("); 
+  Serial.print(payload.length());
+  Serial.println(" bytes):");
+  Serial.println(payload);
+  
+  webSocket.sendTXT(payload);  // ✅ Enviar por WebSocket
+  Serial.println("✅ Datos enviados exitosamente");
+  Serial.println("===============================\n");
 }
 
-// Obtener token al iniciar la conexión
-void obtenerToken() {
-  HTTPClient http;
-  http.begin(String(serverUrl) + "/login_aula");
-  http.addHeader("Content-Type", "application/json");
-
-  String jsonPayload = "{\"nombre_aula\": \"Aula 101\", \"password_aula\": \"pass321\"}";
-  int httpResponseCode = http.POST(jsonPayload);
-
-  if (httpResponseCode > 0) {
-    String response = http.getString();
-    Serial.println("Respuesta completa: " + response);
-    
-    // Parsear JSON para extraer el token
-    StaticJsonDocument<512> doc;
-    DeserializationError error = deserializeJson(doc, response);
-    
-    if (error) {
-      Serial.print("Error parseando JSON: ");
-      Serial.println(error.f_str());
-    } else {
-      if (doc.containsKey("token")) {
-        jwtToken = doc["token"].as<String>();
-        Serial.println("✅ Token JWT obtenido correctamente");
-        Serial.println("Token: " + jwtToken.substring(0, 20) + "...");
-      } else {
-        Serial.println("❌ No se encontró el campo 'token' en la respuesta");
-      }
-    }
-  } else {
-    Serial.print("❌ Error obteniendo token. Código: ");
-    Serial.println(httpResponseCode);
-  }
-
-  http.end();
-}

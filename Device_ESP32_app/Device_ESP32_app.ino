@@ -4,11 +4,12 @@
 
 //Librerías necesarias
 #include <WiFi.h>
+#include <WiFiClientSecure.h>  // HTTPS
 #include <WiFiUdp.h>
 #include <time.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
-#include <WebSocketsClient.h>
+#include <WebSocketsClient.h>  // ✅ Librería ORIGINAL para WebSockets con control SSL
 //#include "Freenove_WS2812_Lib_for_ESP32.h"
 #include <Wire.h>
 #include <SPI.h>         //Librería para comunicación SPI
@@ -24,7 +25,6 @@
 
 // Declaración adelantada
 void initSensores();
-void obtenerToken();
 void HiloComunicadorcode(void* pvParameters);
 void leerNFC();
 void obtenerProximaClase();
@@ -33,7 +33,7 @@ void registrarAsistencia();
 String uidToString(byte *uid, unsigned int longitud);
 String urlencode(String str);
 unsigned long epochFromString(String fecha);
-void webSocketEvent(WStype_t type, uint8_t *payload, size_t length);
+void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);  // ✅ Callback para WebSocketsClient
 
 
 //Instanciamos clases que usan las librerias de los sensores
@@ -42,7 +42,7 @@ BH1750 lightMeter;
 ld2410 radar;
 UNIT_PN532 nfc(PN532_SS);  // Línea enfocada para la comunicación por SPI
 
-//Instanciamos la clase websocket que nos va a permitir el intercambio de información bidireccional para el control de relays
+// Cliente WebSocket (maneja SSL internamente)
 WebSocketsClient webSocket;
 
 //Handle del hilo de ejecución que vamos a fijar en el core 0 para llevar el tema de comunicaciones
@@ -68,52 +68,65 @@ void setup() {
 }
 
 //HiloComunicador: Equivale al Loop normal de .ino pero que se ejecutará en el core 0
-//La idea es reservarla para comunicaciones
-void HiloComunicadorcode(void* pvParameters) {
 
-  // Inicialización de WiFi y nos conectamos (los datos están en pines y funciones auxiliares)
+void HiloComunicadorcode(void* pvParameters) {
+  // Conectar a WiFi
   WiFi.begin(ssid, password);
-  Serial.print("Conectando a WiFi");
+  Serial.print("Conectando WiFi");
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
-  Serial.println(" Conectado!");
+  Serial.println(" OK");
+  Serial.print("IP: ");
+  Serial.println(WiFi.localIP());
 
-  //Nos conectamos a servidor de tiempo para tener la hora correcta
+  // Sincronizar hora NTP
   configTime(0, 0, "pool.ntp.org", "time.nist.gov");
   setenv("TZ", tzInfo, 1);
   tzset();
 
   struct tm timeinfo;
-
   while (!getLocalTime(&timeinfo)) {
-    Serial.println("Esperando sincronización NTP...");
+    Serial.println("Esperando NTP...");
     delay(1000);
   }
+  Serial.println("Hora sincronizada");
 
-  Serial.println("Hora sincronizada:");
-  Serial.println(&timeinfo, "%c");
-
-  //Obtenemos el token de seguridad que utiulizaremos en todas las comunicaciones
-  obtenerToken();  //login de aula
-
-  //Inicializamos el websocket
-  webSocket.begin(wsHost, wsPort, wsPath);
+  // Configurar SSL
+  Serial.println("\n=== WebSocket SSL ===");
+  
+  // Configurar WebSocket con SSL
+  Serial.print("Conectando WSS: ");
+  Serial.print(wsHost);
+  Serial.print(":");
+  Serial.print(wsPort);
+  Serial.println(wsPath);
+  
+  // Para ESP32, beginSSL configura SSL internamente
+  // El último parámetro (fingerprint) puede estar vacío para certificados autofirmados
+  webSocket.beginSSL(wsHost, wsPort, wsPath);
+  
+  //en caso de q falle usamos
+  
+  
+  // Deshabilitar validación SSL para certificados autofirmados
+ //webSocket.setInsecure();
+  
   webSocket.onEvent(webSocketEvent);
-  Serial.println("✅ WebSocket conectado (puro).");
+  webSocket.setReconnectInterval(5000);
+  
+  // Configurar heartbeat
+  webSocket.enableHeartbeat(15000, 3000, 2);
+  
+  Serial.println("WebSocket configurado\n");
 
-  //Creamos un bucle infinito dentro de este hilo y así podemos distinguir tareas de
-  //inicialización de tareas repetitivas sin meterlo en el Setup
+  // Loop WebSocket
   for (;;) {
-
     webSocket.loop();
-
-    vTaskDelay(10);  // cede brevemente la CPU al scheduler para que no se bloquee y reduce el uso de recursos
+    vTaskDelay(10 / portTICK_PERIOD_MS);
   }
-
-}  //Aquí acaba HiloCode0
-
+}
 //Loop principal que utilizaremos para toda la lógica de los sensores y actuadores
 void loop() {
 
