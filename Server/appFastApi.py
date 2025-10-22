@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import os
 from pathlib import Path
@@ -12,7 +13,7 @@ from middleware.cors import setup_cors
 from routers import auth, asistencias, aulas, clases, websockets, views
 
 # Utils
-from utils.database_pool import close_db_pool
+from utils.database_pool import close_db_pool, get_db_pool
 
 # Configuración de logging
 logging.basicConfig(
@@ -45,10 +46,35 @@ app.include_router(aulas.router)
 app.include_router(clases.router)
 app.include_router(websockets.router)
 
+# Ruta de health check
+@app.get("/health")
+async def health_check():
+    """Verifica el estado del servidor sin tocar la base de datos"""
+    from utils.database_pool import _pool
+    return {
+        "status": "ok",
+        "pool_initialized": _pool is not None
+    }
+
 # Eventos de ciclo de vida
 @app.on_event("startup")
 async def startup_event():
     logging.info("🚀 Servidor iniciado")
+    try:
+        # Inicializar pool con timeout de forma no bloqueante
+        asyncio.create_task(initialize_pool())
+    except Exception as e:
+        logging.error(f"❌ Error en startup: {e}")
+
+async def initialize_pool():
+    """Inicializa el pool de forma asíncrona sin bloquear el servidor"""
+    try:
+        pool = await asyncio.wait_for(get_db_pool(), timeout=10.0)
+        logging.info(f"✅ Pool inicializado: {pool.size}/{pool.maxsize} conexiones")
+    except asyncio.TimeoutError:
+        logging.error("❌ Timeout inicializando pool de base de datos")
+    except Exception as e:
+        logging.error(f"❌ Error inicializando pool: {e}")
 
 @app.on_event("shutdown")
 async def shutdown_event():

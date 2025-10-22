@@ -1,7 +1,7 @@
-docker run -d \
-  --name control-asistencia-db \
-  -e MYSQL_ROOT_PASSWORD=1234\
-  -e MYSQL_DATABASE=control_asistencia \
-  -p 3306:3306 \
-  -v "$(pwd)/init.sql:/docker-entrypoint-initdb.d/init.sql" \
-  mariadb:11.7
+D:\UEX\ControlAsistencia\Database>docker run --name control-asistencia-mysql ^
+¿Más?   -e MYSQL_ROOT_PASSWORD=1234 ^
+¿Más?   -e MYSQL_DATABASE=control-asistencia ^
+¿Más?   -v "%cd%:/docker-entrypoint-initdb.d" ^
+¿Más?   -p 3306:3306 ^
+¿Más?   -d mysql:latest
+20deecebfcfd38bf09f246a55320a447a3cc1547546a3714eb7b3a3bad0e2f9f
