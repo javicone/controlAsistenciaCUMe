@@ -25,6 +25,17 @@ async def dashboard_view(request: Request):
         logging.error(f"Error en dashboard: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@router.get("/administrador", response_class=HTMLResponse)
+async def dashboard_view(request: Request):
+    """Vista de administrador"""
+    try:
+        return templates.TemplateResponse("administrador.html", {"request": request})
+    except Exception as e:
+        logging.error(f"Error en admin: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
 @router.get("/profesor/asistencias", response_class=HTMLResponse)
 async def asistencias_profesor(request: Request):
     """Vista de asistencias para profesores"""

@@ -62,18 +62,34 @@ def read_and_validate(path: Path):
 def main():
     base = Path(".")
     dfs = []
+    
+    print("🔍 Buscando archivos CSV...")
+    print(f"📁 Directorio de trabajo: {base.absolute()}\n")
+    
     for fname in FILES:
         p = base / fname
+        print(f"   Buscando: {fname}...", end=" ")
+        
         if not p.exists():
-            print(f"Aviso: no se encontró {fname} — se omite")
+            print(f"❌ NO ENCONTRADO (ruta completa: {p.absolute()})")
             continue
+        
+        print(f"✓ Encontrado")
+        
         try:
             df = read_and_validate(p)
             df["origen"] = fname
             dfs.append(df)
-            print(f"Leído: {fname} ({len(df)} filas)")
+            print(f"      ✅ Leído correctamente: {len(df)} filas")
+            print(f"      📊 Columnas: {list(df.columns)}")
+            if 'carrera' in df.columns:
+                print(f"      🎓 Carreras únicas: {df['carrera'].unique().tolist()}")
         except Exception as e:
-            print(f"Error leyendo {fname}: {e}")
+            print(f"      ❌ Error: {e}")
+            import traceback
+            traceback.print_exc()
+    
+    print(f"\n📦 Total de archivos cargados: {len(dfs)}/{len(FILES)}\n")
     if not dfs:
         print("No se cargaron archivos. Coloque los CSV en el directorio y vuelva a ejecutar.")
         sys.exit(1)

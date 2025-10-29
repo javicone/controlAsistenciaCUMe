@@ -1,27 +1,149 @@
 # Control de Asistencia y Monitorización de Aulas (IoT)
 
 ![Logo de la aplicación](imagenes/image.png)  
+https://wokwi.com/projects/446089574014956545
 
-
-Repositorio con el backend en Python (Flask + WebSockets) y el código para dispositivos ESP32 que permiten:
+Repositorio con el backend en Python (Flask/FastAPI + WebSockets) y el código para dispositivos ESP32 que permiten:
 - Registrar asistencia vía NFC.
 - Monitorizar temperatura, iluminación y presencia en aulas.
 - Control remoto de relés por aula.
 Este README recoge: estructura del repo, cómo configurar y ejecutar el backend, y notas útiles para trabajar con el firmware.
 
+## Estado actual (resumen)
+- Migración en curso del monolito Flask a FastAPI con routers, middlewares y WebSockets (ver `Server/appFastApi.py` y `Server/routers/*`).
+- La base de datos MySQL se ha movido a Docker. Ya no necesitas instalar MySQL localmente si usas el contenedor.
+- El código antiguo de Flask se conserva en `Server/antiguasVersiones/` como referencia.
+
 ## Estructura principal
-- `Database/` — Dump SQL: `backupControlAsistencia.sql` con el esquema / datos de ejemplo.
-- `Device/` — Sketches y código C++ para ESP32 (PN532, sensores, lógica de envío):
-  - `api_rest.ino`, `leerNFC.ino`, `SensorTempPresNFCMultithyRegistroLimpio.ino`, `webSocketEvent.ino`, `funciones_auxiliares.ino`, `inicializacionsensores.ino`, `pinesyvariablesauxiliares.h`, `UNIT_PN532.*`.
-- `Server/` — Backend Python (Flask + WebSockets):
-  - `appV4.py` — servidor principal (endpoints REST y arranque de WebSocket server).
-  - `config.py` — configuración (DB, SECRET_KEY).
+- `Database/` — Dump SQL: `backupControlAsistencia.sql` y utilidades (`docker comando.txt`).
+- `DatosAnalisisHorario/` — Script `clases.py` y salidas (CSV/XLSX) con estadísticas por aula, carrera, día/hora y cuatrimestre.
+- `Device_ESP32_app/` — Firmware para ESP32 (PN532 NFC, BME280, BH1750, radar LD2410, LEDs, buzzer, relé, WebSocket). Archivos clave: `Device_ESP32_app.ino`, `NFC_module.ino`, `BME_module.ino`, `LightMeter_module.ino`, `radar_module.ino`, `setupSensores.ino`, `webSocketEvent.ino`, `api_rest.ino`, `funciones_auxiliares.ino`, `UNIT_PN532.*`, `globals.h/.cpp`, `indicators.ino`.
+- `Server/` — Backend Python (FastAPI + WebSockets):
+  - `appFastApi.py` — servidor principal actual (endpoints REST, websockets y templates).
+  - `routers/`, `models/`, `services/`, `middleware/`, `utils/`, `static/`, `templates/` — nueva arquitectura modular.
+  - `antiguasVersiones/` — versiones previas en Flask (por compatibilidad/histórico).
+- `imagenes/` — recursos estáticos (por ejemplo, `imagenes/image.png`).
 - `README.md` — (este fichero)
 - `Sensor para Aula.docx` — documentación adicional.
 
+## Estructura del repositorio (actual)
+
+```
+ControlAsistencia/
+├── cert.pem
+├── key.pem
+├── imagenes/
+│   └── image.png
+├── Database/
+│   ├── backupControlAsistencia.sql
+│   └── docker comando.txt
+├── DatosAnalisisHorario/
+├── Device_ESP32_app/
+│   ├── Device_ESP32_app.ino
+│   ├── api_rest.ino
+│   ├── BME_module.ino
+│   ├── LightMeter_module.ino
+│   ├── NFC_module.ino
+│   ├── radar_module.ino
+│   ├── setupSensores.ino
+│   ├── webSocketEvent.ino
+│   ├── funciones_auxiliares.ino
+│   ├── globals.h
+│   ├── globals.cpp
+│   ├── indicators.ino
+│   ├── UNIT_PN532.h
+│   └── UNIT_PN532.cpp
+└── Server/
+    ├── appFastApi.py
+    ├── config.py
+    ├── database.py
+    ├── requirements.txt
+    ├── antiguasVersiones/
+    │   ├── appFastApi_MONOLITO.py
+    │   └── appFlask.py
+    ├── middleware/
+    │   ├── __init__.py
+    │   ├── cors.py
+    │   └── logging.py
+    ├── models/
+    │   ├── __init__.py
+    │   ├── asistencia.py
+    │   ├── aula.py
+    │   ├── clase.py
+    │   └── user.py
+    ├── routers/
+    │   ├── __init__.py
+    │   ├── asistencias.py
+    │   ├── aulas.py
+    │   ├── auth.py
+    │   ├── clases.py
+    │   ├── views.py
+    │   └── websockets.py
+    ├── services/
+    │   ├── __init__.py
+    │   ├── asistencia_service.py
+    │   ├── aula_service.py
+    │   ├── auth_service.py
+    │   └── clase_service.py
+    ├── static/
+    │   └── css/
+    │       └── styles.css
+    ├── templates/
+    │   ├── administrador.html
+    │   ├── conserjes.html
+    │   ├── dashboard.html
+    │   ├── gestion_aulas.html
+    │   └── index.html
+    └── utils/
+        ├── __init__.py
+        ├── database_pool.py
+        └── websocket_manager.py
+```
+
+## Base de datos en Docker (MySQL)
+
+La base de datos se ejecuta ahora en un contenedor Docker de MySQL. Desde PowerShell, sitúate en la carpeta `Database` y ejecuta el siguiente comando (Windows):
+
+```powershell
+# En: D:\UEX\ControlAsistencia\Database
+docker run --name control-asistencia-mysql ^
+  -e MYSQL_ROOT_PASSWORD=1234 ^
+  -e MYSQL_DATABASE=control-asistencia ^
+  -v "%cd%:/docker-entrypoint-initdb.d" ^
+  -p 3306:3306 ^
+  -d mysql:latest
+```
+
+Qué hace cada parámetro:
+- `MYSQL_ROOT_PASSWORD`: contraseña del usuario root de MySQL dentro del contenedor.
+- `MYSQL_DATABASE`: crea automáticamente la BD `control-asistencia` si no existe.
+- `-v "%cd%:/docker-entrypoint-initdb.d"`: vincula la carpeta actual (donde está `backupControlAsistencia.sql`) a la ruta de auto-inicialización de MySQL en el contenedor. Cualquier `.sql` en esa carpeta se ejecutará automáticamente en el primer arranque del contenedor.
+- `-p 3306:3306`: expone MySQL en el puerto 3306 del host.
+
+### Cargar el backup de la base de datos
+
+Tienes dos opciones:
+
+1) Auto-inicialización (primer arranque del contenedor)
+- Asegúrate de que `Database/backupControlAsistencia.sql` está en la carpeta `Database` antes de lanzar el `docker run` anterior. MySQL ejecutará ese SQL automáticamente al iniciar por primera vez.
+
+2) Importación manual (si el contenedor ya existe o quieres reimportar)
+- Ejecuta el cliente MySQL dentro del contenedor leyendo el SQL desde el host:
+
+```powershell
+# Desde la raíz del repo o dentro de Database
+# Importa el backup dentro del contenedor MySQL
+Get-Content Database\backupControlAsistencia.sql | docker exec -i control-asistencia-mysql mysql -u root -p1234 control-asistencia
+```
+
+Comprobación rápida (opcional, si tienes cliente mysql en el host):
+```powershell
+mysql -h 127.0.0.1 -P 3306 -u root -p1234 -e "SHOW DATABASES;"
+```
+
 ## Requisitos (backend)
 - Python 3.10+ (3.11/3.12 recomendadas).
-- MySQL/MariaDB para la base de datos.
+- MySQL/MariaDB para la base de datos (recomendado vía Docker, ver sección anterior).
 - Entorno de Arduino/PlatformIO con soporte ESP32 y las librerías para PN532, BME280, BH1750 si se usa el firmware.
 
 He añadido un `requirements.txt` básico con las dependencias del backend.
@@ -40,12 +162,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-3) Importar la base de datos (desde un cliente MySQL):
-
-```powershell
-# Ajusta usuario/host y la ruta al .sql según tu entorno
-mysql -u root -p control_asistencia < Database\backupControlAsistencia.sql
-```
+3) Base de datos en Docker: sigue la sección "Base de datos en Docker (MySQL)" de este README. Si prefieres MySQL instalado localmente, puedes seguir usando el cliente y redirigiendo el SQL como alternativa.
 
 ## Configuración
 
@@ -112,38 +229,3 @@ He revisado `Server/appV4.py`, `Server/config.py` y la estructura de `Device/` y
   - No existe `requirements.txt` (ahora añadido). Considera añadir un `README` separado para firmware con pasos de compilación y librerías necesarias.
   - Añadir `env.example` o usar variables de entorno para evitar poner secretos en `config.py`.
 
-
-## propuesta refactorización del BACKEND
-
-```
-Server/
-├── app.py                 # Punto de entrada principal
-├── config.py             # Configuración (ya existe)
-├── database.py           # Conexión DB (ya existe)
-├── requirements.txt      # Dependencias
-├── routes/
-│   ├── __init__.py
-│   ├── auth.py          # Login, JWT
-│   ├── asistencias.py   # Registro y consulta asistencias
-│   ├── aulas.py         # Datos de aulas, control relay
-│   └── dashboard.py     # Rutas de templates
-├── services/
-│   ├── __init__.py
-│   ├── auth_service.py  # Lógica de autenticación
-│   ├── asistencia_service.py # Lógica de asistencias
-│   └── aula_service.py  # Lógica de estado de aulas
-├── websockets/
-│   ├── __init__.py
-│   ├── ws_server.py     # Servidor WebSocket
-│   └── ws_handlers.py   # Manejadores de eventos WS
-├── models/
-│   ├── __init__.py
-│   ├── usuario.py       # Modelo Usuario
-│   ├── aula.py         # Modelo Aula
-│   └── asistencia.py   # Modelo Asistencia
-├── utils/
-│   ├── __init__.py
-│   └── decorators.py   # Decoradores personalizados
-└── templates/           # Ya existe
-    └── static/          # Ya existe
-```
