@@ -90,7 +90,7 @@
     }
 
     function cambiarRelay(aula, estado) {
-      fetch("http://10.25.186.94:5000/control_relay", {
+      fetch("https://10.25.186.94:5000/control_relay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ aula: aula, relay: estado })

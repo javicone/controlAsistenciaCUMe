@@ -26,7 +26,7 @@ async def dashboard_view(request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/administrador", response_class=HTMLResponse)
-async def dashboard_view(request: Request):
+async def administrador_view(request: Request):
     """Vista de administrador"""
     try:
         return templates.TemplateResponse("administrador.html", {"request": request})
