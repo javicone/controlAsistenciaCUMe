@@ -2,6 +2,9 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+
+
+
 // WiFi y servidor
 const char* ssid = "Nothing";
 const char* password = "12345678";
@@ -59,7 +62,10 @@ const char* tzInfo = "CET-1CEST,M3.5.0/2,M10.5.0/3";
 // Aula y pines
 const char* aula = "Aula 101";
 const int relayPin = 26;
-
+const int buzzerPin = 33;
+const int ledRojoPin = 25;
+const int ledVerdePin = 27;
+const int ledAmarilloPin = 14;
 // Constantes de sensores
 #define SEALEVELPRESSURE_HPA (1013.25)
 #define RADAR_RX_PIN 16

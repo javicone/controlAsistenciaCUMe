@@ -1,5 +1,8 @@
 # Control de Asistencia y Monitorización de Aulas (IoT)
 
+![Logo de la aplicación](imagenes/image.png)  
+
+
 Repositorio con el backend en Python (Flask + WebSockets) y el código para dispositivos ESP32 que permiten:
 - Registrar asistencia vía NFC.
 - Monitorizar temperatura, iluminación y presencia en aulas.

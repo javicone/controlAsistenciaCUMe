@@ -10,6 +10,8 @@ void setupRadar(){
 
 
     if (radar.begin(RADAR_SERIAL)) {
+        sensores.ld2410_ok = true;
+        indicarEstado(NORMAL);
         Serial.println(F("OK"));
         Serial.print(F("LD2410 firmware version: "));
         Serial.print(radar.firmware_major_version);
@@ -19,5 +21,64 @@ void setupRadar(){
         Serial.println(radar.firmware_bugfix_version, HEX);
     } else {
         Serial.println(F("not connected"));
+        indicarEstado(ERROR);
+        sensores.ld2410_ok = false;
     }
+}
+struct RadarData {
+  bool presenciaDetectada;
+  int distanciaEstatico;
+  int distanciaMovil;
+  bool valido;
+};
+
+RadarData leerRadar() {
+  RadarData datos = {false, -1, -1, false};
+  
+  // Verificar si el sensor está disponible
+  if(!sensores.ld2410_ok) {
+    Serial.println("⚠️ LD2410 no disponible, reintentando...");
+    if(!setupRadar()) {
+      return datos;
+    }
+  }
+  
+  // Leer radar
+  radar.read();
+  
+  // Verificar conexión
+  if(!radar.isConnected()) {
+    Serial.println("❌ LD2410 perdió conexión");
+    sensores.ld2410_ok = false;
+    return datos;
+  }
+  
+  // Obtener datos
+  datos.presenciaDetectada = radar.presenceDetected();
+  
+  if(datos.presenciaDetectada) {
+    if(radar.stationaryTargetDetected()) {
+      datos.distanciaEstatico = radar.stationaryTargetDistance();
+      
+      // Validar distancia (0 a 600 cm según LD2410)
+      if(datos.distanciaEstatico < 0 || datos.distanciaEstatico > 600) {
+        Serial.printf("❌ Distancia estático inválida: %d cm\n", datos.distanciaEstatico);
+        datos.distanciaEstatico = -1;
+      }
+    }
+    
+    if(radar.movingTargetDetected()) {
+      datos.distanciaMovil = radar.movingTargetDistance();
+      
+      // Validar distancia
+      if(datos.distanciaMovil < 0 || datos.distanciaMovil > 600) {
+        Serial.printf("❌ Distancia móvil inválida: %d cm\n", datos.distanciaMovil);
+        datos.distanciaMovil = -1;
+      }
+    }
+  }
+  
+  // Todo OK
+  datos.valido = true;
+  return datos;
 }

@@ -54,31 +54,63 @@ void setupNFC() {
     nfc_present = true;
   }
 }
-// ...existing code...
+struct NFCData {
+  String uid;
+  bool tarjetaDetectada;
+  bool valido;
+};
 
-void leerNFC() {
-  //Recepción y detección de los datos de la tarjeta y almacenamiento en la variable "LeeTarjeta"
-  LeeTarjeta = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, &uid[0], &LongitudUID, 1000);
-
-  //Se detecto un tarjeta RFID
-  if (LeeTarjeta) {
-    Serial.println("Tarjeta encontrada!");
-    Serial.print("Longitud del UID: ");
-    Serial.print(LongitudUID, DEC);  //Imprime la longitud de los datos de la tarjeta en decimal
-    Serial.println(" bytes");
-    Serial.print("Valor del UID: ");
-    // Imprime los datos almacenados en la tarjeta en Hexadecimal
-    for (uint8_t i = 0; i < LongitudUID; i++) {
-      Serial.print(" 0x");
-      Serial.print(uid[i], HEX);
+NFCData leerNFC() {
+  NFCData datos = {"", false, false};
+  
+  // Verificar si el sensor está disponible
+  if(!sensores.pn532_ok) {
+    Serial.println("⚠️ PN532 no disponible, reintentando...");
+    if(!setupNFC()) {
+      return datos;
     }
-    Serial.println("");
-    registrarAsistencia();
-    //delay (1000); // Espera de 1 segundo
   }
-
-  //Si no se detecta tarjeta
-  else {
-    Serial.println("Se agotó el tiempo de espera de una tarjeta");
+  
+  uint8_t success;
+  uint8_t uid_local[] = {0, 0, 0, 0, 0, 0, 0};
+  uint8_t uidLength;
+  
+  // Leer tarjeta (timeout 500ms - balance entre responsividad y detección)
+  success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid_local, &uidLength, 500);
+  
+  if(success) {
+    // Validar longitud de UID (típicamente 4 o 7 bytes)
+    if(uidLength != 4 && uidLength != 7) {
+      Serial.printf("❌ UID longitud inválida: %d bytes\n", uidLength);
+      return datos;
+    }
+    
+    // Log detallado
+    Serial.print("✅ Tarjeta detectada - UID (");
+    Serial.print(uidLength);
+    Serial.print(" bytes): ");
+    for(uint8_t i = 0; i < uidLength; i++) {
+      Serial.print("0x");
+      if(uid_local[i] < 0x10) Serial.print("0");
+      Serial.print(uid_local[i], HEX);
+      Serial.print(" ");
+    }
+    Serial.println();
+    
+    // Convertir UID a String
+    datos.uid = uidToString(uid_local, uidLength);
+    
+    // Validar que no esté vacío
+    if(datos.uid.length() == 0) {
+      Serial.println("❌ UID vacío tras conversión");
+      return datos;
+    }
+    
+    datos.tarjetaDetectada = true;
+    datos.valido = true;
+    
+    Serial.println("UID String: " + datos.uid);
   }
+  
+  return datos;
 }

@@ -1,6 +1,6 @@
 // 🔍 CÓDIGO DE DEBUG AVANZADO PARA beginSSL()
 // Añadir esto ANTES de webSocket.beginSSL() en Device_ESP32_app.ino
-
+public void debugWebSocketSSL() {
 // 1. Verificar WiFi
 Serial.println("\n🔍 === DIAGNÓSTICO WEBSOCKET ===");
 Serial.print("📶 WiFi conectado: ");
@@ -50,3 +50,4 @@ Serial.println(" bytes");
 Serial.println("🔍 === FIN DIAGNÓSTICO ===\n");
 
 // AHORA SÍ, llamar a beginSSL()...
+}

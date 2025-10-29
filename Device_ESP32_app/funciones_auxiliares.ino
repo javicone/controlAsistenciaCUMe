@@ -59,3 +59,45 @@ String urlencode(const char* msg) {
   return encodedMsg;
 }
 
+// ====== MANEJO DE ERRORES DE SENSORES ======
+
+void indicarEstado(EstadoLED estado) {
+  switch(estado) {
+
+    
+
+    case NORMAL:
+      digitalWrite(ledVerdePin, HIGH);
+      digitalWrite(ledAmarilloPin, LOW);
+      digitalWrite(ledRojoPin, LOW);
+      noTone(buzzerPin);
+      break;
+      
+    case ADVERTENCIA:
+      digitalWrite(ledVerdePin, LOW);
+      digitalWrite(ledAmarilloPin, HIGH);
+      digitalWrite(ledRojoPin, LOW);
+      tone(buzzerPin, 1000, 100);  // Beep corto
+      break;
+      
+    case ERROR:
+      digitalWrite(ledVerdePin, LOW);
+      digitalWrite(ledAmarilloPin, LOW);
+      // Parpadeo rojo
+      for(int i = 0; i < 3; i++) {
+        digitalWrite(ledRojoPin, HIGH);
+        delay(100);
+        digitalWrite(ledRojoPin, LOW);
+        delay(100);
+      }
+      tone(buzzerPin, 800, 200);
+      break;
+      
+    case CRITICO:
+      digitalWrite(ledVerdePin, LOW);
+      digitalWrite(ledAmarilloPin, LOW);
+      digitalWrite(ledRojoPin, HIGH);
+      tone(buzzerPin, 500, 500);  // Beep largo
+      break;
+  }
+}

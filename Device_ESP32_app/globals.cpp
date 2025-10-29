@@ -1,30 +1,39 @@
 #include "globals.h"
+#include "config.h"
 
-// Token y estado de aula
-String jwtToken = "asdfghjklñzxcvbnmQWERTYUIOPZXCVBNMLKJHGFDSA1234567890";
-bool clase_en_curso = false;
+// ============================================
+// TIMERS
+// ============================================
+unsigned long lastReading = 0;
+unsigned long lastReading2 = 0;
+unsigned long lastReading3 = 0;
+const unsigned long delayTime = 5000;      // 5 segundos - envío de datos
+const unsigned long delayTime2 = 300000;   // 5 minutos - próxima clase
 
-// Variables de sensores y estado
-float temperatura = 0.0;
-float humedad = 0.0;
-float presion = 0.0;
-float iluminacion = 0.0;
-int personas = 0;
-float DistanciaMovil = 0.0; // Cambiado a float
-bool radarConnected = false;
-int status = 0; // Cambiado a int
+// ============================================
+// ESTADO DE SENSORES
+// ============================================
+SensorStatus sensores;
 
-// Tiempos y flags
-unsigned long delayTime = 1000;
-unsigned long delayTime2 = 5000;
-uint32_t lastReading = 0;
-uint32_t lastReading2 = 0;
-uint32_t lastReading3 = 0;
-unsigned long targetTimeMillis = 0;
-bool ledRedOn = false;
+// ============================================
+// WEBSOCKET
+// ============================================
+bool wsConectado = false;
+WebSocketsClient webSocket;
 
-// NFC
-uint8_t DatoRecibido[4];
-boolean LeeTarjeta = false;
-uint8_t uid[7];
-uint8_t LongitudUID = 0;
+// ============================================
+// INSTANCIAS DE SENSORES
+// ============================================
+Adafruit_BME280 bme;
+BH1750 lightMeter;
+ld2410 radar;
+UNIT_PN532 nfc(PN532_SS);
+
+// ============================================
+// PINES (desde config.h)
+// ============================================
+const int ledRojoPin = LED_ROJO_PIN;
+const int ledVerdePin = LED_VERDE_PIN;
+const int ledAmarilloPin = LED_AMARILLO_PIN;
+const int buzzerPin = BUZZER_PIN;
+const int relayPin = RELAY_PIN;

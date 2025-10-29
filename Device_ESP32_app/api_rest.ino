@@ -1,4 +1,4 @@
-void registrarAsistencia() {
+void registrarAsistencia(String tarjetaUID) {
   Serial.println("\n=== REGISTRO DE ASISTENCIA ===");
   
   WiFiClientSecure *client = new WiFiClientSecure();
@@ -17,10 +17,11 @@ void registrarAsistencia() {
   https.begin(*client, fullUrl);
   https.addHeader("Content-Type", "application/json");
   
-  String tarjetaUID = uidToString(uid, LongitudUID);
   String jsonPayload = "{\"uid\": \"" + tarjetaUID + "\", \"nombre_aula\": \"" + aula + "\"}";
   
   Serial.println("📤 Enviando datos de asistencia...");
+  Serial.print("📋 Payload: "); Serial.println(jsonPayload);
+  
   int httpResponseCode = https.POST(jsonPayload);
   
   if (httpResponseCode > 0) {
@@ -131,54 +132,53 @@ void obtenerProximaClase() {
 
 void EnviaValoresAula() {
 
-  temperatura = bme.readTemperature();
-  Serial.print("Temperature = ");
-  Serial.print(temperatura);
-  Serial.println(" *C");
-
-  iluminacion = lightMeter.readLightLevel();
-  Serial.print("Light: ");
-  Serial.print(iluminacion);
-  Serial.println(" lx");
-
-  Serial.println("\n📊 === ENVÍO DATOS DE AULA ===");
-  Serial.println("✅ WebSocket Seguro (WSS) - Conexión cifrada");
-  
-  // Verificar estado de conexiones antes de enviar
-  if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("❌ WiFi desconectado, no se pueden enviar datos");
-    Serial.println("===============================\n");
+  if (!wsConectado) {
+    Serial.println("❌ WebSocket no conectado, no se envían datos");
     return;
   }
-  
-  if (!webSocket.isConnected()) {
-    Serial.println("⚠️  WebSocket NO conectado, omitiendo envío");
-    Serial.println("💡 Tip: El WebSocket se reconectará automáticamente");
-    Serial.println("===============================\n");
-    return;
-  }
-  
-  Serial.println("✅ Conexión WebSocket activa");
-  
-  // Enviar los datos a través de WebSocket (más eficiente que HTTP POST)
+
+
+  // Leer sensores con validación
+  BME280Data bme_data = leerBME280();
+  LuzData luz_data = leerLuz();
+  RadarData radar_data = leerRadar();
+
   StaticJsonDocument<256> doc;
-  doc["tipo"] = "datos_aula"; // ← Identificador para el servidor
+  doc["tipo"] = "datos_aula";
   doc["aula"] = aula;
-  doc["temperatura"] = temperatura;
-  doc["luz"] = iluminacion;
-  doc["personas"] = personas;
-  doc["clase_en_curso"] = clase_en_curso;
-
-  String payload;
-  serializeJson(doc, payload);
+    // Solo enviar datos válidos
+  if(bme_data.valido) {
+    doc["temperatura"] = bme_data.temperatura;
+    doc["humedad"] = bme_data.humedad;
+    doc["presion"] = bme_data.presion;
+  } else {
+    doc["temperatura"] = -999;
+    doc["humedad"] = -999;
+    doc["presion"] = -999;
+  }
   
-  Serial.print("📤 Enviando datos ("); 
-  Serial.print(payload.length());
-  Serial.println(" bytes):");
-  Serial.println(payload);
+  if(luz_data.valido) {
+    doc["luz"] = luz_data.lux;
+  } else {
+    doc["luz"] = -999;
+  }
   
-  webSocket.sendTXT(payload);  // ✅ Enviar por WebSocket
+  if(radar_data.valido) {
+    doc["personas"] = radar_data.presenciaDetectada ? 1 : 0;
+  } else {
+    doc["personas"] = 0;
+  }
+  
+  String json;
+  serializeJson(doc, json);
+  webSocket.sendTXT(json);
+  Serial.println("\n=== ENVÍO DE DATOS DEL AULA ===");
+  Serial.println("📤 Enviando datos del aula vía WebSocket...");
   Serial.println("✅ Datos enviados exitosamente");
   Serial.println("===============================\n");
+  // Log opcional
+  if(!bme_data.valido || !luz_data.valido || !radar_data.valido) {
+    Serial.println("⚠️ Algunos sensores enviaron datos inválidos");
+  }
 }
 

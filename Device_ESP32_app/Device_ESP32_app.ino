@@ -50,6 +50,11 @@ TaskHandle_t HiloComunicador;
 
 // Set up global del código
 void setup() {
+  //Inicializo los pines de los LEDs y el buzzer
+  pinMode(ledRojoPin, OUTPUT);
+  pinMode(ledVerdePin, OUTPUT);
+  pinMode(ledAmarilloPin, OUTPUT);
+  pinMode(buzzerPin, OUTPUT);
 
   //Inicializamos Serial para comunicación en Arduino IDE
   Serial.begin(115200);
@@ -123,54 +128,50 @@ void HiloComunicadorcode(void* pvParameters) {
 
   // Loop WebSocket
   for (;;) {
+    // Mantener conexión WiFi y reconexión automática
+    if(WiFi.status() != WL_CONNECTED) {
+      Serial.println("⚠️ WiFi desconectado, intentando reconectar...");
+      WiFi.reconnect();
+      while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+      }
+      Serial.println(" ✅ WiFi reconectado");
+      continue;
+    }
     webSocket.loop();
     vTaskDelay(10 / portTICK_PERIOD_MS);
   }
 }
 //Loop principal que utilizaremos para toda la lógica de los sensores y actuadores
 void loop() {
-
-  //leemos el sensor de presencia
-  radar.read();
-  if (radar.isConnected() && millis() - lastReading > 1000)  //comprueba si está conectado cada 1000ms
-  {
+ // Leer radar con validación
+  RadarData radar_data = leerRadar();
+  
+  if(radar_data.valido && millis() - lastReading > 1000) {
     lastReading = millis();
-    if (radar.presenceDetected()) {
-      // Compruea si hay personas estáticas
-      if (radar.stationaryTargetDetected()) {
-        //Serial.print(F("Stationary target: "));
-        personas = radar.stationaryTargetDistance();
-        //Serial.print(personas);
-        //Serial.print(F("cm energy:"));
-        //Serial.print(radar.stationaryTargetEnergy());
-        //Serial.print(' ');
-      }
-      // Comprueba si hay personas moviéndose
-      if (radar.movingTargetDetected()) {
-        Serial.print(F("Moving target: "));
-        DistanciaMovil = radar.movingTargetDistance();
-        Serial.print(DistanciaMovil);
-        Serial.print(F("cm energy:"));
-        Serial.print(radar.movingTargetEnergy());
-        Serial.println();
-        //Si la persona que se mueve está a menos de 50 cm lee el NFC
-        if (DistanciaMovil < 50) {
-          Serial.print(F("Leyendo NFC:"));
-          leerNFC();
+    
+    if(radar_data.presenciaDetectada) {
+      DistanciaEstatico = radar_data.distanciaEstatico;
+      DistanciaMovil = radar_data.distanciaMovil;
+      
+      if(DistanciaMovil > 0 && DistanciaMovil < 50) {
+        NFCData nfc_data = leerNFC();
+        
+        if(nfc_data.valido && nfc_data.tarjetaDetectada) {
+          registrarAsistencia(nfc_data.uid);
         }
       }
-      // Sensor de presencia LD2410
-      clase_en_curso = (personas > 0);  // Si hay personas, la clase está en curso
-    } else {
-      Serial.println(F("No target"));
     }
   }
-  //Compruebo cuando es la próxima clase en este aula
+
+  // Obtener próxima clase
   if (millis() - lastReading3 > delayTime2) {
     lastReading3 = millis();
     obtenerProximaClase();
   }
-  //SI ha pasado el tiempo estipulado mando los datos del aula
+
+  // Enviar datos del aula
   if (millis() - lastReading2 > delayTime) {
     lastReading2 = millis();
     EnviaValoresAula();

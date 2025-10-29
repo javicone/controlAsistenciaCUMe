@@ -1,0 +1,1069 @@
+aula,asignatura,hora,carrera,cuatrimestre,dia,origen
+Aula 1,Análisis y Diseño de Algoritmos,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Aula 8,Estadística,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Aula 10,Fundamentos de Redes I,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 4,Habilidades Comunicativas,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Aula 5,Sistemas Inteligentes,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 3,Sistemas Operativos,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 8,Tecnologia de Computadores,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 1,"Aspectos sociales, legales, éticos y profesionales de la informática",11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Aula 8,Estructura de Datos y de la Información,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Aula 10,Fundamentos de Redes I,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 3,Sistemas Distribuidos y de Tiempo Real,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Aula 3,Sistemas Operativos,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 8,Tecnologia de Computadores,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 1,Ampliación de Matemáticas,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 1,Arquitectura y Organización de Computadores,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Aula 8,Estructura de Datos y de la Información,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Lab. IV,Fundamentos de Programación,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 8,Física,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 3,Sistemas Distribuidos y de Tiempo Real,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Aula 3,Sistemas Operativos,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Lab. Elec.,Tecnologia de Computadores,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 8,Fundamentos de Electrónica,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Lab. IV,Fundamentos de Programación,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 8,Física,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Lab. Inf. IV,Sistemas Distribuidos y de Tiempo Real,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Aula 3,Sistemas Operativos,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Lab. Elec.,Tecnologia de Computadores,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 8,Fundamentos de Electrónica,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Lab. Inf. IV,Sistemas Distribuidos y de Tiempo Real,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Diseño y Programación Web,15 a 16,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Infraestructura y almacenamiento de grandes volúmenes de datos,15 a 16,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Diseño y Programación Web,16 a 17,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Infraestructura y almacenamiento de grandes volúmenes de datos,16 a 17,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Adquisición y Computación del Big Data,17 a 18,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Sistemas Inteligentes,17 a 18,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Sistemas Inteligentes,18 a 19,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Adquisición y Computación del Big Data,19 a 20,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Gestión de Proyectos TIC,19 a 20,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Gestión de Proyectos TIC,20 a 21,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Seguridad Avanzada,20 a 21,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Gestión de Proyectos TIC,21 a 22,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Seguridad Avanzada,21 a 22,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Lab. IV,Fundamentos de Programación,8 a 9,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Lab. Elec.,Tecnologia de Computadores,8 a 9,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 1,Ampliación de Matemáticas,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 1,"Aspectos sociales, legales, éticos y profesionales de la informática",9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Aula 8,Estadística,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Lab. IV,Fundamentos de Programación,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 4,Habilidades Comunicativas,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Lunes,clases_informatica.csv
+Aula 5,Sistemas Inteligentes,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 3,Sistemas de Información,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Lab. Elec.,Tecnologia de Computadores,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Lunes,clases_informatica.csv
+Aula 1,Arquitectura y Organización de Computadores,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 1,Estructura de Computadores,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 8,Fundamentos de Electrónica,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 8,Física,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 5,Metodología y Desarrollo de aplicaciones para Internet,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 3,Sistemas de Información,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 3,Tecnologías Web,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 1,Ampliación de Matemáticas,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 1,Análisis y Diseño de Algoritmos,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 8,Economía y Empresa,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 8,Fundamentos de Programación,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 3,Programación Concurrente y Distribuida,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 3,Sistemas Distribuidos y de Tiempo Real,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 8,Algebra Lineal,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 1,Análisis y Diseño de Algoritmos,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 8,Cálculo,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 8,Economía y Empresa,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 1,Estructura de Computadores,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 3,Programación Concurrente y Distribuida,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 3,Sistemas Distribuidos y de Tiempo Real,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 1,Análisis y Diseño de Algoritmos,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 1,Arquitectura y Organización de Computadores,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 3,Diseño y Evaluación de Tecnologías Hardware,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 5,Estadística,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 1,Estructura de Computadores,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 3,Programación Concurrente y Distribuida,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 3,Tecnologías Web,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 1,Análisis y Diseño de Algoritmos,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 1,Arquitectura y Organización de Computadores,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 3,Diseño y Evaluación de Tecnologías Hardware,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 5,Estadística,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 1,Estructura de Computadores,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 8,Física,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 3,Programación Concurrente y Distribuida,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 3,Tecnologías Web,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Arquitectura de Seguridad en los Sistemas,15 a 16,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 8,Física,15 a 16,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB","Plataformas, Framework y tendencias Tecnológicas",15 a 16,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 3,Sistemas de Información,15 a 16,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Arquitectura de Seguridad en los Sistemas,16 a 17,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 8,Física,16 a 17,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB","Plataformas, Framework y tendencias Tecnológicas",16 a 17,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 3,Sistemas de Información,16 a 17,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 8,Física,17 a 18,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Metodología y Desarrollo de aplicaciones para Internet,17 a 18,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Análisis y Visualización de Datos,18 a 19,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Metodología y Desarrollo de aplicaciones para Internet,18 a 19,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Análisis y Visualización de Datos,19 a 20,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Gestión de Proyectos TIC,19 a 20,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Evidencias Digitales y Análisis Forense,20 a 21,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Gestión de Proyectos TIC,20 a 21,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Evidencias Digitales y Análisis Forense,21 a 22,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Gestión de Proyectos TIC,21 a 22,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 1,Arquitectura y Organización de Computadores,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 3,Diseño y Evaluación de Tecnologías Hardware,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 1,Estructura de Computadores,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 8,Fundamentos de Electrónica,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Martes,clases_informatica.csv
+Aula 8,Física,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 3,Ingeniería del Software,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 5,Metodología y Desarrollo de aplicaciones para Internet,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Martes,clases_informatica.csv
+Aula 1,Base de Datos,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 8,Cálculo,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 8,Economía y Empresa,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 3,Ingeniería del Software,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Lab. I,Metodología y Desarrollo de Programas,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 3,Sistemas Distribuidos y de Tiempo Real,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 1,Arquitectura y Organización de Computadores,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 8,Cálculo,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 8,Estadística,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 1,Interacción Persona-Ordenador,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 3,Sistemas Distribuidos y de Tiempo Real,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 3,Sistemas de Información,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 1,Arquitectura y Organización de Computadores,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 8,Estadística,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 1,Interacción Persona-Ordenador,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 3,Sistemas de Información,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 8,Tecnologia de Computadores,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 1,"Aspectos sociales, legales, éticos y profesionales de la informática",13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 8,Estructura de Datos y de la Información,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 8,Fundamentos de Computadores,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 3,Habilidades Comunicativas,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 1,Interacción Persona-Ordenador,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Lab. I,Metodología y Desarrollo de Programas,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 3,Sistemas Operativos,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 1,"Aspectos sociales, legales, éticos y profesionales de la informática",14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 8,Estructura de Datos y de la Información,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 8,Fundamentos de Computadores,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 1,Interacción Persona-Ordenador,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Lab. I,Metodología y Desarrollo de Programas,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Diseño y Programación Web,15 a 16,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Evidencias Digitales y Análisis Forense,15 a 16,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Diseño y Programación Web,16 a 17,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Evidencias Digitales y Análisis Forense,16 a 17,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 4,Seguridad de la Información,16 a 17,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Arquitectura de Seguridad en los Sistemas,17 a 18,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 4,Seguridad de la Información,17 a 18,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Análisis y Visualización de Datos,18 a 19,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Arquitectura de Seguridad en los Sistemas,18 a 19,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 4,Seguridad de la Información,18 a 19,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Desarrollo de Aplicaciones para Dispositivos Móviles,19 a 20,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Análisis y Visualización de Datos,19 a 20,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Adquisición y Computación del Big Data,20 a 21,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Desarrollo de Aplicaciones para Dispositivos Móviles,20 a 21,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Adquisición y Computación del Big Data,21 a 22,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 1,Metodología y Desarrollo de Programas,8 a 9,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 8,Algebra Lineal,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 1,Base de Datos,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 8,Economía y Empresa,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 3,Ingeniería del Software,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Lab. I,Metodología y Desarrollo de Programas,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Miércoles,clases_informatica.csv
+Aula 3,Tecnologías Web,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Miércoles,clases_informatica.csv
+Aula 8,Estructura de Datos y de la Información,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 8,Fundamentos de Computadores,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 8,Fundamentos de Programación,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 10,Fundamentos de Redes I,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 3,Gestión de la Organizaciones,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 3,Ingeniería del Software,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 1,Redes de Ordenador,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 1,"Aspectos sociales, legales, éticos y profesionales de la informática",11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 8,Cálculo,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 3,Diseño y Evaluación de Tecnologías Hardware,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 8,Fundamentos de Computadores,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 10,Fundamentos de Redes I,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 3,Ingeniería del Software,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 1,Análisis y Diseño de Algoritmos,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 3,Diseño y Evaluación de Tecnologías Hardware,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 1,Estructura de Computadores,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 8,Fundamentos de Computadores,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Lab. I,Metodología y Desarrollo de Programas,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 3,Programación Concurrente y Distribuida,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 1,Análisis y Diseño de Algoritmos,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 1,Estructura de Computadores,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 8,Estructura de Datos y de la Información,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 8,Fundamentos de Computadores,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Lab. I,Metodología y Desarrollo de Programas,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 3,Programación Concurrente y Distribuida,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 8,Cálculo,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 8,Estructura de Datos y de la Información,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 8,Fundamentos de Computadores,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 8,Algebra Lineal,15 a 16,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Seguridad Avanzada,15 a 16,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Sistemas Inteligentes,15 a 16,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Seguridad Avanzada,16 a 17,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Sistemas Inteligentes,16 a 17,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Metodología y Desarrollo de aplicaciones para Internet,17 a 18,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 4,Seguridad de la Información,17 a 18,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Metodología y Desarrollo de aplicaciones para Internet,18 a 19,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB","Plataformas, Framework y tendencias Tecnológicas",18 a 19,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Desarrollo de Aplicaciones para Dispositivos Móviles,19 a 20,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB","Plataformas, Framework y tendencias Tecnológicas",19 a 20,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+"Aula 3, Lab. IV y Lab. III",Desarrollo de Aplicaciones para Dispositivos Móviles,20 a 21,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 1,Ampliación de Matemáticas,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 8,Estructura de Datos y de la Información,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 8,Fundamentos de Computadores,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Lab. IV,Fundamentos de Programación,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 8,Física,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 3,Gestión de la Organizaciones,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Aula 1,Redes de Ordenador,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Jueves,clases_informatica.csv
+Lab.Elec.,Tecnologia de Computadores,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Jueves,clases_informatica.csv
+Aula 8,Algebra Lineal,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Aula 1,Base de Datos,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Lab. I,Estructura de Datos y de la Información,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 8,Fundamentos de Electrónica,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 1,Metodología y Desarrollo de Programas,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Aula 3,Tecnologías Web,10 a 11,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 8,Algebra Lineal,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Aula 8,Fundamentos de Electrónica,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 8,Física,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Aula 3,Gestión de la Organizaciones,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 1,Metodología y Desarrollo de Programas,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Aula 5,Redes de Ordenador,11 a 12,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 8,Fundamentos de Electrónica,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 8,Fundamentos de Programación,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Aula 8,Física,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Lab. Inf. IV,Habilidades Comunicativas,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 1,Interacción Persona-Ordenador,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Aula 5,Redes de Ordenador,12 a 13,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 8,Fundamentos de Programación,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Aula 8,Física,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Lab. Inf. IV,Habilidades Comunicativas,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 1,Interacción Persona-Ordenador,13 a 14,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Aula 8,Algebra Lineal,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Aula 9,Cálculo,14 a 15,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Infraestructura y almacenamiento de grandes volúmenes de datos,20 a 21,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+"Lab. III, Lab. IV y Lab. IIB",Infraestructura y almacenamiento de grandes volúmenes de datos,21 a 22,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 8,Algebra Lineal,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Aula 1,Base de Datos,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Lab. I,Estructura de Datos y de la Información,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 8,Fundamentos de Electrónica,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 1,Interacción Persona-Ordenador,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,1,Viernes,clases_informatica.csv
+Aula 3,Tecnologías Web,9 a 10,Grado en Ingeniería Informática en Tecnologías de la Información,2,Viernes,clases_informatica.csv
+Aula 8,Estadística,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 5,Fotonica,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 5,Fundamentos de Ondas y Acústica,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 8,Fundamentos de Programación,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 4,Habilidades Comunicativas,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 3,Sistemas Operativos,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 8,Estructura de Datos y de la Información,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 5,Fotonica,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 5,Fundamentos de Ondas y Acústica,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 8,Fundamentos de Programación,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 4,Programación de sistemas en tiempo real,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 3,Sistemas Operativos,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 5,Electrónica de Dispositivos,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 8,Estructura de Datos y de la Información,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Lab. IV,Fundamentos de Programación,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 8,Física,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 4,Programación de sistemas en tiempo real,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Lab. IIB,Redes y Servicios,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 5,Transmisión de Datos,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 1,Ampliación de Matemáticas,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 8,Fundamentos de Computadores,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 8,Fundamentos de Electrónica,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Lab. IV,Fundamentos de Programación,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 8,Física,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 4,Programación de sistemas en tiempo real,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Lab. IIB,Redes y Servicios,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 5,Transmisión de Datos,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 8,Fundamentos de Computadores,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 8,Fundamentos de Electrónica,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Diseño y Programación Web,15 a 16,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Diseño y Programación Web,16 a 17,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Lab. IIB,Sistema de Transmisión Multimedia,16 a 17,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 4,Seguridad de la Información,17 a 18,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Lab. IIB,Sistema de Transmisión Multimedia,17 a 18,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Lab. IIB,Redes Inalámbricas Móviles,18 a 19,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 4,Seguridad de la Información,18 a 19,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Lab. IIB,Redes Inalámbricas Móviles,19 a 20,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 4,Seguridad de la Información,19 a 20,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Lab. IIB,Seguridad Avanzada,20 a 21,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Lab. IIB,Seguridad Avanzada,21 a 22,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Lab. IV,Fundamentos de Programación,8 a 9,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 1,Ampliación de Matemáticas,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 8,Estadística,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Lab. IV,Fundamentos de Programación,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Lunes,clases_telematica.csv
+Aula 4,Habilidades Comunicativas,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Lunes,clases_telematica.csv
+Aula 8,Cálculo,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 5,Cálculo Avanzado,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 8,Fundamentos de Electrónica,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 5,Interconexión de Sistemas,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Lab. Inf. IV,Redes de Computadores,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 4,Sistemas Operativos,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 8,Álgebra Lineal,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 1,Ampliación de Matemáticas,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 8,Economía y Empresa,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 5,Electrónica Digital,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 4,Electrónica de Comunicaciones,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 10,Fundamentos de Redes,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 4,Sistemas Electrónicos Digitales,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 8,Economía y Empresa,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 5,Electrónica Digital,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 4,Electrónica de Comunicaciones,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 5,Electrónica de Dispositivos,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 10,Fundamentos de Redes,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 4,Sistemas Electrónicos Digitales,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 5,Electrónica de Dispositivos,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 5,Estadística,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 8,Física,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 5,Estadística,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 8,Física,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Servicios de Comunicación Avanzada,15 a 16,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Lab. IIB,Computación Móvil,16 a 17,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 8,Física,16 a 17,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Servicios de Comunicación Avanzada,16 a 17,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Lab. IIB,Computación Móvil,17 a 18,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 8,Física,17 a 18,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Gestión Avanzada de Redes,17 a 18,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Gestión Avanzada de Redes,18 a 19,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Lab. IIB,Ingeniería de Teletráfico,18 a 19,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Gestión Avanzada de Redes,19 a 20,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Lab. IIB,Ingeniería de Teletráfico,19 a 20,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Gestión Avanzada de Redes,20 a 21,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Lab. IIB,Normativa y Proyectos de Telecomunicación,20 a 21,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Lab. IIB,Normativa y Proyectos de Telecomunicación,21 a 22,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 8,Física,8 a 9,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 5,Cálculo Avanzado,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Lab. IIB,Encaminamiento y Conmutación,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 8,Fundamentos de Electrónica,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 8,Física,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 5,Interconexión de Sistemas,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Martes,clases_telematica.csv
+Aula 4,Sistemas Operativos,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Martes,clases_telematica.csv
+Aula 1,Base de Datos,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Lab. I,Doble Titulación,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 8,Economía y Empresa,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 5,Electrónica de Dispositivos,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 10,Fundamentos de Redes,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Lab. IIB,Redes y Servicios,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Lab. III,Sistemas Electrónicos Digitales,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Lab. I,Doble Titulación,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 5,Electrónica de Dispositivos,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 4,Encaminamiento y Conmutación,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 8,Estadística,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 10,Fundamentos de Redes,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 4,Medios de Transmisión,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 5,Transmisión de Datos,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 8,Cálculo,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 8,Estadística,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 5,Fotonica,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 5,Fundamentos de Ondas y Acústica,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 4,Medios de Transmisión,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 4,Programación de sistemas en tiempo real,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 8,Cálculo,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 5,Fotonica,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 8,Fundamentos de Computadores,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 5,Fundamentos de Ondas y Acústica,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Lab. Inf. IV,Habilidades Comunicativas,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 3,Sistemas Operativos,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 5,Cálculo Avanzado,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Lab. I,Doble Titulación,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 8,Fundamentos de Computadores,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 5,Cálculo Avanzado,15 a 16,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Diseño y Programación Web,15 a 16,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Lab. I,Doble Titulación,15 a 16,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Diseño y Programación Web,16 a 17,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Lab. IIB,Sistema de Transmisión Multimedia,16 a 17,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Servicios de Comunicación Avanzada,17 a 18,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Lab. IIB,Sistema de Transmisión Multimedia,17 a 18,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Lab. IIB,Normativa y Proyectos de Telecomunicación,18 a 19,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Servicios de Comunicación Avanzada,18 a 19,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Desarrollo de Aplicaciones para Dispositivos Móviles,19 a 20,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Lab. IIB,Normativa y Proyectos de Telecomunicación,19 a 20,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Desarrollo de Aplicaciones para Dispositivos Móviles,20 a 21,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Lab. IIB,Ingeniería de Teletráfico,20 a 21,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Lab. IIB,Ingeniería de Teletráfico,21 a 22,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 8,Álgebra Lineal,8 a 9,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 1,Base de Datos,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 1,Doble Titulación,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 8,Economía y Empresa,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Aula 4,Redes de Computadores,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Miércoles,clases_telematica.csv
+Lab. IIB,Redes y Servicios,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 8,Álgebra Lineal,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Miércoles,clases_telematica.csv
+Aula 4,Arquitectura de Sistemas,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 8,Cálculo,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 8,Estructura de Datos y de la Información,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 5,Fotonica,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 8,Fundamentos de Computadores,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Lab. III,Sistemas Electrónicos Digitales,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 5,Sistemas Lineales,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 8,Cálculo,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 4,Electrónica de Comunicaciones,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 8,Fundamentos de Electrónica,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Lab. Inf. IV,Redes de Computadores,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 5,Sistemas Lineales,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 5,Transmisión de Datos,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Lab. I,Doble Titulación,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 5,Electrónica Digital,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 8,Fundamentos de Computadores,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 4,Medios de Transmisión,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 4,Redes de Computadores,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 8,Cálculo,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Lab. I,Doble Titulación,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 5,Electrónica Digital,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 8,Estructura de Datos y de la Información,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 8,Fundamentos de Computadores,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 4,Medios de Transmisión,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 5,Cálculo Avanzado,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 8,Estructura de Datos y de la Información,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 8,Fundamentos de Computadores,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Aplicaciones Telemáticas,15 a 16,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 5,Cálculo Avanzado,15 a 16,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Aplicaciones Telemáticas,16 a 17,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Lab. IIB,Seguridad Avanzada,16 a 17,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Aplicaciones Telemáticas,17 a 18,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Lab. IIB,Seguridad Avanzada,17 a 18,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Lab. IIB,Redes Inalámbricas Móviles,18 a 19,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Desarrollo de Aplicaciones para Dispositivos Móviles,19 a 20,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Lab. IIB,Redes Inalámbricas Móviles,19 a 20,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Lab. IIB,Computación Móvil,20 a 21,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+"Lab IIB, Lab. IIA y Lab. IV",Desarrollo de Aplicaciones para Dispositivos Móviles,20 a 21,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Lab. IIB,Computación Móvil,21 a 22,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Lab. Idiomas,Inglés Técnico,8 a 9,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Lab. IV,Fundamentos de Programación,8 a 9,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 8,Física,8 a 9,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 1,Ampliación de Matemáticas,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 4,Arquitectura de Sistemas,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 5,Electrónica Digital,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 4,Encaminamiento y Conmutación,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 8,Estructura de Datos y de la Información,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 8,Fundamentos de Computadores,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Lab. IV,Fundamentos de Programación,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Aula 8,Física,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Jueves,clases_telematica.csv
+Lab. Idiomas,Inglés Técnico,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Jueves,clases_telematica.csv
+Aula 4,Arquitectura de Sistemas,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 1,Doble Titulación,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Lab. I,Estructura de Datos y de la Información,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 8,Fundamentos de Electrónica,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 8,Física,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 4,Habilidades Comunicativas,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 5,Interconexión de Sistemas,10 a 11,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 5,Base de Datos,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 1,Doble Titulación,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 4,Electrónica de Comunicaciones,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 4,Encaminamiento y Conmutación,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 8,Fundamentos de Computadores,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 8,Física,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 9,Física II,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+4B,Instrumentos y Observaciones Geomáticas,11 a 12,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 5,Base de Datos,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 4,Electrónica de Comunicaciones,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 8,Fundamentos de Electrónica,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 8,Fundamentos de Programación,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 8,Física,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 9,Física II,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 4,Programación de sistemas en tiempo real,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 5,Sistemas Lineales,12 a 13,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 8,Estructura de Datos y de la Información,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 8,Fundamentos de Programación,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 8,Física,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+4B,Geomorfología y Climatología,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 5,Sistemas Lineales,13 a 14,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 9,Cálculo,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 8,Estructura de Datos y de la Información,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 8,Álgebra Lineal,14 a 15,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 4,Seguridad de la Información,19 a 20,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 8,Álgebra Lineal,8 a 9,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 4,Arquitectura de Sistemas,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Lab. I,Estructura de Datos y de la Información,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 8,Fundamentos de Electrónica,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 5,Fundamentos de Ondas y Acústica,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 4,Habilidades Comunicativas,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 5,Interconexión de Sistemas,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,2,Viernes,clases_telematica.csv
+Aula 8,Álgebra Lineal,9 a 10,Grado en Ingeniería Telemática en Telecomunicación,1,Viernes,clases_telematica.csv
+Aula 7,Ampliación de Matemáticas,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 7,Diseño y Creatividad,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 9,Expresión Gráfica II,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 9,Física I,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 7,Inglés Técnico,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 6,Procesos de Fabricación I,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 7,Taller de Diseño I,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 7,Ampliación de Matemáticas,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 7,Diseño y Creatividad,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 6,Estadística,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 9,Estética,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 9,Expresión Gráfica II,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 7,Inglés Técnico,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 6,Mecánica y Estructuras,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 7,Taller de Diseño I,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 7,Diseño y Creatividad,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 6,Estadística,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 9,Estética,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 9,Fisica II,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Lab.Ciencias,Materiales-I,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 6,Mecánica y Estructuras,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 7,Metodología del Diseño,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Lab. IIA,Aplicaciones Electrónicas Orientadas al Diseño,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 9,Cálculo,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 9,Fisica II,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 7,Materiales-I,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 7,Metodología del Diseño,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 6,Taller de Diseño III,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Lab. IIA,Aplicaciones Electrónicas Orientadas al Diseño,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 9,Cálculo,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Lab.Idioma,Comunicación Multimodal en Lengua Inglesa,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 6,Taller de Diseño III,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 6,Diseño de Mecanismos,16 a 17,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 6,Diseño de Mecanismos,17 a 18,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 6,Diseño de Mecanismos,18 a 19,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 6,Aspectos Económicos y Empresariales del Diseño,19 a 20,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 6,Aspectos Económicos y Empresariales del Diseño,20 a 21,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 6,Aspectos Económicos y Empresariales del Diseño,21 a 22,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 7,Inglés Técnico,8 a 9,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 7,Diseño y Creatividad,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 9,Física I,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 7,Inglés Técnico,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 7,Metodología del Diseño,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 6,Procesos de Fabricación I,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Lunes,clases_diseño.csv
+Aula 9,Álgebra Lineal,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Lunes,clases_diseño.csv
+Aula 7,Diseño y Creatividad,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 9,Empresa,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 6,Estadística,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 9,Expresión Gráfica I,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 9,Física I,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 9,Informática,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 2,Ingeniería Ambiental,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 7,Metodología del Diseño,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Lab. Ciencias,Procesos de Fabricación I,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 9,Expresión Artística,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 9,Física I,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 7,Inglés Técnico,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 6,Materiales II,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 7,Metodología del Diseño,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 6,Procesos de Fabricación II,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 7,Diseño y Creatividad,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 6,Estadística,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 9,Expresión Artística,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 7,Expresión Gráfica III,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 9,Fisica II,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 9,Informática,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 6,Mecánica y Estructuras,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Lab.Ciencias,Procesos de Fabricación I,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 7,Diseño y Creatividad,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 6,Estadística,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 9,Expresión Artística,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 7,Expresión Gráfica III,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 9,Fisica II,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 6,Mecánica y Estructuras,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 9,Álgebra Lineal,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 6,Aspectos Económicos y Empresariales del Diseño,16 a 17,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 7,Diseño y Creatividad,16 a 17,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 6,Oficina Técnica,16 a 17,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 6,Aspectos Económicos y Empresariales del Diseño,17 a 18,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 7,Diseño y Creatividad,17 a 18,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 6,Oficina Técnica,17 a 18,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 6,Aspectos Económicos y Empresariales del Diseño,18 a 19,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 6,Oficina Técnica,18 a 19,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 6,Diseño de Mecanismos,19 a 20,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 6,Oficina Técnica,19 a 20,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 6,Diseño de Mecanismos,20 a 21,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 6,Oficina Técnica,20 a 21,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 6,Diseño de Mecanismos,21 a 22,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 6,Oficina Técnica,21 a 22,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 7,Ampliación de Matemáticas,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 7,Diseño y Creatividad,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 9,Empresa,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Aula 6,Estadística,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 9,Expresión Gráfica I,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 9,Física I,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 9,Informática,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 2,Ingeniería Ambiental,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Martes,clases_diseño.csv
+Lab.Ciencias,Procesos de Fabricación I,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Martes,clases_diseño.csv
+Aula 6,Diseño Gráfico,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 7,Diseño y Creatividad,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 9,Expresión Gráfica I,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Lab. Ciencias,Materiales II,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 6,Procesos de Fabricación II,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 7,Taller de Diseño I,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 7,Taller de Diseño-II,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 9,Álgebra Lineal,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Lab. ExpA.,Diseño e Interacción,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 9,Estética,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 9,Expresión Gráfica II,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 6,Materiales II,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 7,Materiales-I,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 7,Taller de Diseño I,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 6,Taller de Diseño IV,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 7,Ampliación de Matemáticas,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 6,Diseño Gráfico,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Lab. ExpA.,Diseño e Interacción,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 9,Estética,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 9,Expresión Gráfica II,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Lab.Ciencias,Materiales-I,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 6,Taller de Diseño IV,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 7,Taller de Diseño-II,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 7,Ampliación de Matemáticas,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 6,Diseño Gráfico,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 9,Empresa,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 9,Expresión Gráfica I,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 9,Física I,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Lab. Dibujo,Generación de Objetos Virtuales,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 9,Informática,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 2,Ingeniería Ambiental,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 6,Taller de Diseño IV,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 7,Taller de Diseño-II,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 9,Empresa,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 9,Expresión Gráfica I,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 9,Física I,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Lab. Dibujo,Generación de Objetos Virtuales,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 9,Informática,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 2,Ingeniería Ambiental,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 6,Taller de Diseño IV,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 9,Física I,16 a 17,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 9,Física I,17 a 18,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 6,Diseño Gráfico,8 a 9,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 6,Diseño Gráfico,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 7,Diseño y Creatividad,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 7,Expresión Gráfica III,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 9,Física I,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Miércoles,clases_diseño.csv
+Aula 7,Taller de Diseño-II,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 9,Álgebra Lineal,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Miércoles,clases_diseño.csv
+Aula 6,Diseño Gráfico,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Expresión Gráfica I,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Fisica II,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Lab. Dibujo,Generación de Objetos Virtuales,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Lab.Ciencias,Procesos de Fabricación II,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 6,Taller de Diseño III,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Cálculo,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Expresión Artística,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 7,Expresión Gráfica III,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Fisica II,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 6,Materiales II,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 7,Ampliación de Matemáticas,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 6,Diseño Gráfico,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Expresión Artística,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 9,Expresión Gráfica I,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Fisica II,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 9,Física I,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Informática,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Lab.Ciencias,Materiales II,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 7,Taller de Diseño I,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 7,Ampliación de Matemáticas,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 6,Diseño Gráfico,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Expresión Artística,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 9,Expresión Gráfica I,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Fisica II,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 9,Física I,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Informática,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 7,Inglés Técnico,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Lab.Ciencias,Materiales II,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 7,Taller de Diseño I,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Álgebra Lineal,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 9,Fisica II,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 9,Informática,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 7,Inglés Técnico,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 6,Oficina Técnica,16 a 17,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 6,Oficina Técnica,17 a 18,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 6,Aspectos Económicos y Empresariales del Diseño,18 a 19,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 6,Aspectos Económicos y Empresariales del Diseño,19 a 20,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 6,Diseño de Mecanismos,20 a 21,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 6,Diseño de Mecanismos,21 a 22,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Lab.Ciencias,Procesos de Fabricación II,8 a 9,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 7,Taller de Diseño-II,8 a 9,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 6,Diseño Gráfico,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Expresión Gráfica I,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 9,Fisica II,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Lab. Dibujo,Generación de Objetos Virtuales,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 6,Procesos de Fabricación II,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 6,Taller de Diseño III,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Jueves,clases_diseño.csv
+Aula 7,Taller de Diseño-II,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Jueves,clases_diseño.csv
+Aula 7,Diseño Asistido por Ordenador I,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 7,Diseño Asistido por Ordenador II,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 6,Envase y Embalaje,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 9,Estética,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 9,Expresión Artística,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 9,Física I,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 6,Procesos de Fabricación I,10 a 11,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 7,Diseño Asistido por Ordenador I,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 6,Estadística,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 9,Estética,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 9,Expresión Artística,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 7,Materiales-I,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 6,Sistemas de Comunicación Multimedia,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 6,Taller de Diseño IV,11 a 12,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 9,Cálculo,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 7,Diseño Asistido por Ordenador I,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 9,Expresión Artística,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 9,Fisica II,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Lab.Ciencias,Materiales-I,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 6,Sistemas de Comunicación Multimedia,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 6,Taller de Diseño III,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 6,Taller de Diseño IV,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 7,Taller de Diseño-II,12 a 13,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 9,Cálculo,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Lab.Idioma,Comunicación Multimodal en Lengua Inglesa,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 7,Diseño Asistido por Ordenador I,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 9,Expresión Artística,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 6,Taller de Diseño III,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 7,Taller de Diseño-II,13 a 14,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Lab.Idioma,Comunicación Multimodal en Lengua Inglesa,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 6,Envase y Embalaje,14 a 15,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Lab.Ciencias,Procesos de Fabricación II,8 a 9,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 7,Diseño Asistido por Ordenador I,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 7,Diseño Asistido por Ordenador II,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 9,Estética,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 9,Física I,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Aula 6,Procesos de Fabricación I,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,1,Viernes,clases_diseño.csv
+Lab.Ciencias,Procesos de Fabricación II,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Aula 9,Álgebra Lineal,9 a 10,Grado en Ingeniería en Diseño Industrial Y Desarrollo de Productos,2,Viernes,clases_diseño.csv
+Lab Enf II,Bioquímica-Biofísica,10 a 11,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+Aula 3,"Enfermería en urgencias, emergencias y catástrofes",10 a 11,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Aula 12,Farmacología general,10 a 11,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Aula 12 y 10 (Mañana) Aula 1 (Tarde),Fundamentos de enfermería II,10 a 11,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde","Ética, legislación y gestión en enfermería",10 a 11,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,11 a 12,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+Aula 12 y 10 (Mañana) Aula 1 (Tarde),Enfermería comunitaria I,11 a 12,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde",Enfermería comunitaria II,11 a 12,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Aula 12,Fundamentos de enfermería I,11 a 12,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Aula 4,Métodos estadísticos aplicados en enfermería,11 a 12,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde",Enfermería del envejecimiento,12 a 13,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Lab. Enf. I,Fundamentos de enfermería I,12 a 13,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Aula 4,Métodos estadísticos aplicados en enfermería,12 a 13,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde",Enfermería del envejecimiento,13 a 14,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Lab. Enf. I,Fundamentos de enfermería I,13 a 14,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Aula 12,Ciencias psicosociales aplicadas a enfermería,16 a 17,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Aula 12 y 10 (Mañana) Aula 1 (Tarde),Enfermería de la mujer,16 a 17,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+Aula 12,Historia y filosofia de la ciencia enfermera,16 a 17,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+Aula 12,Ciencias psicosociales aplicadas a enfermería,17 a 18,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+6h,Enfermería de la mujer,17 a 18,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+Aula 12,Historia y filosofia de la ciencia enfermera,17 a 18,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+Aula 12,Ciencias psicosociales aplicadas a enfermería,18 a 19,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Lab. Enf. I,Enfermería de la mujer,18 a 19,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+Aula 12,Inglés específico,18 a 19,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+Lab. Enf. I,Enfermería de la mujer,19 a 20,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+Aula 12,Inglés específico,19 a 20,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+Aula 3,Metodología de de investigación aplicada a la enfermería,19 a 20,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Aula 12,Inglés específico,20 a 21,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+Aula 3,Metodología de de investigación aplicada a la enfermería,21 a 22,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,9 a 10,Grado en Enfermería,1,Lunes,clases_enfermeria.csv
+Aula 3,"Enfermería en urgencias, emergencias y catástrofes",9 a 10,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Aula 12,Farmacología general,9 a 10,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde","Ética, legislación y gestión en enfermería",9 a 10,Grado en Enfermería,2,Lunes,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,10 a 11,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Educación para la salud,10 a 11,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Lab. Enf. II,Enfermería del adulto I,10 a 11,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Lab. Enf. I,Enfermería del envejecimiento,10 a 11,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 12 y 10 (Mañana) Aula 1 (Tarde),"Enfermería del recién nacido, infancia y adolescencia",10 a 11,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Lab Enf I,Fisiología humana básica,10 a 11,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Lab. Enf. I,Fundamentos de enfermería I,10 a 11,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,11 a 12,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Cuidados paliativos,11 a 12,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 12 y 10 (Mañana) Aula 1 (Tarde),Enfermería comunitaria I,11 a 12,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Lab. Enf. II,Enfermería del adulto I,11 a 12,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Lab. Enf. I,Fundamentos de enfermería I,11 a 12,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Cuidados paliativos,12 a 13,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Lab. Enf. II,Enfermería del adulto I,12 a 13,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 3,Metodología de de investigación aplicada a la enfermería,12 a 13,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Lab. Enf. II,Enfermería del adulto II,13 a 14,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 3,Metodología de de investigación aplicada a la enfermería,13 a 14,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Lab. Enf. II,Enfermería del adulto II,14 a 15,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 3,Metodología de de investigación aplicada a la enfermería,14 a 15,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 12,Alteraciones de mecanismos fisiológicos,16 a 17,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 12 y 10 (Mañana) Aula 1 (Tarde),Enfermería de la mujer,16 a 17,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Aula 6,Enfermería de salud mental,16 a 17,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 12,Inglés específico,16 a 17,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Riesgos laborales en enfermería,16 a 17,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 12,Alteraciones de mecanismos fisiológicos,17 a 18,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 12 y 10 (Mañana) Aula 1 (Tarde),Enfermería de la mujer,17 a 18,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Aula 6,Enfermería de salud mental,17 a 18,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 12,Inglés específico,17 a 18,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Riesgos laborales en enfermería,17 a 18,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Lab. Enf. 1,Enfermería de la mujer,18 a 19,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Aula 12,Inglés específico,18 a 19,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Métodos y técnicas de comunicación,18 a 19,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Lab. Enf. I,Enfermería de la mujer,19 a 20,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Métodos y técnicas de comunicación,19 a 20,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,9 a 10,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Educación para la salud,9 a 10,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Lab. Enf. II,Enfermería del adulto I,9 a 10,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Lab. Enf. I,Enfermería del envejecimiento,9 a 10,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 12 y 10 (Mañana) Aula 1 (Tarde),"Enfermería del recién nacido, infancia y adolescencia",9 a 10,Grado en Enfermería,1,Martes,clases_enfermeria.csv
+Lab. Enf. I,Fundamentos de enfermería I,9 a 10,Grado en Enfermería,2,Martes,clases_enfermeria.csv
+Aula 12,Bioquímica-Biofísica,10 a 11,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,10 a 11,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Cuidados paliativos,10 a 11,Grado en Enfermería,2,Miércoles,clases_enfermeria.csv
+Aula 10,Enfermería comunitaria I,10 a 11,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Aula 12,Bioquímica-Biofísica,11 a 12,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,11 a 12,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Enfermería del adulto II,11 a 12,Grado en Enfermería,2,Miércoles,clases_enfermeria.csv
+Aula 10,Fundamentos de enfermería II,11 a 12,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,12 a 13,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Educación para la salud,12 a 13,Grado en Enfermería,2,Miércoles,clases_enfermeria.csv
+Aula 12,"Farmacoterapia, prescripción, nutrición y dietética",12 a 13,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,13 a 14,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Aula 12,"Enfermería del recién nacido, infancia y adolescencia",13 a 14,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+,Practicum I,14 a 15,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+,Practicum II,14 a 15,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+,Practicum III,14 a 15,Grado en Enfermería,2,Miércoles,clases_enfermeria.csv
+Lab Enf II,Anatomía humana,16 a 17,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Lab. Enf. I,Enfermería de salud mental,16 a 17,Grado en Enfermería,2,Miércoles,clases_enfermeria.csv
+Lab Enf II,Anatomía humana,17 a 18,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Lab. Enf. I,Enfermería de salud mental,17 a 18,Grado en Enfermería,2,Miércoles,clases_enfermeria.csv
+Aula 12,Anatomía humana,18 a 19,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Lab. Enf. I,Enfermería de salud mental,18 a 19,Grado en Enfermería,2,Miércoles,clases_enfermeria.csv
+Aula 12,Metodología de de investigación aplicada a la enfermería,18 a 19,Grado en Enfermería,2,Miércoles,clases_enfermeria.csv
+Aula 12,Anatomía humana,19 a 20,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Lab. Enf. I,Enfermería de salud mental,19 a 20,Grado en Enfermería,2,Miércoles,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Cuidados paliativos,9 a 10,Grado en Enfermería,2,Miércoles,clases_enfermeria.csv
+Aula 12,Fisiología humana básica,9 a 10,Grado en Enfermería,1,Miércoles,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,10 a 11,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Lab. Enf. I,Cuidados paliativos,10 a 11,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde",Enfermería del adulto I,10 a 11,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Lab. Enf. II,Enfermería del adulto II,10 a 11,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 12 y 10 (Mañana) Aula 1 (Tarde),"Farmacoterapia, prescripción, nutrición y dietética",10 a 11,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Lab Enf I,Fisiología humana básica,10 a 11,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,11 a 12,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Enfermería del adulto II,11 a 12,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde",Enfermería del envejecimiento,11 a 12,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 12 y 10 (Mañana) Aula 1 (Tarde),"Farmacoterapia, prescripción, nutrición y dietética",11 a 12,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Lab Enf I,Fisiología humana básica,11 a 12,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Enfermería del adulto II,12 a 13,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde",Enfermería del envejecimiento,12 a 13,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Lab Enf I,Fisiología humana básica,12 a 13,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Lab Enf II,Anatomía humana,13 a 14,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Aula 12,Alteraciones de mecanismos fisiológicos,16 a 17,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 6,Enfermería de salud mental,16 a 17,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Riesgos laborales en enfermería,16 a 17,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 12,Alteraciones de mecanismos fisiológicos,17 a 18,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Lab Enf II,Anatomía humana,17 a 18,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Aula 6,Enfermería comunitaria II,17 a 18,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Riesgos laborales en enfermería,17 a 18,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 12,Anatomía humana,18 a 19,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Aula 12,Ciencias psicosociales aplicadas a enfermería,18 a 19,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Métodos y técnicas de comunicación,18 a 19,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 12,Ciencias psicosociales aplicadas a enfermería,19 a 20,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 12,Historia y filosofia de la ciencia enfermera,19 a 20,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Aula 12 (Mañana) / Aula 1 (Tarde),Métodos y técnicas de comunicación,19 a 20,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 12,Ciencias psicosociales aplicadas a enfermería,20 a 21,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 12,Historia y filosofia de la ciencia enfermera,20 a 21,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,9 a 10,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Lab. Enf. I,Cuidados paliativos,9 a 10,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde",Enfermería del adulto I,9 a 10,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Lab. Enf. II,Enfermería del adulto II,9 a 10,Grado en Enfermería,2,Jueves,clases_enfermeria.csv
+Aula 12 y 10 (Mañana) Aula 1 (Tarde),Fundamentos de enfermería II,9 a 10,Grado en Enfermería,1,Jueves,clases_enfermeria.csv
+Aula 12,Fisiología humana básica,10 a 11,Grado en Enfermería,1,Viernes,clases_enfermeria.csv
+Aula 12,Fundamentos de enfermería I,10 a 11,Grado en Enfermería,2,Viernes,clases_enfermeria.csv
+Aula 4,Métodos estadísticos aplicados en enfermería,10 a 11,Grado en Enfermería,2,Viernes,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde","Ética, legislación y gestión en enfermería",10 a 11,Grado en Enfermería,2,Viernes,clases_enfermeria.csv
+Aula 12,Bioquímica-Biofísica,11 a 12,Grado en Enfermería,1,Viernes,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,11 a 12,Grado en Enfermería,1,Viernes,clases_enfermeria.csv
+Aula 4,"Enfermería en urgencias, emergencias y catástrofes",11 a 12,Grado en Enfermería,2,Viernes,clases_enfermeria.csv
+Aula 12,Farmacología general,11 a 12,Grado en Enfermería,2,Viernes,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde","Ética, legislación y gestión en enfermería",11 a 12,Grado en Enfermería,2,Viernes,clases_enfermeria.csv
+Aula 12,Bioquímica-Biofísica,12 a 13,Grado en Enfermería,1,Viernes,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,12 a 13,Grado en Enfermería,1,Viernes,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde",Enfermería comunitaria II,12 a 13,Grado en Enfermería,2,Viernes,clases_enfermeria.csv
+Lab. Enf. II,"Enfermería en urgencias, emergencias y catástrofes",12 a 13,Grado en Enfermería,2,Viernes,clases_enfermeria.csv
+Aula 12,Farmacología general,12 a 13,Grado en Enfermería,2,Viernes,clases_enfermeria.csv
+Lab Enf II,Bioquímica-Biofísica,13 a 14,Grado en Enfermería,1,Viernes,clases_enfermeria.csv
+"Aula 10 Mañana, Aula 6 Tarde",Enfermería del adulto I,9 a 10,Grado en Enfermería,2,Viernes,clases_enfermeria.csv
+Aula 12,Fisiología humana básica,9 a 10,Grado en Enfermería,1,Viernes,clases_enfermeria.csv
+Aula 12,Fundamentos de enfermería I,9 a 10,Grado en Enfermería,2,Viernes,clases_enfermeria.csv
+Aula 4,Métodos estadísticos aplicados en enfermería,9 a 10,Grado en Enfermería,2,Viernes,clases_enfermeria.csv
+Aula 7,Ampliación de Matemáticas,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Lab. Foto.,Fotogrametría Digital,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula 9,Física I,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Lab. Ciencias,Infraestructura de Datos Espaciales y Geoservicios,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+4B,Instrumentos y Observaciones Geomáticas,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula 5B,Modelado de la Información de la Construcción,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula 7,Ampliación de Matemáticas,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Aula Dibujo,Cartografía,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+4B,Geomorfología y Climatología,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula 4B,Ingeniería Ambiental y Cartografía de Recursos Naturales,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Aula 5B,Ingeniería Civil,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula Dibujo,Cartografía,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Aula 9,Física II,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula 4B,Ingeniería Ambiental y Cartografía de Recursos Naturales,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Aula 5B,Ingeniería Civil,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula 5B,Métodos Topográficos,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+4B,Programación de Aplicaciones Geomáticas,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Lab. Foto.,Análisis de Datos UAV y LIDAR,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula 9,Cálculo,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Aula 9,Física II,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula 5B,Métodos Topográficos,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+4B,Programación de Aplicaciones Geomáticas,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula 9,Cálculo,14 a 15,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Análisis de Datos Espaciales,16 a 17,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Satélites y Geodesia,16 a 17,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Análisis de Datos Espaciales,17 a 18,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Satélites y Geodesia,17 a 18,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Análisis de Datos Espaciales,18 a 19,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Modelado y Cartografía Hidrológica,18 a 19,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Modelado y Cartografía Hidrológica,19 a 20,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Proyectos Geomáticos y Urbanismo,19 a 20,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Generación de Objetos Virtuales,20 a 21,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Proyectos Geomáticos y Urbanismo,20 a 21,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Generación de Objetos Virtuales,21 a 22,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Proyectos Geomáticos y Urbanismo,21 a 22,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Lab. Foto.,Fotogrametría Digital,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula 9,Física I,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Lab. Ciencias,Infraestructura de Datos Espaciales y Geoservicios,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Lunes,clases_geomatica.csv
+Aula 5B,Modelado de la Información de la Construcción,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula 9,Álgebra Lineal,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Lunes,clases_geomatica.csv
+Aula 5B,Bases de Datos,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula 9,Empresa,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 9,Expresión Gráfica,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Lab. Foto.,Fotogrametría Digital,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 9,Física I,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula 4B,Geodesia Geométrica,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula 9,Informática,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula 5B,Ingeniería Civil,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 5B,Bases de Datos,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula 9,Física I,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+4B,Geomorfología y Climatología,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 5B,Geomática Aplicada a la Ingeniería Civil y Edificación,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 7,Inglés Técnico,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 4B,Teledetección,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula 9,Física II,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 4B,GeoFísica,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Lab. Foto.,Geomática Aplicada a la Ingeniería Civil y Edificación,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 9,Informática,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula 5B,Métodos Topográficos,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Lab. Foto.,Análisis de Datos UAV y LIDAR,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 9,Física II,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 5B,Métodos Topográficos,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula 9,Álgebra Lineal,14 a 15,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Meteorología y Climatología Espacial,16 a 17,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Proyectos Geomáticos y Urbanismo,16 a 17,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Meteorología y Climatología Espacial,17 a 18,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Proyectos Geomáticos y Urbanismo,17 a 18,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Proyectos Geomáticos y Urbanismo,18 a 19,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Trabajos Geomáticos en Ingeniería Civil,18 a 19,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Catastro y Gestión de la Propiedad,19 a 20,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Trabajos Geomáticos en Ingeniería Civil,19 a 20,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Catastro y Gestión de la Propiedad,20 a 21,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Satélites y Geodesia,20 a 21,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Catastro y Gestión de la Propiedad,21 a 22,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula Virtual (Docencia Online),Satélites y Geodesia,21 a 22,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+aula 7,Ampliación de Matemáticas,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula 9,Empresa,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 9,Expresión Gráfica,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Lab. Foto.,Fotogrametría Digital,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 9,Física I,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula 9,Informática,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula 4B,Ingeniería Ambiental y Cartografía de Recursos Naturales,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Martes,clases_geomatica.csv
+Aula 5B,Ingeniería Civil,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Martes,clases_geomatica.csv
+Aula 9,Expresión Gráfica,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 4B,GeoFísica,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+4B,Herramientas Matemáticas de la Geodesia,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula 5B,Producción Cartográfica,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 5B,Sistemas Globales de Navegación por Satélite,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula 9,Álgebra Lineal,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula Dibujo,Cartografía,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 4B,GeoFísica,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+4B,Geomorfología y Climatología,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Lab. Foto.,Geomática Aplicada a la Ingeniería Civil y Edificación,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Lab. I,Programación de Aplicaciones Geomáticas,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula 7,Ampliación de Matemáticas,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula Dibujo,Cartografía,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Lab. Foto.,Geomática Aplicada a la Ingeniería Civil y Edificación,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula 4B,Ingeniería Ambiental y Cartografía de Recursos Naturales,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+4B,Instrumentos y Observaciones Geomáticas,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Lab. 1,Programación de Aplicaciones Geomáticas,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula 7,Ampliación de Matemáticas,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 5B,Análisis de Datos UAV y LIDAR,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula 9,Empresa,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula 9,Expresión Gráfica,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 9,Física I,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 9,Informática,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 9,Empresa,14 a 15,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula 9,Expresión Gráfica,14 a 15,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 9,Física I,14 a 15,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 9,Informática,14 a 15,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula Virtual (Docencia Online),Catastro y Gestión de la Propiedad,16 a 17,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 9,Física I,16 a 17,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula Virtual (Docencia Online),Trabajos Geomáticos en Ingeniería Civil,16 a 17,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula Virtual (Docencia Online),Catastro y Gestión de la Propiedad,17 a 18,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 9,Física I,17 a 18,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula Virtual (Docencia Online),Trabajos Geomáticos en Ingeniería Civil,17 a 18,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula Virtual (Docencia Online),Catastro y Gestión de la Propiedad,18 a 19,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula Virtual (Docencia Online),Generación de Objetos Virtuales,18 a 19,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula Virtual (Docencia Online),Análisis de Datos Espaciales,19 a 20,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula Virtual (Docencia Online),Generación de Objetos Virtuales,19 a 20,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula Virtual (Docencia Online),Análisis de Datos Espaciales,20 a 21,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula Virtual (Docencia Online),Big Data y Geointeligencia,20 a 21,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula Virtual (Docencia Online),Análisis de Datos Espaciales,21 a 22,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula Virtual (Docencia Online),Big Data y Geointeligencia,21 a 22,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula 9,Física I,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 4B,Geodesia Geométrica,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+4B,Herramientas Matemáticas de la Geodesia,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula 5B,Producción Cartográfica,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Miércoles,clases_geomatica.csv
+Aula 5B,Sistemas Globales de Navegación por Satélite,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Aula 9,Álgebra Lineal,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Miércoles,clases_geomatica.csv
+Lab. Idiomas,Inglés Técnico,8 a 9,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 9,Expresión Gráfica,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 9,Física II,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 4B,Geodesia Geométrica,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Lab. Idiomas,Inglés Técnico,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 5B,Modelado de la Información de la Construcción,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 5B,Análisis de Datos UAV y LIDAR,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 5B,Bases de Datos,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 9,Cálculo,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 9,Física II,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 4B,Geodesia Geométrica,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+4B,Sistemas de Información Geográfica,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 7,Ampliación de Matemáticas,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 5B,Análisis de Datos UAV y LIDAR,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 5B,Bases de Datos,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 9,Expresión Gráfica,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 9,Física I,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 9,Física II,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 9,Informática,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+4B,Sistemas de Información Geográfica,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 4B,Teledetección,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 7,Ampliación de Matemáticas,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 9,Expresión Gráfica,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 9,Física I,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 9,Física II,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 9,Informática,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 5B,Sistemas Globales de Navegación por Satélite,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 9,Álgebra Lineal,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 9,Física II,14 a 15,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 9,Informática,14 a 15,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula Virtual (Docencia Online),Big Data y Geointeligencia,16 a 17,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula Virtual (Docencia Online),Catastro y Gestión de la Propiedad,16 a 17,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula Virtual (Docencia Online),Big Data y Geointeligencia,17 a 18,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula Virtual (Docencia Online),Catastro y Gestión de la Propiedad,17 a 18,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula Virtual (Docencia Online),Meteorología y Climatología Espacial,18 a 19,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula Virtual (Docencia Online),Proyectos Geomáticos y Urbanismo,18 a 19,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula Virtual (Docencia Online),Meteorología y Climatología Espacial,19 a 20,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula Virtual (Docencia Online),Proyectos Geomáticos y Urbanismo,19 a 20,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula Virtual (Docencia Online),Análisis de Datos Espaciales,20 a 21,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula Virtual (Docencia Online),Modelado y Cartografía Hidrológica,20 a 21,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula Virtual (Docencia Online),Análisis de Datos Espaciales,21 a 22,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula Virtual (Docencia Online),Modelado y Cartografía Hidrológica,21 a 22,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 9,Expresión Gráfica,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Aula 9,Física II,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 4B,GeoFísica,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Jueves,clases_geomatica.csv
+Lab. Idiomas,Inglés Técnico,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 5B,Modelado de la Información de la Construcción,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Jueves,clases_geomatica.csv
+Aula 5B,Análisis de Datos UAV y LIDAR,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+Aula 7,Diseño Asistido por Ordenador I,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+Aula 9,Física I,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+4B,Instrumentos y Observaciones Geomáticas,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+Aula 5B,Producción Cartográfica,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+Lab. Ciencias,Sistemas de Información Geográfica,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+Aula 4B,Teledetección,10 a 11,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+Aula 5B,Análisis de Datos UAV y LIDAR,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+Aula 7,Diseño Asistido por Ordenador I,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+Aula 9,Física II,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+5B,Herramientas Matemáticas de la Geodesia,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+Lab. Ciencias,Infraestructura de Datos Espaciales y Geoservicios,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+4B,Instrumentos y Observaciones Geomáticas,11 a 12,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+Aula 9,Cálculo,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+Aula 7,Diseño Asistido por Ordenador I,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+Aula 9,Física II,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+5B,Herramientas Matemáticas de la Geodesia,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+Lab. Ciencias,Infraestructura de Datos Espaciales y Geoservicios,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+Aula 5B,Sistemas Globales de Navegación por Satélite,12 a 13,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+Aula 9,Cálculo,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+Aula 7,Diseño Asistido por Ordenador I,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+4B,Geomorfología y Climatología,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+Aula 5B,Sistemas Globales de Navegación por Satélite,13 a 14,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+Aula 9,Física I,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+Aula 5B,Producción Cartográfica,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+Lab. Ciencias,Sistemas de Información Geográfica,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
+Aula 4B,Teledetección,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,0,Viernes,clases_geomatica.csv
+Aula 9,Álgebra Lineal,9 a 10,Grado en Ingeniería en Geoinformación y Geomática,1,Viernes,clases_geomatica.csv
