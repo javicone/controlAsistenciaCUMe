@@ -56,7 +56,7 @@ void setup() {
   pinMode(ledVerdePin, OUTPUT);
   pinMode(ledAmarilloPin, OUTPUT);
   pinMode(buzzerPin, OUTPUT);
-
+  setupWiFiEvents(); //Configuramos los eventos de WiFi
   //Inicializamos Serial para comunicación en Arduino IDE
   Serial.begin(115200);
   //Inicializamos todos los sensores y actuadores que vamos a utilizar
@@ -83,7 +83,7 @@ void HiloComunicadorcode(void* pvParameters) {
     delay(500);
     Serial.print(".");
   }
-  Serial.println(" OK");
+  Serial.println("\n✅ WiFi conectado");
   Serial.print("IP: ");
   Serial.println(WiFi.localIP());
 
@@ -113,7 +113,7 @@ void HiloComunicadorcode(void* pvParameters) {
   if (!fetchDeviceToken()) {
     Serial.println("Error obteniendo token JWT");
   }
-}  // Para ESP32, beginSSL configura SSL internamente
+  // Para ESP32, beginSSL configura SSL internamente
   // El último parámetro (fingerprint) puede estar vacío para certificados autofirmados
   connectWS();
   //en caso de q falle usamos
@@ -125,21 +125,14 @@ void HiloComunicadorcode(void* pvParameters) {
 
   // Loop WebSocket
   for (;;) {
-    // Mantener conexión WiFi y reconexión automática
-    if(WiFi.status() != WL_CONNECTED) {
-      Serial.println("⚠️ WiFi desconectado, intentando reconectar...");
-      WiFi.reconnect();
-      while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-      }
-      Serial.println(" ✅ WiFi reconectado");
-      continue;
-    }
+
+    // Verificar conexión WiFi y reconectar si es necesario
+    checkWiFiConnection();
     webSocket.loop();
-    vTaskDelay(10 / portTICK_PERIOD_MS);
+    vTaskDelay(100 / portTICK_PERIOD_MS); // Increased delay to reduce CPU usage
   }
 }
+
 //Loop principal que utilizaremos para toda la lógica de los sensores y actuadores
 void loop() {
  // Leer radar con validación
