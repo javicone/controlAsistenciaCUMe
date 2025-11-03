@@ -99,3 +99,19 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
       break;
   }
 }
+
+connectWS(){
+  Serial.println("🌐 Conectando WebSocket...");
+  String token = ensureToken();
+  String path = "/ws?token=" + token;
+  // Usar token en la conexión
+  webSocket.beginSSL(wsHost, wsPort, path.c_str());
+  webSocket.setInsecure();  // Deshabilitar validación SSL si es necesario
+  webSocket.onEvent(webSocketEvent);
+  webSocket.setReconnectInterval(5000);
+  // Configurar heartbeat
+  webSocket.enableHeartbeat(15000, 3000, 2);
+  Serial.println("WebSocket configurado\n");
+  //webSocket.setCACert(server_certificate);
+  // no funciona por ahora
+}

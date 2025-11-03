@@ -9,6 +9,9 @@ from fastapi.staticfiles import StaticFiles
 # Configuración
 from middleware.cors import setup_cors
 
+# JWT seguridad
+from security import jwt
+
 # Routers
 from routers import auth, asistencias, aulas, clases, websockets, views
 
@@ -87,8 +90,8 @@ if __name__ == "__main__":
     print("🚀 Iniciando servidor FastAPI...")
     print("="*60)
     
-    ssl_keyfile = "./key.pem"
-    ssl_certfile = "./cert.pem"
+    ssl_keyfile = "./key_https.pem"
+    ssl_certfile = "./cert_https.pem"
     ssl_enabled = os.path.exists(ssl_keyfile) and os.path.exists(ssl_certfile)
     
     if ssl_enabled:

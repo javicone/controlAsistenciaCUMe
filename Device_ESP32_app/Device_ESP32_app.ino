@@ -18,6 +18,7 @@
 #include <Adafruit_BME280.h>
 #include <BH1750.h>
 #include <ld2410.h>
+#include <Preferences.h>
 #include "globals.h"
 #include "config.h"
 
@@ -108,23 +109,19 @@ void HiloComunicadorcode(void* pvParameters) {
   Serial.print(wsPort);
   Serial.println(wsPath);
   
-  // Para ESP32, beginSSL configura SSL internamente
+  // Obtener token JWT
+  if (!fetchDeviceToken()) {
+    Serial.println("Error obteniendo token JWT");
+  }
+}  // Para ESP32, beginSSL configura SSL internamente
   // El último parámetro (fingerprint) puede estar vacío para certificados autofirmados
-  webSocket.beginSSL(wsHost, wsPort, wsPath);
-  
+  connectWS();
   //en caso de q falle usamos
   
   
   // Deshabilitar validación SSL para certificados autofirmados
  //webSocket.setInsecure();
-  
-  webSocket.onEvent(webSocketEvent);
-  webSocket.setReconnectInterval(5000);
-  
-  // Configurar heartbeat
-  webSocket.enableHeartbeat(15000, 3000, 2);
-  
-  Serial.println("WebSocket configurado\n");
+ 
 
   // Loop WebSocket
   for (;;) {

@@ -4,6 +4,9 @@
 
 
 
+// ID del dispositivo y API Key segura
+static String deviceId = "node-001";
+static String apiKey   = "REEMPLAZA_ESTA_API_KEY_SEGURA";
 
 // WiFi y servidor
 const char* ssid = "Nothing";

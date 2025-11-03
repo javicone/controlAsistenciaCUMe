@@ -17,3 +17,5 @@ class UserInDB(BaseModel):
     correo: str
     rol: str
     password: str
+
+    
