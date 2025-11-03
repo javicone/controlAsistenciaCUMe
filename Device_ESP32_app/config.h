@@ -64,7 +64,8 @@ const char* tzInfo = "CET-1CEST,M3.5.0/2,M10.5.0/3";
 
 // Aula y pines
 const char* aula = "Aula 101";
-const int relayPin = 26;
+const int relayPin1 = 26;
+const int relayPin2 = 27;
 const int buzzerPin = 33;
 const int ledRojoPin = 25;
 const int ledVerdePin = 27;

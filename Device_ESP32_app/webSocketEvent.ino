@@ -47,17 +47,29 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
         // Ejemplo: esperamos { "tipo": "...", "aula": "...", "relay": true/false }
         if (doc.containsKey("tipo")) {
           String tipoMensaje = doc["tipo"].as<String>();
-          if (tipoMensaje == "actualizacion_relay") {
+          if (tipoMensaje == "actualizacion_relay1") {
             // Por ejemplo: { "tipo":"actualizacion_relay", "aula":"Aula 101", "relay":true }
             String aulaRecibida = doc["aula"].as<String>();
             bool relayState = doc["relay"];
 
             // Actuar en consecuencia
-            Serial.print("✅ Actualizando relé para ");
+            Serial.print("✅ Actualizando relé 1 para ");
             Serial.print(aulaRecibida);
             Serial.print(" => ");
             Serial.println(relayState ? "Encendido" : "Apagado");
-            digitalWrite(relayPin, relayState ? HIGH : LOW);
+            digitalWrite(relayPin1, relayState ? HIGH : LOW);
+          }
+          else if (tipoMensaje == "actualizacion_relay2") {
+            // Por ejemplo: { "tipo":"actualizacion_relay", "aula":"Aula 101", "relay":true }
+            String aulaRecibida = doc["aula"].as<String>();
+            bool relayState = doc["relay"];
+
+            // Actuar en consecuencia
+            Serial.print("✅ Actualizando relé 2 para ");
+            Serial.print(aulaRecibida);
+            Serial.print(" => ");
+            Serial.println(relayState ? "Encendido" : "Apagado");
+            digitalWrite(relayPin2, relayState ? HIGH : LOW);
           }
           else if (tipoMensaje == "actualizacion_aula") {
             // Ejemplo: { "tipo":"actualizacion_aula","aula":"Aula 101","temperatura":25,... }
