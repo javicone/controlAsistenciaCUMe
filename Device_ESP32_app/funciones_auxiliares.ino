@@ -63,9 +63,7 @@ String urlencode(const char* msg) {
 
 void indicarEstado(EstadoLED estado) {
   switch(estado) {
-
     
-
     case NORMAL:
       digitalWrite(ledVerdePin, HIGH);
       digitalWrite(ledAmarilloPin, LOW);

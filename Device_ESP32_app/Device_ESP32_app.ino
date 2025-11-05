@@ -116,19 +116,20 @@ void HiloComunicadorcode(void* pvParameters) {
   // Para ESP32, beginSSL configura SSL internamente
   // El último parámetro (fingerprint) puede estar vacío para certificados autofirmados
   connectWS();
-  //en caso de q falle usamos
-  
-  
-  // Deshabilitar validación SSL para certificados autofirmados
- //webSocket.setInsecure();
- 
-
+  //en caso de q falle usamos conexión no segura
   // Loop WebSocket
   for (;;) {
 
     // Verificar conexión WiFi y reconectar si es necesario
     checkWiFiConnection();
     webSocket.loop();
+    // Procesar cola offline periódicamente
+    if (millis() - lastQueueProcess > QUEUE_PROCESS_INTERVAL) {
+      lastQueueProcess = millis();
+      processQueue();
+    }
+
+
     vTaskDelay(100 / portTICK_PERIOD_MS); // Increased delay to reduce CPU usage
   }
 }

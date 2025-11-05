@@ -1,5 +1,4 @@
 Preferences prefs;
-
 String jwtToken;
 unsigned long tokenExpEpoch = 0; // opcional si devuelves exp
 

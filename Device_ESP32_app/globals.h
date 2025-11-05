@@ -16,7 +16,7 @@ extern unsigned long lastReading2;
 extern unsigned long lastReading3;
 extern const unsigned long delayTime;
 extern const unsigned long delayTime2;
-
+extern const unsigned long INTERVALO_PROCESO_COLA=50000; // Intervalo para procesar la cola de envíos offline
 // ============================================
 // ESTADO DE SENSORES
 // ============================================
@@ -75,8 +75,10 @@ void indicarEstado(EstadoLED estado);
 void parpadearLED(int pin, int veces, int duracion_ms);
 
 // Control del relé
-void activarRele(bool estado);
-bool estadoRele();
+void activarRele1(bool estado);
+void activarRele2(bool estado);
+bool estadoRele1();
+bool estadoRele2();
 
 // Control individual de LEDs
 void ledVerde(bool estado);
