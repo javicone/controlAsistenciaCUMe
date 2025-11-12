@@ -340,6 +340,25 @@ input:checked + .slider:before {
     transform: none;
 }
 
+/* Estado de conexión WebSocket */
+.status-connected,
+.status-disconnected {
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.status-connected {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-disconnected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
 /* Scrollbar personalizado */
 .aulas-list::-webkit-scrollbar {
     width: 8px;

@@ -3,8 +3,10 @@ void initSensores() {
   Serial.println("║  INICIALIZACIÓN DE SENSORES    ║");
   Serial.println("╚════════════════════════════════╝\n");
 
-  pinMode(relayPin, OUTPUT);
-  digitalWrite(relayPin, LOW);
+  pinMode(relayPin1, OUTPUT);
+  digitalWrite(relayPin1, LOW); // Relé de la calefaccion
+  pinMode(relayPin2, OUTPUT);
+  digitalWrite(relayPin2, LOW); // Relé de la luz 
   setupNFC();  //Inicializamos el lector NFC
   setupRadar();  //Inicializamos el radar de presencia
   setupBME();  //Inicializamos el sensor de temperatura, humedad y presión

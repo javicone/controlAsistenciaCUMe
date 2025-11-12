@@ -18,6 +18,8 @@
 #include <Adafruit_BME280.h>
 #include <BH1750.h>
 #include <ld2410.h>
+#include <Adafruit_GFX.h>
+
 #include <Preferences.h>
 #include "globals.h"
 #include "config.h"
@@ -27,7 +29,7 @@
 // Declaración adelantada
 void initSensores();
 void HiloComunicadorcode(void* pvParameters);
-void leerNFC();
+NFCData leerNFC();  // Devuelve NFCData
 void obtenerProximaClase();
 void EnviaValoresAula();
 void registrarAsistencia();
@@ -37,14 +39,13 @@ unsigned long epochFromString(String fecha);
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);  // ✅ Callback para WebSocketsClient
 
 
-//Instanciamos clases que usan las librerias de los sensores
-Adafruit_BME280 bme;  // I2C
-BH1750 lightMeter;
-ld2410 radar;
-UNIT_PN532 nfc(PN532_SS);  // Línea enfocada para la comunicación por SPI
-
-// Cliente WebSocket (maneja SSL internamente)
-WebSocketsClient webSocket;
+// NO instanciar objetos aquí - ya están en globals.cpp
+// Las siguientes líneas se eliminan para evitar múltiples definiciones:
+// Adafruit_BME280 bme;
+// BH1750 lightMeter;
+// ld2410 radar;
+// UNIT_PN532 nfc(PN532_SS);
+// WebSocketsClient webSocket;
 
 //Handle del hilo de ejecución que vamos a fijar en el core 0 para llevar el tema de comunicaciones
 TaskHandle_t HiloComunicador;

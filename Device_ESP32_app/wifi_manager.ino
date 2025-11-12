@@ -7,7 +7,7 @@ const int MAX_WIFI_ATTEMPTS = 15;
 // Manejador de eventos de WiFi
 void onWiFiEvent(WiFiEvent_t event) {
   switch(event) {
-    case SYSTEM_EVENT_STA_GOT_IP:
+    case IP_EVENT_STA_GOT_IP:
       Serial.println("✅ WiFi conectado");
       Serial.print("IP: ");
       Serial.println(WiFi.localIP());
@@ -16,12 +16,12 @@ void onWiFiEvent(WiFiEvent_t event) {
       configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
       break;
       
-    case SYSTEM_EVENT_STA_DISCONNECTED:
+    case WIFI_EVENT_STA_DISCONNECTED:
       Serial.println("❌ WiFi desconectado");
       wifiReconnectAttempts++;
       break;
       
-    case SYSTEM_EVENT_STA_LOST_IP:
+    case IP_EVENT_STA_LOST_IP:
       Serial.println("⚠️ IP perdida");
       break;
   }

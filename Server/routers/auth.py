@@ -11,7 +11,6 @@ router = APIRouter(prefix="/auth", tags=["Autenticación"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 @router.post("/login")
-@router.post("/login", include_in_schema=False)
 async def login(user_data: UserLogin):
     """Inicia sesión y devuelve un token JWT"""
     user = await authenticate_user(user_data.correo, user_data.password)

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel de Conserjes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <h1>Estado de las Aulas</h1>
+  <div id="panel"></div>
+  <!-- Botón para cerrar sesión -->
+  <button class="button button-off" onclick="cerrarSesion()">Cerrar Sesión</button>
+  <script>
+    // Conexión WS
+    let ws = new WebSocket("ws://10.147.78.46:5678/");
+
+    ws.onopen = function() {
+      console.log("✅ Conectado al WebSocket puro");
+    };
+
+    ws.onmessage = function(event) {
+      let msg = JSON.parse(event.data);
+      console.log("📩 Mensaje WS recibido:", msg);
+
+      if (msg.tipo === "estado_inicial") {
+        actualizarPanel(msg.data);
+      } else if (msg.tipo === "actualizacion_aula") {
+        let aula = msg.aula;
+        actualizarPanel({ [aula]: msg });
+      } else if (msg.tipo === "actualizacion_relay") {
+        let aula = msg.aula;
+        if (!panelData[aula]) {
+          panelData[aula] = {};
+        }
+        panelData[aula].relay = msg.relay;
+        actualizarPanel(panelData);
+      } else {
+        console.log("⚠️ Mensaje desconocido:", msg);
+      }
+    };
+
+    ws.onclose = function() {
+      console.log("❌ WebSocket cerrado");
+    };
+
+    let panelData = {};
+
+    function actualizarPanel(datos) {
+      // Merge de datos
+      Object.keys(datos).forEach(aula => {
+        if (!panelData[aula]) {
+          panelData[aula] = {};
+        }
+        Object.assign(panelData[aula], datos[aula]);
+      });
+
+      const panel = document.getElementById("panel");
+      panel.innerHTML = "";
+
+      Object.keys(panelData).forEach(aula => {
+        let info = panelData[aula];
+        let aulaDiv = document.createElement("div");
+        aulaDiv.classList.add("aula");
+
+        aulaDiv.innerHTML = `
+          <h3>${aula}</h3>
+          <p><strong>Temperatura:</strong> ${info.temperatura}°C</p>
+          <p><strong>Luz:</strong> ${info.luz ? "Encendida" : "Apagada"}</p>
+          <p><strong>Personas:</strong> ${info.personas}</p>
+          <p><strong>Clase en Curso:</strong> ${info.clase_en_curso ? "Sí" : "No"}</p>
+          <p><strong>Calefacción:</strong> ${info.relay ? "Encendida" : "Apagada"}</p>
+          <button 
+            class="button ${info.relay ? 'button-off' : 'button-on'}" 
+            onclick="cambiarRelay('${aula}', ${!info.relay})"
+          >
+            ${info.relay ? "Apagar" : "Encender"} Calefacción
+          </button>
+        `;
+
+        panel.appendChild(aulaDiv);
+      });
+	  
+    }
+	
+	function cerrarSesion() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("rol");
+      window.location.href = "/";
+    }
+
+    function cambiarRelay(aula, estado) {
+      fetch("http://10.147.78.46:5000/control_relay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ aula: aula, relay: estado })
+      })
+      .then(response => response.json())
+      .then(data => console.log("Respuesta relay:", data))
+      .catch(error => console.error("Error al cambiar el relé:", error));
+    }
+  </script>
+</body>
+</html>

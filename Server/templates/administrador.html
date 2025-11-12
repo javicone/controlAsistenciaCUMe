@@ -17,7 +17,10 @@
                 <h1>📡 Gestión de Aulas y Dispositivos</h1>
                 <p class="subtitle">Configuración y monitoreo de nodos ESP32</p>
             </div>
-            <a href="/dashboard" class="btn-back">← Volver al Dashboard</a>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span id="ws-status" class="status-disconnected">🔴 Conectando...</span>
+                <a href="/dashboard" class="btn-back">← Volver al Dashboard</a>
+            </div>
         </div>
 
         <!-- Contenido Principal -->
@@ -48,13 +51,13 @@
 
                     <form id="aula-form">
                         <div class="form-group">
-                            <label for="mac-address">📍 Dirección MAC</label>
-                            <input type="text" id="mac-address" disabled>
+                            <label for="device-id">� ID Dispositivo</label>
+                            <input type="text" id="device-id" disabled>
                         </div>
 
                         <div class="form-group">
                             <label for="aula-nombre">🏷️ Nombre del Aula</label>
-                            <input type="text" id="aula-nombre" placeholder="Ej: Aula A-101" required>
+                            <input type="text" id="aula-nombre" placeholder="Ej: Aula 101" required>
                         </div>
 
                         <div class="form-group">

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Acceso</h2>
+        <input type="email" id="correo" placeholder="Correo Electrónico">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button onclick="login()">Entrar</button>
+        <p id="error-message" style="color:red;"></p>
+    </div>
+
+    <script>
+        function login() {
+            const correo = document.getElementById("correo").value;
+            const password = document.getElementById("password").value;
+            fetch("/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ correo, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+				
+                if (data.token) {
+					// Guardar el token y el rol en localStorage
+					localStorage.setItem("token", data.token);
+					localStorage.setItem("rol", data.rol);
+
+					if (data.rol === "profesor") {
+						// Redirige al dashboard de profesor
+						window.location.href = "/dashboard";
+					} else if (data.rol === "conserje") {
+						// Redirige a conserjes.html
+						window.location.href = "/conserjes";
+					} else {
+					// Si tienes otros roles, manejarlos aquí
+					console.log("Rol desconocido:", data.rol);
+					}
+				} else {
+					document.getElementById("error-message").innerText = data.error;
+				}
+
+            });
+        }
+        
+        function cargarDashboard() {
+		     console.log(localStorage.getItem("token"));
+            fetch("/dashboard", {
+                method: "GET",
+                headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
+            })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = "/";  // Si no está autorizado, vuelve al login
+                } else {
+                    return response.text();
+                }
+            })
+            .then(html => {
+                document.documentElement.innerHTML = html;
+            });
+        }
+		
+		function cargarConserjes() {
+		     console.log(localStorage.getItem("token"));
+            fetch("/conserjes", {
+                method: "GET",
+                headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
+            })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = "/";  // Si no está autorizado, vuelve al login
+                } else {
+                    return response.text();
+                }
+            })
+            .then(html => {
+                document.documentElement.innerHTML = html;
+            });
+        }
+
+        if (window.location.pathname === "/dashboard") {
+            cargarDashboard();
+        }
+		
+		if (window.location.pathname === "/conserjes") {
+            cargarConserjes();
+        }
+		
+    </script>
+</body>
+</html>

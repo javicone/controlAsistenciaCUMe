@@ -7,7 +7,7 @@ from utils.database_pool import get_db_pool
 import aiomysql
 
 def create_access_token(data: dict) -> str:
-    """Crea un token JWT"""
+    """Crea un token JWT simple"""
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})

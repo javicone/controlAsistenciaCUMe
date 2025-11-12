@@ -1,5 +1,6 @@
-void setupBME(){
+bool setupBME(){
   Serial.print("🌡️  Inicializando BME280... ");
+  const uint8_t reintentos = 3;
   
   for(uint8_t i = 0; i < reintentos; i++) {
     if(i > 0) {
@@ -21,14 +22,9 @@ void setupBME(){
   indicarEstado(ERROR);
   return false;
 }
-      
 
-struct BME280Data {
-  float temperatura;
-  float humedad;
-  float presion;
-  bool valido;
-};
+// No redefinir BME280Data aquí, ya está en globals.h
+
 
 BME280Data leerBME280() {
   BME280Data datos = {-999.0, -999.0, -999.0, false};

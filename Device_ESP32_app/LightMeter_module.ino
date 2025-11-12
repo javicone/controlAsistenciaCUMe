@@ -1,5 +1,6 @@
-void setupLightMeter(){
+bool setupLightMeter(){
   Serial.print("💡 Inicializando BH1750... ");
+  const uint8_t reintentos = 3;
   
   for(uint8_t i = 0; i < reintentos; i++) {
     if(i > 0) {
@@ -22,11 +23,6 @@ void setupLightMeter(){
   return false;
 }
 
-
-struct LuzData {
-  float lux;
-  bool valido;
-};
 
 LuzData leerLuz() {
   LuzData datos = {-999.0, false};

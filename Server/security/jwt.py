@@ -10,7 +10,7 @@ PRIV = (KEYS_DIR / "jwt_priv.pem").read_text(encoding="utf-8")
 PUB = (KEYS_DIR / "jwt_pub.pem").read_text(encoding="utf-8")
 AUDIENCE = "api"
 
-def issue_token(sub: str, scope: Literal["device","admin","teacher"]="device", exp_seconds: int = 3600) -> str:
+def issue_token(sub: str, scope: Literal["device","admin","teacher","conserje"]="device", exp_seconds: int = 3600) -> str:
     now = datetime.now(timezone.utc)
     payload = {
         "sub": sub,

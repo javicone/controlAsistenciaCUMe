@@ -1,4 +1,4 @@
-void setupRadar(){
+bool setupRadar(){
     RADAR_SERIAL.begin(256000, SERIAL_8N1, RADAR_RX_PIN, RADAR_TX_PIN);  //UART for monitoring the radar
     delay(500);
 
@@ -25,12 +25,7 @@ void setupRadar(){
         sensores.ld2410_ok = false;
     }
 }
-struct RadarData {
-  bool presenciaDetectada;
-  int distanciaEstatico;
-  int distanciaMovil;
-  bool valido;
-};
+
 
 RadarData leerRadar() {
   RadarData datos = {false, -1, -1, false};

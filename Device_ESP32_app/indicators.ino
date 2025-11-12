@@ -35,20 +35,23 @@ void setupIndicators() {
   pinMode(ledVerdePin, OUTPUT);
   pinMode(ledAmarilloPin, OUTPUT);
   pinMode(buzzerPin, OUTPUT);
-  pinMode(relayPin, OUTPUT);
+  pinMode(relayPin1, OUTPUT);
+  pinMode(relayPin2, OUTPUT);
   
   Serial.println("📌 Pines configurados:");
   Serial.printf("   LED Rojo:     GPIO %d\n", ledRojoPin);
   Serial.printf("   LED Verde:    GPIO %d\n", ledVerdePin);
   Serial.printf("   LED Amarillo: GPIO %d\n", ledAmarilloPin);
   Serial.printf("   Buzzer:       GPIO %d\n", buzzerPin);
-  Serial.printf("   Relé:         GPIO %d\n", relayPin);
+  Serial.printf("   Relé 1:       GPIO %d\n", relayPin1);
+  Serial.printf("   Relé 2:       GPIO %d\n", relayPin2);
   
   // Estado inicial: todos apagados
   digitalWrite(ledRojoPin, LOW);
   digitalWrite(ledVerdePin, LOW);
   digitalWrite(ledAmarilloPin, LOW);
-  digitalWrite(relayPin, LOW);
+  digitalWrite(relayPin1, LOW);
+  digitalWrite(relayPin2, LOW);
   noTone(buzzerPin);
   
   Serial.println("🔌 Estado inicial: Todos apagados");
@@ -188,21 +191,35 @@ void parpadearLED(int pin, int veces, int duracion_ms) {
 }
 
 // ============================================================================
-// CONTROL DEL RELÉ
+// CONTROL DE RELÉS
 // ============================================================================
 
-void activarRele(bool estado) {
-  digitalWrite(relayPin, estado ? HIGH : LOW);
+void activarRele1(bool estado) {
+  digitalWrite(relayPin1, estado ? HIGH : LOW);
   
   Serial.println("\n╔════════════════════════════════╗");
-  Serial.println("║      CONTROL DE RELÉ           ║");
+  Serial.println("║    CONTROL DE RELÉ 1           ║");
   Serial.println("╚════════════════════════════════╝");
-  Serial.printf("🔌 Relé: %s\n", estado ? "ACTIVADO ⚡" : "DESACTIVADO 🔴");
+  Serial.printf("🔌 Relé 1 (Calefacción): %s\n", estado ? "ACTIVADO ⚡" : "DESACTIVADO 🔴");
   Serial.println("════════════════════════════════\n");
 }
 
-bool estadoRele() {
-  return digitalRead(relayPin) == HIGH;
+void activarRele2(bool estado) {
+  digitalWrite(relayPin2, estado ? HIGH : LOW);
+  
+  Serial.println("\n╔════════════════════════════════╗");
+  Serial.println("║    CONTROL DE RELÉ 2           ║");
+  Serial.println("╚════════════════════════════════╝");
+  Serial.printf("� Relé 2 (Iluminación): %s\n", estado ? "ACTIVADO ⚡" : "DESACTIVADO 🔴");
+  Serial.println("════════════════════════════════\n");
+}
+
+bool estadoRele1() {
+  return digitalRead(relayPin1) == HIGH;
+}
+
+bool estadoRele2() {
+  return digitalRead(relayPin2) == HIGH;
 }
 
 // ============================================================================

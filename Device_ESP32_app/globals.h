@@ -9,17 +9,42 @@
 #include <WebSocketsClient.h>
 
 // ============================================
-// TIMERS
+// DECLARACIONES EXTERNAS (definidas en globals.cpp)
 // ============================================
-extern unsigned long lastReading;
-extern unsigned long lastReading2;
-extern unsigned long lastReading3;
-extern const unsigned long delayTime;
-extern const unsigned long delayTime2;
-extern const unsigned long INTERVALO_PROCESO_COLA=50000; // Intervalo para procesar la cola de envíos offline
+
+// Configuración del dispositivo
+extern String deviceId;
+extern String apiKey;
+
+// WiFi y servidor
+extern const char* ssid;
+extern const char* password;
+extern const char* wsHost;
+extern const int wsPort;
+extern const char* wsPath;
+extern const char* serverUrl;
+extern const char* datos_aula;
+extern const char* registro;
+extern const char* server_certificate;
+extern const char* tzInfo;
+extern const char* aula;
+
 // ============================================
-// ESTADO DE SENSORES
+// CONSTANTES DE TIEMPO
 // ============================================
+#define QUEUE_PROCESS_INTERVAL 30000  // 30 segundos
+#define SENSOR_READ_INTERVAL   5000   // 5 segundos (delayTime)
+#define CLASS_CHECK_INTERVAL   300000 // 5 minutos (delayTime2)
+
+// Alias para compatibilidad con código antiguo
+#define delayTime  SENSOR_READ_INTERVAL
+#define delayTime2 CLASS_CHECK_INTERVAL
+
+// ============================================
+// ESTRUCTURAS DE DATOS
+// ============================================
+
+// Estructura para estado de sensores
 struct SensorStatus {
   bool bme280_ok = false;
   bool bh1750_ok = false;
@@ -31,30 +56,56 @@ struct SensorStatus {
   uint8_t pn532_errores = 0;
 };
 
-extern SensorStatus sensores;
+struct BME280Data {
+  bool valido = false;
+  float temperatura = 0.0;
+  float humedad = 0.0;
+  float presion = 0.0;
+};
+
+struct LuzData {
+  bool valido = false;
+  float lux = 0.0;
+};
+
+struct NFCData {
+  bool valido = false;
+  bool tarjetaDetectada = false;
+  String uid = "";
+};
+
+struct RadarData {
+  bool valido = false;
+  int distanciaEstatico = 0;
+  int distanciaMovil = 0;
+  bool presenciaDetectada = false;
+};
 
 // ============================================
-// WEBSOCKET
-// ============================================
-extern bool wsConectado;
-extern WebSocketsClient webSocket;
-
-// ============================================
-// INSTANCIAS DE SENSORES
+// OBJETOS DE SENSORES (definidos en globals.cpp)
 // ============================================
 extern Adafruit_BME280 bme;
 extern BH1750 lightMeter;
 extern ld2410 radar;
 extern UNIT_PN532 nfc;
+extern WebSocketsClient webSocket;
 
 // ============================================
-// PINES
+// VARIABLES DE ESTADO (definidas en globals.cpp)
 // ============================================
-extern const int ledRojoPin;
-extern const int ledVerdePin;
-extern const int ledAmarilloPin;
-extern const int buzzerPin;
-extern const int relayPin;
+extern SensorStatus sensores;
+extern unsigned long lastReading;
+extern unsigned long lastReading2;
+extern unsigned long lastReading3;
+extern unsigned long lastQueueProcess;
+extern int DistanciaEstatico;
+extern int DistanciaMovil;
+extern const long gmtOffset_sec;
+extern const int daylightOffset_sec;
+extern const char* ntpServer;
+extern unsigned long targetTimeMillis;
+extern bool ledRedOn;
+extern bool wsConectado;
 
 // ============================================
 // ESTADOS DE LEDs

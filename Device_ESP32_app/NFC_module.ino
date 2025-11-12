@@ -1,11 +1,12 @@
-// ...existing code...
-void setupNFC() {
-  Serial.println("Inicializando PN532 (SPI) con diagnóstico...");
-  boolean nfc_present;
-  // Asegúrate de inicializar SPI con los pines correctos si usas pines no por defecto
-  // SPI.begin(SCK, MISO, MOSI); // Descomenta y ajusta si usas pines distintos
+#include "globals.h"
 
-  // Forzar CS HIGH antes de iniciar
+bool setupNFC() {
+  Serial.println("🔧 Inicializando PN532 (SPI) con diagnóstico...");
+  
+  // ✅ Inicializar SPI con pines explícitos
+  SPI.begin(PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
+  
+  // Forzar CS HIGH antes de iniciar (PN532 inactivo)
   pinMode(PN532_SS, OUTPUT);
   digitalWrite(PN532_SS, HIGH);
   delay(10);
@@ -13,29 +14,36 @@ void setupNFC() {
   // Intentar inicializar varias veces
   const int max_attempts = 4;
   bool ok = false;
+  
   for (int attempt = 1; attempt <= max_attempts; ++attempt) {
-    Serial.printf("Intento PN532 #%d\n", attempt);
-    // Llamada de inicialización de la librería
-    nfc.begin();        // si tu lib no tiene begin, ajusta según la librería
-    delay(50);
+    Serial.printf("📡 Intento PN532 #%d/%d\n", attempt, max_attempts);
+    
+    nfc.begin();
+    delay(100);  // ← Aumentado a 100ms para dar tiempo al chip
 
-    // Intentar leer versión/firmware (método típico Adafruit)
-    uint32_t versiondata = 0;
-    // Si tu librería usa otro método, reemplaza esta línea
-    versiondata = nfc.getFirmwareVersion();
+    uint32_t versiondata = nfc.getFirmwareVersion();
 
     if (versiondata) {
-      Serial.print("PN53x detectado. Version: 0x");
+      Serial.print("✅ PN53x detectado! Version: 0x");
       Serial.println(versiondata, HEX);
-      // Configuración SAM (si existe)
-      #ifdef UNIT_PN532_HAS_SAMCONFIG
+      Serial.print("   Chip: PN5");
+      Serial.println((versiondata >> 24) & 0xFF, HEX);
+      Serial.print("   Firmware: ");
+      Serial.print((versiondata >> 16) & 0xFF, DEC);
+      Serial.print(".");
+      Serial.println((versiondata >> 8) & 0xFF, DEC);
+      
+      // Configurar para leer tarjetas MIFARE
       nfc.SAMConfig();
-      #endif
+      
+      sensores.pn532_ok = true;
+      sensores.pn532_errores = 0;
       ok = true;
       break;
     } else {
-      Serial.println("No se encontró la placa PN53x en este intento.");
-      // togglear CS para intentar "liberar" el bus
+      Serial.println("❌ No se encontró la placa PN53x en este intento.");
+      
+      // Togglear CS para intentar "liberar" el bus SPI
       digitalWrite(PN532_SS, LOW);
       delay(10);
       digitalWrite(PN532_SS, HIGH);
@@ -44,24 +52,29 @@ void setupNFC() {
   }
 
   if (!ok) {
-    Serial.println("ERROR: PN53x NO detectado tras varios intentos.");
-    Serial.print("PN532_SS definido como: ");
-    Serial.println(PN532_SS);
-    Serial.println("Verifica wiring, alimentación 3.3V y pines SPI. Comentando NFC temporalmente para continuar.");
-    // opcional: establecer flag para saltar lecturas NFC en loop
-    nfc_present = false; // declara bool nfc_present globalmente y úsalo en leerNFC()
-  } else {
-    nfc_present = true;
+    Serial.println("❌ ERROR CRÍTICO: PN53x NO detectado tras 4 intentos.");
+    Serial.println("📋 Diagnóstico:");
+    Serial.printf("   - PN532_SS:   GPIO %d\n", PN532_SS);
+    Serial.printf("   - PN532_SCK:  GPIO %d\n", PN532_SCK);
+    Serial.printf("   - PN532_MISO: GPIO %d\n", PN532_MISO);
+    Serial.printf("   - PN532_MOSI: GPIO %d\n", PN532_MOSI);
+    Serial.println("🔍 Verifica:");
+    Serial.println("   1. Alimentación 3.3V (NO 5V)");
+    Serial.println("   2. Cables firmemente conectados");
+    Serial.println("   3. Módulo PN532 en modo SPI (switches/jumpers)");
+    Serial.println("   4. Pines SPI correctos según tu placa ESP32");
+    
+    sensores.pn532_ok = false;
+    sensores.pn532_errores++;
+    return false;
   }
+  
+  return true;
 }
-struct NFCData {
-  String uid;
-  bool tarjetaDetectada;
-  bool valido;
-};
+
 
 NFCData leerNFC() {
-  NFCData datos = {"", false, false};
+  NFCData datos = {false, false, ""};
   
   // Verificar si el sensor está disponible
   if(!sensores.pn532_ok) {
@@ -76,7 +89,7 @@ NFCData leerNFC() {
   uint8_t uidLength;
   
   // Leer tarjeta (timeout 500ms - balance entre responsividad y detección)
-  success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid_local, &uidLength, 500);
+  success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid_local, &uidLength, 1000);
   
   if(success) {
     // Validar longitud de UID (típicamente 4 o 7 bytes)

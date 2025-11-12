@@ -6,7 +6,9 @@ bool fetchDeviceToken() {
   WiFiClientSecure client;
   client.setInsecure(); // TODO: usar CA real con client.setCACert(...)
   HTTPClient https;
-  if (!https.begin(client, serverUrl + "/auth/device")) return false;
+  
+  String url = String(serverUrl) + "/auth/device";
+  if (!https.begin(client, url)) return false;
   https.addHeader("Content-Type", "application/json");
 
   StaticJsonDocument<256> doc;

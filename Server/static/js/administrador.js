@@ -1,9 +1,149 @@
-// Datos de ejemplo (esto vendrá del backend)
-let aulasData = [
+// ========================================
+// CONFIGURACIÓN Y VARIABLES GLOBALES
+// ========================================
+
+let ws = null;
+let aulaSeleccionada = null;
+let aulasData = [];
+
+// Obtener JWT token
+const JWT_TOKEN = sessionStorage.getItem('token') || localStorage.getItem('token');
+
+if (!JWT_TOKEN) {
+    console.error('❌ No hay token JWT disponible');
+    alert('Sesión no válida. Redirigiendo al login...');
+    window.location.href = '/';
+}
+
+// ========================================
+// WEBSOCKET - CONEXIÓN Y MANEJO
+// ========================================
+
+function connectWebSocket() {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${protocol}//${window.location.host}/ws/admin?token=${JWT_TOKEN}`;
+    
+    console.log('🔌 Conectando a:', wsUrl);
+    
+    ws = new WebSocket(wsUrl);
+    
+    ws.onopen = () => {
+        console.log('✅ WebSocket conectado');
+        updateConnectionStatus(true);
+    };
+    
+    ws.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        console.log('📩 Mensaje:', msg);
+        
+        switch (msg.tipo) {
+            case 'admin_bienvenida':
+                console.log('Dispositivos conectados:', msg.dispositivos_conectados);
+                actualizarEstadoDispositivos(msg.dispositivos_conectados);
+                break;
+            
+            case 'comando_enviado':
+                console.log(`✅ Comando ${msg.accion} enviado`);
+                break;
+            
+            case 'error':
+                console.error('❌ Error:', msg.mensaje);
+                alert('Error: ' + msg.mensaje);
+                break;
+            
+            case 'test_respuesta':
+                mostrarResultadoTest(msg);
+                break;
+            
+            case 'reset_confirmado':
+                console.log('🔄 Dispositivo reiniciando...');
+                break;
+            
+            case 'config_confirmada':
+                console.log('⚙️ Configuración actualizada');
+                break;
+            
+            case 'actualizacion_aula':
+                actualizarAulaEnTiempoReal(msg);
+                break;
+        }
+    };
+    
+    ws.onerror = (error) => {
+        console.error('❌ Error WebSocket:', error);
+        updateConnectionStatus(false);
+    };
+    
+    ws.onclose = () => {
+        console.log('❌ WebSocket cerrado');
+        updateConnectionStatus(false);
+        // Reconectar en 5 segundos
+        setTimeout(connectWebSocket, 5000);
+    };
+}
+
+function updateConnectionStatus(connected) {
+    const statusEl = document.getElementById('ws-status');
+    if (statusEl) {
+        statusEl.textContent = connected ? '🟢 Conectado' : '🔴 Desconectado';
+        statusEl.className = connected ? 'status-connected' : 'status-disconnected';
+    }
+}
+
+// ========================================
+// FUNCIONES DE ENVÍO
+// ========================================
+
+function enviarComando(action, device_id, data = null) {
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+        alert('WebSocket no conectado');
+        return false;
+    }
+    
+    const mensaje = { action, device_id };
+    if (data) mensaje.data = data;
+    
+    ws.send(JSON.stringify(mensaje));
+    console.log('📤 Comando enviado:', mensaje);
+    return true;
+}
+
+// ========================================
+// FUNCIONES DE UI
+// ========================================
+
+function mostrarResultadoTest(resultado) {
+    alert(`🧪 Test - ${resultado.device_id}\n\nEstado: ${resultado.estado}\nWiFi: ${resultado.wifi_rssi} dBm\nUptime: ${Math.floor(resultado.uptime / 60)} min\nRAM libre: ${Math.floor(resultado.free_heap / 1024)} KB`);
+}
+
+function actualizarEstadoDispositivos(conectados) {
+    aulasData.forEach(aula => {
+        aula.estado = conectados.includes(aula.device_id) ? 'disponible' : 'desconectada';
+    });
+    renderAulas();
+}
+
+function actualizarAulaEnTiempoReal(msg) {
+    const aula = aulasData.find(a => a.nombre === msg.aula);
+    if (aula) {
+        if (msg.temperatura !== undefined) aula.temperatura = msg.temperatura;
+        if (msg.humedad !== undefined) aula.humedad = msg.humedad;
+        if (msg.luz !== undefined) aula.luz = msg.luz;
+        if (msg.personas !== undefined) aula.personas = msg.personas;
+        if (msg.estado !== undefined) aula.estado = msg.estado;
+        renderAulas();
+    }
+}
+
+// ========================================
+// RENDERIZADO Y SELECCIÓN DE AULAS
+// ========================================
+
+// Datos de ejemplo
+aulasData = [
     {
-        id: 1,
+        device_id: 'ESP32_AULA_A101',
         nombre: 'Aula A-101',
-        mac: 'AA:BB:CC:DD:EE:01',
         ip: '192.168.1.101',
         estado: 'disponible',
         edificio: 'Edificio A',
@@ -16,9 +156,8 @@ let aulasData = [
         luz: 450
     },
     {
-        id: 2,
+        device_id: 'ESP32_AULA_B203',
         nombre: 'Aula B-203',
-        mac: 'AA:BB:CC:DD:EE:02',
         ip: '192.168.1.102',
         estado: 'ocupada',
         edificio: 'Edificio B',
@@ -31,9 +170,8 @@ let aulasData = [
         luz: 380
     },
     {
-        id: 3,
+        device_id: 'ESP32_LAB_C105',
         nombre: 'Laboratorio C-105',
-        mac: 'AA:BB:CC:DD:EE:03',
         ip: '192.168.1.103',
         estado: 'desconectada',
         edificio: 'Edificio C',
@@ -46,8 +184,6 @@ let aulasData = [
         luz: null
     }
 ];
-
-let aulaSeleccionada = null;
 
 // Renderizar lista de aulas
 function renderAulas() {
@@ -66,8 +202,8 @@ function renderAulas() {
             </div>
             <div class="aula-info">
                 <div class="info-item">
-                    <span class="info-label">MAC:</span>
-                    <span>${aula.mac}</span>
+                    <span class="info-label">Device ID:</span>
+                    <span>${aula.device_id}</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">IP:</span>
@@ -95,7 +231,7 @@ function seleccionarAula(aula) {
     document.getElementById('form-container').classList.add('active');
     
     // Llenar formulario
-    document.getElementById('mac-address').value = aula.mac;
+    document.getElementById('device-id').value = aula.device_id;
     document.getElementById('aula-nombre').value = aula.nombre;
     document.getElementById('edificio').value = aula.edificio;
     document.getElementById('planta').value = aula.planta;
@@ -108,10 +244,12 @@ function seleccionarAula(aula) {
 }
 
 // Guardar cambios
-document.getElementById('aula-form').addEventListener('submit', async (e) => {
+document.getElementById('aula-form').addEventListener('submit', (e) => {
     e.preventDefault();
     
-    const datosActualizados = {
+    if (!aulaSeleccionada) return;
+    
+    const config = {
         nombre: document.getElementById('aula-nombre').value,
         edificio: document.getElementById('edificio').value,
         planta: parseInt(document.getElementById('planta').value),
@@ -120,34 +258,17 @@ document.getElementById('aula-form').addEventListener('submit', async (e) => {
         iluminacion: document.getElementById('iluminacion-enabled').checked
     };
 
-    console.log('Guardando cambios para:', aulaSeleccionada.mac, datosActualizados);
-    
-    // TODO: Enviar al backend
-    // await fetch(`/api/aulas/${aulaSeleccionada.id}`, {
-    //     method: 'PUT',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(datosActualizados)
-    // });
-
-    // Actualizar datos locales
-    Object.assign(aulaSeleccionada, datosActualizados);
+    enviarComando('actualizar_config', aulaSeleccionada.device_id, config);
+    Object.assign(aulaSeleccionada, config);
     renderAulas();
-    
-    alert('✅ Cambios guardados correctamente');
 });
 
 // Resetear nodo
-document.getElementById('btn-reset').addEventListener('click', async () => {
-    if (!confirm(`¿Estás seguro de que deseas resetear el nodo ${aulaSeleccionada.nombre}?`)) {
-        return;
-    }
-
-    console.log('Reseteando nodo:', aulaSeleccionada.mac);
+document.getElementById('btn-reset').addEventListener('click', () => {
+    if (!aulaSeleccionada) return;
+    if (!confirm(`¿Resetear ${aulaSeleccionada.nombre}?`)) return;
     
-    // TODO: Enviar comando de reset al ESP32
-    // await fetch(`/api/aulas/${aulaSeleccionada.id}/reset`, { method: 'POST' });
-
-    alert('🔄 Comando de reset enviado al dispositivo');
+    enviarComando('resetear_nodo', aulaSeleccionada.device_id);
 });
 
 // Cancelar edición
@@ -159,14 +280,21 @@ document.getElementById('btn-cancel').addEventListener('click', () => {
 });
 
 // Test de conexión
-document.getElementById('btn-test').addEventListener('click', async () => {
-    console.log('Testeando conexión con:', aulaSeleccionada.mac);
-    
-    // TODO: Ping al dispositivo
-    // const response = await fetch(`/api/aulas/${aulaSeleccionada.id}/ping`);
-    
-    alert('🧪 Prueba de conexión enviada. Revisa los logs del dispositivo.');
+document.getElementById('btn-test').addEventListener('click', () => {
+    if (!aulaSeleccionada) return;
+    enviarComando('test_conexion', aulaSeleccionada.device_id);
 });
 
-// Inicializar
-renderAulas();
+// ========================================
+// INICIALIZACIÓN
+// ========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Inicializando panel admin');
+    connectWebSocket();
+    renderAulas();
+});
+
+window.addEventListener('beforeunload', () => {
+    if (ws) ws.close();
+});
