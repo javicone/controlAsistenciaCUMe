@@ -1,7 +1,13 @@
 #include "globals.h"
 
+
 bool setupNFC() {
-  Serial.println("🔧 Inicializando PN532 (SPI) con diagnóstico...");
+  Serial.println("🔧 Inicializando PN532 (SPI) con consumo reducido...");
+  
+  // ✅ REDUCIR CONSUMO WiFi TEMPORALMENTE (240mA → 180mA)
+  wifi_power_t powerBackup = WiFi.getTxPower();
+  WiFi.setTxPower(WIFI_POWER_11dBm);
+  delay(100);
   
   // ✅ Inicializar SPI con pines explícitos
   SPI.begin(PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
@@ -9,22 +15,22 @@ bool setupNFC() {
   // Forzar CS HIGH antes de iniciar (PN532 inactivo)
   pinMode(PN532_SS, OUTPUT);
   digitalWrite(PN532_SS, HIGH);
-  delay(10);
+  delay(50);  // ← REDUCIDO de 1000ms a 50ms (ahorro de tiempo)
 
   // Intentar inicializar varias veces
   const int max_attempts = 4;
   bool ok = false;
   
   for (int attempt = 1; attempt <= max_attempts; ++attempt) {
-    Serial.printf("📡 Intento PN532 #%d/%d\n", attempt, max_attempts);
+    Serial.printf("📡 Intento PN532 #%d/%d (WiFi bajo consumo)\n", attempt, max_attempts);
     
     nfc.begin();
-    delay(100);  // ← Aumentado a 100ms para dar tiempo al chip
+    delay(150);  // ← Aumentado para dar tiempo al chip
 
     uint32_t versiondata = nfc.getFirmwareVersion();
 
     if (versiondata) {
-      Serial.print("✅ PN53x detectado! Version: 0x");
+      Serial.print("✅ PN532 detectado! Version: 0x");
       Serial.println(versiondata, HEX);
       Serial.print("   Chip: PN5");
       Serial.println((versiondata >> 24) & 0xFF, HEX);
@@ -41,7 +47,7 @@ bool setupNFC() {
       ok = true;
       break;
     } else {
-      Serial.println("❌ No se encontró la placa PN53x en este intento.");
+      Serial.println("❌ No se encontró PN532 en este intento.");
       
       // Togglear CS para intentar "liberar" el bus SPI
       digitalWrite(PN532_SS, LOW);
@@ -51,8 +57,12 @@ bool setupNFC() {
     }
   }
 
+  // ✅ RESTAURAR POTENCIA WiFi
+  WiFi.setTxPower(powerBackup);
+  Serial.println("✅ WiFi restaurado a potencia normal");
+
   if (!ok) {
-    Serial.println("❌ ERROR CRÍTICO: PN53x NO detectado tras 4 intentos.");
+    Serial.println("❌ ERROR CRÍTICO: PN532 NO detectado tras 4 intentos.");
     Serial.println("📋 Diagnóstico:");
     Serial.printf("   - PN532_SS:   GPIO %d\n", PN532_SS);
     Serial.printf("   - PN532_SCK:  GPIO %d\n", PN532_SCK);
@@ -63,6 +73,7 @@ bool setupNFC() {
     Serial.println("   2. Cables firmemente conectados");
     Serial.println("   3. Módulo PN532 en modo SPI (switches/jumpers)");
     Serial.println("   4. Pines SPI correctos según tu placa ESP32");
+    Serial.println("   5. Fuente de alimentación suficiente (>500mA)");
     
     sensores.pn532_ok = false;
     sensores.pn532_errores++;
@@ -71,7 +82,6 @@ bool setupNFC() {
   
   return true;
 }
-
 
 NFCData leerNFC() {
   NFCData datos = {false, false, ""};

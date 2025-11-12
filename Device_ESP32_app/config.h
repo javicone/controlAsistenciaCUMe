@@ -37,8 +37,9 @@ extern const char* aula;
 // PINES (constantes que NO cambian - usamos #define)
 // ============================================
 #define RELAY_PIN_1         26
-#define RELAY_PIN_2         27
+#define RELAY_PIN_2         32
 #define BUZZER_PIN          33
+
 #define LED_ROJO_PIN        25
 #define LED_VERDE_PIN       27
 #define LED_AMARILLO_PIN    14
@@ -52,7 +53,7 @@ extern const char* aula;
 // Conexiones SPI del ESP32
 #define PN532_SCK           18
 #define PN532_MOSI          23
-#define PN532_MISO  19  // ← AGREGAR ESTA LÍNEA
+#define PN532_MISO          19  
 #define PN532_SS            5
 
 // ============================================

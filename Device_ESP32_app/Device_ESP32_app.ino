@@ -32,12 +32,18 @@ void HiloComunicadorcode(void* pvParameters);
 NFCData leerNFC();  // Devuelve NFCData
 void obtenerProximaClase();
 void EnviaValoresAula();
-void registrarAsistencia();
+void registrarAsistencia(String tarjetaUID);
 String uidToString(byte *uid, unsigned int longitud);
 String urlencode(String str);
 unsigned long epochFromString(String fecha);
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);  // ✅ Callback para WebSocketsClient
-
+// Declaraciones faltantes para las funciones de otros archivos
+void setupWiFiEvents();           // ← AÑADIR
+bool fetchDeviceToken();          // ← AÑADIR
+void connectWS();                 // ← AÑADIR
+void checkWiFiConnection();       // ← AÑADIR
+void processQueue();              // ← AÑADIR
+RadarData leerRadar();         
 
 // NO instanciar objetos aquí - ya están en globals.cpp
 // Las siguientes líneas se eliminan para evitar múltiples definiciones:
@@ -137,7 +143,7 @@ void HiloComunicadorcode(void* pvParameters) {
 
 //Loop principal que utilizaremos para toda la lógica de los sensores y actuadores
 void loop() {
- // Leer radar con validación
+  // Leer radar con validación
   RadarData radar_data = leerRadar();
   
   if(radar_data.valido && millis() - lastReading > 1000) {
@@ -152,10 +158,14 @@ void loop() {
         
         if(nfc_data.valido && nfc_data.tarjetaDetectada) {
           registrarAsistencia(nfc_data.uid);
+        } else {  // ← CORREGIDO: else después de cerrar if
+          Serial.println("No hay tarjeta NFC cerca");
         }
+      } else {  // ← CORREGIDO: else para DistanciaMovil
+        Serial.println("Distancia móvil fuera de rango");
       }
-    }
-  }
+    }  // ← CIERRA if(radar_data.presenciaDetectada)
+  }  // ← CIERRA if(radar_data.valido)
 
   // Obtener próxima clase
   if (millis() - lastReading3 > delayTime2) {
