@@ -4,8 +4,8 @@
 #include <Arduino.h>
 #include <Adafruit_BME280.h>
 #include <BH1750.h>
+#include <Adafruit_PN532.h> 
 #include <ld2410.h>
-#include "UNIT_PN532.h"
 #include <WebSocketsClient.h>
 
 // ============================================
@@ -87,7 +87,7 @@ struct RadarData {
 extern Adafruit_BME280 bme;
 extern BH1750 lightMeter;
 extern ld2410 radar;
-extern UNIT_PN532 nfc;
+extern Adafruit_PN532 nfc;
 extern WebSocketsClient webSocket;
 
 // ============================================

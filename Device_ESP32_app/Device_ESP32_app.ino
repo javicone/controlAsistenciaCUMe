@@ -11,14 +11,17 @@
 #include <ArduinoJson.h>
 #include <WebSocketsClient.h>  // ✅ Librería ORIGINAL para WebSockets con control SSL
 //#include "Freenove_WS2812_Lib_for_ESP32.h"
+//-----------------------------------
 #include <Wire.h>
 #include <SPI.h>         //Librería para comunicación SPI
-#include "UNIT_PN532.h"  //Librería Modificada
+#include <Adafruit_PN532.h>
+//-----------------------------------
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <BH1750.h>
 #include <ld2410.h>
 #include <Adafruit_GFX.h>
+
 
 #include <Preferences.h>
 #include "globals.h"

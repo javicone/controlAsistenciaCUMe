@@ -51,10 +51,10 @@ extern const char* aula;
 #define RADAR_SERIAL        Serial1
 
 // Conexiones SPI del ESP32
-#define PN532_SCK           18
-#define PN532_MOSI          23
-#define PN532_MISO          19  
-#define PN532_SS            5
+#define PN532_SCK           (18)
+#define PN532_MOSI          (23)
+#define PN532_MISO          (19)  
+#define PN532_SS            (5)
 
 // ============================================
 // COMPATIBILIDAD (para código antiguo que use const int)

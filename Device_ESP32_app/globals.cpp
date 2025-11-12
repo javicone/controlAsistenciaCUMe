@@ -72,7 +72,7 @@ const char* aula = "Aula 101";
 Adafruit_BME280 bme;
 BH1750 lightMeter;
 ld2410 radar;
-UNIT_PN532 nfc(PN532_SS);
+Adafruit_PN532 nfc(PN532_SS);  // Solo necesita CS, SPI ya inicializado
 WebSocketsClient webSocket;
 
 // ============================================
