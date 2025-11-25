@@ -9,7 +9,8 @@ bool registrarAsistenciaConTimestamp(String tarjetaUID, unsigned long eventTimes
   
   WiFiClientSecure client;
   client.setCACert(server_certificate);
-  client.setInsecure(); // ⚠️ TEMPORAL: Desactiva validación SSL para debugging
+  //
+  // client.setInsecure(); // ⚠️ TEMPORAL: Desactiva validación SSL para debugging
   
   Serial.println("🔍 DEBUG: Validación SSL desactivada temporalmente");
   
@@ -97,7 +98,7 @@ void obtenerProximaClase() {
   if(usingHTTPS) {
   WiFiClientSecure client;
   client.setCACert(server_certificate);
-  client.setInsecure(); // ⚠️ TEMPORAL: Desactiva validación SSL para debugging
+  //client.setInsecure(); // ⚠️ TEMPORAL: Desactiva validación SSL para debugging
   
   Serial.println("🔍 DEBUG: Validación SSL desactivada temporalmente");
   

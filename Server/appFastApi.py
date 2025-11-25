@@ -88,19 +88,25 @@ async def shutdown_event():
 if __name__ == "__main__":
     print("\n" + "="*60)
     print("🚀 Iniciando servidor FastAPI...")
-    print("="*60)
+       # --- INICIO DEL FIX: Usar rutas absolutas ---
+    # 1. Definir las rutas absolutas usando BASE_DIR
+    KEY_FILE_PATH = BASE_DIR / "keys" / "key_https.pem"
+    CERT_FILE_PATH = BASE_DIR / "keys" / "cert_https.pem"
     
-    ssl_keyfile = "./key_https.pem"
-    ssl_certfile = "./cert_https.pem"
-    ssl_enabled = os.path.exists(ssl_keyfile) and os.path.exists(ssl_certfile)
+    # 2. Verificar existencia usando .exists() de pathlib
+    ssl_enabled = KEY_FILE_PATH.exists() and CERT_FILE_PATH.exists()
     
+    # 3. Asignar los valores para uvicorn
     if ssl_enabled:
         print("🔒 SSL/TLS HABILITADO ✅")
-        print(f"   📍 https://0.0.0.0:5000")
-        print(f"   📚 https://0.0.0.0:5000/docs")
-        print(f"   🔌 wss://0.0.0.0:5000/ws")
+        print(f"   📍 https://0.0.0.0:5000")
+        print(f"   📚 https://0.0.0.0:5000/docs")
+        print(f"   🔌 wss://0.0.0.0:5000/ws")
+        # Convertir Path objects a string para uvicorn
+        ssl_keyfile = str(KEY_FILE_PATH)
+        ssl_certfile = str(CERT_FILE_PATH)
     else:
-        print("⚠️ SSL/TLS DESHABILITADO")
+        print(f"⚠️ SSL/TLS DESHABILITADO. Archivos no encontrados en: {KEY_FILE_PATH.parent.resolve()}")
         ssl_keyfile = None
         ssl_certfile = None
     

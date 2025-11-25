@@ -9,7 +9,7 @@
 #include <time.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
-#include <WebSocketsClient.h>  // ✅ Librería ORIGINAL para WebSockets con control SSL
+#include <WebSocketsClient.h>  
 //#include "Freenove_WS2812_Lib_for_ESP32.h"
 //-----------------------------------
 #include <Wire.h>
@@ -119,17 +119,13 @@ void HiloComunicadorcode(void* pvParameters) {
   Serial.print(wsPort);
   Serial.println(wsPath);
   
-  // Obtener token JWT
-  if (!fetchDeviceToken()) {
-    Serial.println("Error obteniendo token JWT");
-  }
+
   // Para ESP32, beginSSL configura SSL internamente
   // El último parámetro (fingerprint) puede estar vacío para certificados autofirmados
   connectWS();
   //en caso de q falle usamos conexión no segura
   // Loop WebSocket
   for (;;) {
-
     // Verificar conexión WiFi y reconectar si es necesario
     checkWiFiConnection();
     webSocket.loop();
@@ -138,47 +134,73 @@ void HiloComunicadorcode(void* pvParameters) {
       lastQueueProcess = millis();
       processQueue();
     }
-
-
     vTaskDelay(100 / portTICK_PERIOD_MS); // Increased delay to reduce CPU usage
   }
 }
 
 //Loop principal que utilizaremos para toda la lógica de los sensores y actuadores
 void loop() {
-  // Leer radar con validación
-  RadarData radar_data = leerRadar();
-  
-  if(radar_data.valido && millis() - lastReading > 1000) {
-    lastReading = millis();
-    
-    if(radar_data.presenciaDetectada) {
-      DistanciaEstatico = radar_data.distanciaEstatico;
-      DistanciaMovil = radar_data.distanciaMovil;
-      
-      if(DistanciaMovil > 0 && DistanciaMovil < 50) {
-        NFCData nfc_data = leerNFC();
-        
-        if(nfc_data.valido && nfc_data.tarjetaDetectada) {
-          registrarAsistencia(nfc_data.uid);
-        } else {  // ← CORREGIDO: else después de cerrar if
-          Serial.println("No hay tarjeta NFC cerca");
-        }
-      } else {  // ← CORREGIDO: else para DistanciaMovil
-        Serial.println("Distancia móvil fuera de rango");
-      }
-    }  // ← CIERRA if(radar_data.presenciaDetectada)
-  }  // ← CIERRA if(radar_data.valido)
 
-  // Obtener próxima clase
+
+   static unsigned long lastNFCCheck = 0;
+  
+  // ============================================
+  // MODO CON IRQ: Solo leer NFC cuando la flag esté activa
+  // ============================================
+  if (nfcCardDetected) {
+    nfcCardDetected = false;  // ✅ Resetear flag INMEDIATAMENTE
+    
+    Serial.println("🔔 IRQ: Tarjeta detectada");
+    
+    NFCData nfc_data = leerNFC();
+    
+    if (nfc_data.valido && nfc_data.tarjetaDetectada) {
+      registrarAsistencia(nfc_data.uid);
+      delay(2000);  // Evitar lecturas duplicadas
+    }
+  }
+
+    // ============================================
+  // OBTENER PRÓXIMA CLASE
+  // ============================================
   if (millis() - lastReading3 > delayTime2) {
     lastReading3 = millis();
     obtenerProximaClase();
   }
 
-  // Enviar datos del aula
+  // ============================================
+  // ENVIAR DATOS DEL AULA
+  // ============================================
   if (millis() - lastReading2 > delayTime) {
     lastReading2 = millis();
     EnviaValoresAula();
-  }
 }
+
+  // ============================================
+  // RENOVAR JWT SI ES NECESARIO
+  // ============================================
+  
+  static unsigned long lastTokenCheck = 0;
+
+// Suponiendo que tokenExpirationTime está en minutos desde ahora
+unsigned long nowMinutes = millis() / 60000; // minutos desde arranque
+
+if (millis() - lastTokenCheck > TOKEN_CHECK_INTERVAL) {
+    lastTokenCheck = millis();
+    Serial.println("⏰ Comprobando/renovando JWT por timer...");
+
+    // Comprueba si el token ha expirado
+    if (nowMinutes >= tokenExpirationTime) {
+        String newToken = ensureToken();
+        if (newToken.length() > 0) {
+            Serial.println("✅ JWT renovado correctamente");
+        } else {
+            Serial.println("❌ Error renovando JWT");
+        }
+    } else {
+        Serial.println("🔒 JWT sigue siendo válido");
+    }
+}
+
+}
+

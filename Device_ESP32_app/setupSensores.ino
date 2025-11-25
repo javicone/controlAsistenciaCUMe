@@ -7,7 +7,8 @@ void initSensores() {
   digitalWrite(relayPin1, LOW); // Relé de la calefaccion
   pinMode(relayPin2, OUTPUT);
   digitalWrite(relayPin2, LOW); // Relé de la luz 
-  setupNFC();  //Inicializamos el lector NFC
+  setupNFC();
+  delay(200);  //Inicializamos el lector NFC
   setupRadar();  //Inicializamos el radar de presencia
   setupBME();  //Inicializamos el sensor de temperatura, humedad y presión
   setupLightMeter();  //Inicializamos el sensor de luz

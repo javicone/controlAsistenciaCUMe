@@ -3,8 +3,8 @@ from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect, HTTPExcept
 from utils.websocket_manager import manager
 from services.aula_service import aulas_estado, actualizar_estado_aula
 from services.auth_service import decode_access_token
-from repositories.nodos import get_device
 import json
+from security.jwt import verify_token
 
 router = APIRouter()
 
@@ -12,7 +12,7 @@ router = APIRouter()
 async def websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
     # Validar JWT - puede ser device o usuario
     try:
-        from security.jwt import verify_token
+
         payload = verify_token(token, required_scope="device")
         device_id = payload["sub"]
     except:

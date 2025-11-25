@@ -1,6 +1,6 @@
 bool setupRadar(){
     RADAR_SERIAL.begin(256000, SERIAL_8N1, RADAR_RX_PIN, RADAR_TX_PIN);  //UART for monitoring the radar
-    delay(500);
+    delay(1000);
 
     Serial.print(F("\nConnect LD2410 radar TX to GPIO:"));
     Serial.println(RADAR_RX_PIN);
@@ -19,10 +19,12 @@ bool setupRadar(){
         Serial.print(radar.firmware_minor_version);
         Serial.print('.');
         Serial.println(radar.firmware_bugfix_version, HEX);
+        return true;
     } else {
         Serial.println(F("not connected"));
         indicarEstado(ERROR);
         sensores.ld2410_ok = false;
+        return false;
     }
 }
 

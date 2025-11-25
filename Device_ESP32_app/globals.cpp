@@ -7,7 +7,7 @@
 
 // ID del dispositivo y API Key segura
 String deviceId = "node-001";
-String apiKey = "REEMPLAZA_ESTA_API_KEY_SEGURA";
+String apiKey = "A2fP7zU4tD1sH6kE9wR0mN3cQ5vB8xYgO";
 
 // WiFi y servidor
 const char* ssid = "SERVER";
@@ -16,7 +16,7 @@ const char* password = "12345678";
 // Configuración WebSocket Seguro (WSS)
 const char* wsHost = "192.168.137.1";
 const int wsPort = 5000;
-const char* wsPath = "/ws";
+const char* wsPath = "/ws/device";
 
 // Configuración para HTTP
 const char* serverUrl = "https://192.168.137.1:5000";
@@ -80,6 +80,11 @@ WebSocketsClient webSocket;
 // ============================================
 SensorStatus sensores;
 
+unsigned long lastTokenCheck = 0;
+
+
+volatile bool nfcCardDetected = false; 
+
 unsigned long lastReading = 0;
 unsigned long lastReading2 = 0;
 unsigned long lastReading3 = 0;
@@ -100,3 +105,4 @@ bool ledRedOn = false;
 
 // WebSocket
 bool wsConectado = false;
+

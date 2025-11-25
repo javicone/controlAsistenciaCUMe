@@ -34,6 +34,13 @@ extern const char* tzInfo;
 extern const char* aula;
 
 // ============================================
+// CONSTANTES DE TIEMPO
+// ============================================
+#define QUEUE_PROCESS_INTERVAL 30000  // 30 segundos
+#define SENSOR_READ_INTERVAL   5000   // 5 segundos (delayTime)
+#define TOKEN_CHECK_INTERVAL  43200000 // 12 horas (12 * 60 * 60 * 1000 ms)
+
+// ============================================
 // PINES (constantes que NO cambian - usamos #define)
 // ============================================
 #define RELAY_PIN_1         26
@@ -46,15 +53,16 @@ extern const char* aula;
 
 // Constantes de sensores
 #define SEALEVELPRESSURE_HPA (1013.25)
-#define RADAR_RX_PIN        16
-#define RADAR_TX_PIN        17
-#define RADAR_SERIAL        Serial1
+#define RADAR_RX_PIN 16
+#define RADAR_TX_PIN 17
+#define RADAR_SERIAL Serial1
 
 // Conexiones SPI del ESP32
 #define PN532_SCK           (18)
 #define PN532_MOSI          (23)
 #define PN532_MISO          (19)  
 #define PN532_SS            (5)
+#define PN532_IRQ           (34)
 
 // ============================================
 // COMPATIBILIDAD (para código antiguo que use const int)

@@ -1,11 +1,13 @@
 from datetime import datetime, timedelta
+from flask import logging
 from jose import JWTError, jwt
-from fastapi import HTTPException, status
+from fastapi import HTTPException, logger, status
 from config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 from models.user import TokenData, UserInDB
 from utils.database_pool import get_db_pool
 import aiomysql
-
+from repositories.usuarioRepository import get_usuario_por_mail
+    
 def create_access_token(data: dict) -> str:
     """Crea un token JWT simple"""
     to_encode = data.copy()
@@ -33,15 +35,7 @@ def decode_access_token(token: str) -> TokenData:
 
 async def authenticate_user(correo: str, password: str) -> UserInDB:
     """Autentica un usuario por correo y contraseña"""
-    pool = await get_db_pool()
-    async with pool.acquire() as conn:
-        async with conn.cursor(aiomysql.DictCursor) as cursor:
-            await cursor.execute(
-                "SELECT id, correo, rol, password FROM usuarios WHERE correo = %s", 
-                (correo,)
-            )
-            user = await cursor.fetchone()
-    
+    user = await get_usuario_por_mail(correo)
     if not user or user["password"] != password:  # TODO: usar passlib para hash
         raise HTTPException(
             status_code=401, 

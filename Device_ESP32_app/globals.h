@@ -107,6 +107,8 @@ extern unsigned long targetTimeMillis;
 extern bool ledRedOn;
 extern bool wsConectado;
 
+extern volatile bool nfcCardDetected;
+
 // ============================================
 // ESTADOS DE LEDs
 // ============================================
@@ -116,6 +118,11 @@ enum EstadoLED {
   ERROR,
   CRITICO
 };
+
+// Token JWT expiracion
+extern unsigned long tokenExpirationTime;
+
+
 
 // ============================================
 // FUNCIONES DE INDICADORES (implementadas en indicators.ino)

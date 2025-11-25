@@ -1,11 +1,20 @@
 #include "globals.h"
 
+
+
+// ============================================
+// ISR (Interrupt Service Routine)
+// ============================================
+void IRAM_ATTR nfcIRQHandler() {
+  nfcCardDetected = true;  // Activar flag cuando el PN532 detecta tarjeta
+}
+
 bool setupNFC() {
   Serial.println("🔧 Inicializando PN532 (SPI) con diagnóstico...");
   
   // ✅ Inicializar SPI con pines explícitos
-Adafruit_PN532 nfc(PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
   
+  SPI.begin(PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
 
   delay(1000);
 

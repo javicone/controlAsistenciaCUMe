@@ -7,4 +7,4 @@ class DeviceAuthRequest(BaseModel):
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
-    expires_in: int = 3600
+    expires_in_minutes: int = 60*24  # 24 horas

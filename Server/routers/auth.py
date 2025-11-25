@@ -1,35 +1,118 @@
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
-from Server.models.webTokens import DeviceAuthRequest, TokenResponse
-from Server.repositories.nodos import get_device
-from Server.security.jwt import DevicePrincipal, issue_token
-from models.user import UserLogin, TokenData
-from services.auth_service import authenticate_user, create_access_token, decode_access_token
+from fastapi import APIRouter, HTTPException, Depends
+from fastapi.responses import RedirectResponse
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from models.user import UserLogin
+from security.jwt import verify_token
+from models.webTokens import DeviceAuthRequest, TokenResponse
+from repositories.nodos import verificar_nodo_existe 
+from services.auth_service import authenticate_user 
+from services.auth_service import create_access_token
+from utils.database_pool import get_db_pool
+import logging
+from repositories.usuarioRepository import get_usuario_por_mail
 
-router = APIRouter(prefix="/auth", tags=["Autenticación"])
+router = APIRouter()
+security = HTTPBearer()
+logger = logging.getLogger(__name__)
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+@router.post("/auth/device", response_model=TokenResponse)
+async def authenticate_device(auth_request: DeviceAuthRequest):
+    """
+    Autenticar dispositivo ESP32 y generar token JWT
+    """
+    logger.info(f"🔐 Autenticación solicitada para: {auth_request.device_id}")
+    
+    try:
+        # ✅ AÑADIR: Log de la petición recibida
+        logger.info(f"   Device ID: {auth_request.device_id}")
+        logger.info(f"   API Key: {auth_request.api_key[:10]}...") # Solo primeros 10 chars
+        
+        # Verificar que el nodo existe en la base de datos
+        conn = await get_db_pool()
+        try:
+            existe = await verificar_nodo_existe(conn, auth_request.device_id, auth_request.api_key)
+            # si no existe se le crea el JWT
+            if not existe:
+                logger.warning(f"❌ Credenciales inválidas para {auth_request.device_id}")
+                raise HTTPException(
+                    status_code=401,
+                    detail="Credenciales de dispositivo inválidas"
+                )
+            logger.info(f"✅ Nodo verificado: {auth_request.device_id}")
+            
+            # Crear token JWT
+            token = create_access_token(auth_request.device_id)
+            
+            logger.info(f"🎟️ Token generado para {auth_request.device_id}")
+            logger.info(f"   Longitud: {len(token)} caracteres")
+            
+            return TokenResponse(token=token)
+            
+        finally:
+            conn.close()
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error en autenticación: {e}")
+        raise HTTPException(status_code=500, detail="Error interno del servidor")
 
-@router.post("/login")
-async def login(user_data: UserLogin):
-    """Inicia sesión y devuelve un token JWT"""
-    user = await authenticate_user(user_data.correo, user_data.password)
-    access_token = create_access_token(data={"sub": str(user.id), "rol": user.rol})
-    return {"token": access_token, "rol": user.rol}
 
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> TokenData:
-    """Dependencia para obtener el usuario actual desde el token"""
-    return decode_access_token(token)
 
-@router.post("/device", response_model=TokenResponse)
-def auth_device(body: DeviceAuthRequest):
-    rec = get_device(body.device_id)
-    if not rec or rec["api_key"] != body.api_key:
-        raise HTTPException(status_code=401, detail="invalid credentials")
-    token = issue_token(sub=body.device_id, scope="device", exp_seconds=3600)
-    return TokenResponse(access_token=token)
 
-# Ejemplo de endpoint protegido para dispositivos
-@router.get("/device/ping")
-def device_ping(device_id: str = DevicePrincipal):
-    return {"ok": True, "device_id": device_id}
+
+# Endpoint de prueba sin autenticación
+@router.get("/auth/test")
+async def test_auth():
+    """Endpoint de prueba para verificar que /auth funciona"""
+    return {"status": "ok", "message": "Auth endpoint funcionando"}
+
+@router.post("/auth/login")
+async def login_usuario(credentials: UserLogin):
+    """Login de usuarios web (admin/conserje)"""
+    logger.info(f"🔐 Login solicitado para usuario: {credentials.correo}")
+    
+    try:
+        # ✅ authenticate_user devuelve UserInDB (Pydantic model)
+        user = await authenticate_user(credentials.correo, credentials.password)
+        logger.info(f"✅ Usuario autenticado: {user.correo} (rol: {user.rol})")
+        # Determinar scope según rol
+        scope = "admin" if user.rol == "admin" else "conserje" if user.rol == "conserje" else "usuario"
+        # Crear token JWT con claims adicionales
+        token_data = {
+            "sub": str(user.id),
+            "scope": scope,
+            "rol": user.rol,
+            "correo": user.correo
+        }
+        token = create_access_token(token_data)
+        logger.info(f"🎟️ Token generado para {user.correo} (scope: {scope})")
+         # ✅ REDIRIGIR SEGÚN EL ROL
+        if user.rol == "admin":
+            redirect_url = "/admin"
+        elif user.rol == "conserje":
+            redirect_url = "/conserje"
+        else:
+            redirect_url = "/dashboard"
+        logger.info(f"🔀 Redirigiendo a: {redirect_url}")
+        # ✅ Crear respuesta de redirección con el token en cookie/header
+        response = RedirectResponse(url=redirect_url, status_code=303)
+        # Guardar token en cookie HttpOnly (más seguro)
+        response.set_cookie(
+            key="access_token",
+            value=token,
+            httponly=True,  # No accesible desde JavaScript
+            secure=True,    # Solo HTTPS (cambiar a False en desarrollo HTTP)
+            samesite="lax",
+            max_age=86400   # 24 horas
+        )
+        
+        return response            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error en login: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail="Error interno del servidor"
+        )
