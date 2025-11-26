@@ -1,11 +1,13 @@
 import logging
 from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect, HTTPException
+from config import ALGORITHM, SECRET_KEY
 from utils.websocket_manager import manager
 from services.aula_service import aulas_estado, actualizar_estado_aula
 from services.auth_service import decode_access_token
 import json
 from security.jwt import verify_token
-
+from jose import jwt, JWTError
+from services.auth_service import SECRET_KEY, ALGORITHM
 router = APIRouter()
 
 @router.websocket("/ws")
@@ -125,7 +127,7 @@ async def admin_websocket_endpoint(websocket: WebSocket, token: str = Query(...)
     user_id = token_data.id
 
     client_host = websocket.client.host if websocket.client else "unknown"
-    logging.info(f"🔌 Admin WebSocket conectando desde: {client_host} (user: {user_id})")
+    logging.info(f"🔌 Admin WebSocket conectando desde: {client_host}")
 
     # Registrar conexión de admin (sin client_id)
     await manager.connect(websocket, client_type="admin")
@@ -214,22 +216,52 @@ async def admin_websocket_endpoint(websocket: WebSocket, token: str = Query(...)
 
 
 @router.websocket("/ws/conserje")
-async def conserje_websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
+async def conserje_websocket_endpoint(websocket: WebSocket):
     """Endpoint WebSocket para conserjes - Solo control de relés"""
-    # Validar token y verificar que sea conserje
-    token_data = decode_access_token(token)
-    if token_data.rol != "conserje":
-        raise HTTPException(status_code=403, detail="Solo conserjes")
     
-    user_id = token_data.id
+    # Definimos user_id por defecto
+    user_id = "desconocido"
+
+    # 1. Intentar obtener el token de la cookie
+    token = websocket.cookies.get("access_token")
+    
+    if not token:
+        logging.warning("❌ WS: Intento de conexión sin cookie 'access_token'")
+        await websocket.close()
+        return
+    try:
+        # 2. Validar el token
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        rol = payload.get("rol")
+        user_id = payload.get("correo") or payload.get("sub") or "conserje"
+        
+        # 3. Verificar permisos
+        if rol != "conserje" and rol != "admin":
+            logging.warning(f"⛔ WS: Rol no autorizado ({rol}) intentando conectar")
+            await websocket.close()
+            return
+
+        # ❌ ELIMINADO: await websocket.accept() 
+        # (Ya lo hace manager.connect abajo)
+        
+        logging.info(f"✅ WS Conserje autorizado: {user_id}")
+
+    except JWTError as e:
+        logging.error(f"❌ WS: Token inválido: {e}")
+        await websocket.close()
+        return
+    except Exception as e:
+        logging.error(f"❌ WS: Error inesperado: {e}")
+        await websocket.close()
+        return
 
     client_host = websocket.client.host if websocket.client else "unknown"
-    logging.info(f"🔌 Conserje WebSocket conectando desde: {client_host} (user: {user_id})")
+    logging.info(f"🔌 Conserje WebSocket conectando desde: {client_host}")
 
-    # Registrar conexión de conserje
+    # 4. Registrar conexión (El manager hace el accept internamente)
     await manager.connect(websocket, client_type="conserje")
 
-    # Enviar estado inicial (lista de dispositivos + estado de aulas)
+    # Enviar estado inicial
     await websocket.send_json({
         "tipo": "conserje_bienvenida",
         "dispositivos_conectados": manager.get_connected_devices(),

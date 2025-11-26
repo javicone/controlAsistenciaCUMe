@@ -2,9 +2,9 @@
 // CONFIGURACIÓN Y VARIABLES GLOBALES
 // ========================================
 
-let ws = null;
-let aulasData = {};
 
+let aulasData = {};
+let ws = null;
 
 
 // ========================================
@@ -12,13 +12,13 @@ let aulasData = {};
 // ========================================
 
 function connectWebSocket() {
-    // Nota: Ya no ponemos ?token=... en la URL si usamos cookies
+
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = `${protocol}//${window.location.host}/ws/conserje`; 
     
     console.log('🔌 Conectando a:', wsUrl);
     
-    const ws = new WebSocket(wsUrl);
+    ws = new WebSocket(wsUrl);
     
     ws.onopen = () => {
         console.log('✅ WebSocket conectado (Conserje)');
