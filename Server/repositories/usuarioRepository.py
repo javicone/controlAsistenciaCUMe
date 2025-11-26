@@ -6,7 +6,7 @@ async def get_usuario_por_mail(correo: str):
     async with pool.acquire() as conn:
         async with conn.cursor(aiomysql.DictCursor) as cursor:
             await cursor.execute(
-                "SELECT id, correo, rol, password FROM usuarios WHERE correo = %s", 
+                "SELECT id,nombre, correo, password, rol FROM usuarios WHERE correo = %s", 
                 (correo,)
             )
             return await cursor.fetchone()

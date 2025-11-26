@@ -6,15 +6,6 @@ let ws = null;
 let aulaSeleccionada = null;
 let aulasData = [];
 
-// Obtener JWT token
-const JWT_TOKEN = sessionStorage.getItem('token') || localStorage.getItem('token');
-
-if (!JWT_TOKEN) {
-    console.error('❌ No hay token JWT disponible');
-    alert('Sesión no válida. Redirigiendo al login...');
-    window.location.href = '/';
-}
-
 // ========================================
 // WEBSOCKET - CONEXIÓN Y MANEJO
 // ========================================

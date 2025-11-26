@@ -28,13 +28,40 @@ async def dashboard_view(request: Request):
         logging.error(f"Error en dashboard: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/admin", response_class=HTMLResponse)
+@router.get("/adminPanel", response_class=HTMLResponse)
 async def administrador_view(request: Request):
-    """Vista de administrador"""
+    """Vista de asistencias para profesores"""
+    
+    # 1.OBTENER EL TOKEN DE LA COOKIE
+    token_str = request.cookies.get("access_token")
+    
+    if not token_str:
+        # Si no hay cookie, redirigir al login
+        return RedirectResponse(url="/")
+
     try:
-        return templates.TemplateResponse("administrador.html", {"request": request})
+        # 2. DECODIFICAR LA CADENA
+        payload = jwt.decode(token_str, SECRET_KEY, algorithms=[ALGORITHM])
+        
+        # 3. Verificar rol
+        rol = payload.get("rol")
+        
+        # NOTA: Ajusta la lista ["usuario", "admin"] según cómo llames al rol de profesor en tu BD.
+        # Si el rol es 'profesor', añádelo a la lista.
+        if rol not in ["usuario", "administrador", "profesor"]:
+            logger.warning(f"Acceso denegado a /profesor para rol: {rol}")
+            return RedirectResponse(url="/")
+
+        return templates.TemplateResponse("administrador.html", {
+            "request": request,
+            "user": payload
+        })
+
+    except JWTError as e:
+        logger.error(f"❌ Token inválido o expirado: {e}")
+        return RedirectResponse(url="/")
     except Exception as e:
-        logging.error(f"Error en admin: {e}")
+        logger.error(f"Error en asistencias profesor: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -42,10 +69,76 @@ async def administrador_view(request: Request):
 @router.get("/profesor/asistencias", response_class=HTMLResponse)
 async def asistencias_profesor(request: Request):
     """Vista de asistencias para profesores"""
+    
+    # 1.OBTENER EL TOKEN DE LA COOKIE
+    token_str = request.cookies.get("access_token")
+    
+    if not token_str:
+        # Si no hay cookie, redirigir al login
+        return RedirectResponse(url="/")
+
     try:
-        return templates.TemplateResponse("asistencias_profesor.html", {"request": request})
+        # 2. DECODIFICAR LA CADENA
+        payload = jwt.decode(token_str, SECRET_KEY, algorithms=[ALGORITHM])
+        
+        # 3. Verificar rol
+        rol = payload.get("rol")
+        
+        # NOTA: Ajusta la lista ["usuario", "admin"] según cómo llames al rol de profesor en tu BD.
+        # Si el rol es 'profesor', añádelo a la lista.
+        if rol not in ["usuario", "admin", "profesor"]:
+            logger.warning(f"Acceso denegado a /profesor para rol: {rol}")
+            return RedirectResponse(url="/")
+
+        return templates.TemplateResponse("asistencias_profesor.html", {
+            "request": request,
+            "user": payload
+        })
+
+    except JWTError as e:
+        logger.error(f"❌ Token inválido o expirado: {e}")
+        return RedirectResponse(url="/")
     except Exception as e:
-        logging.error(f"Error en asistencias profesor: {e}")
+        logger.error(f"Error en asistencias profesor: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+#
+@router.get("/profesor/asistencias", response_class=HTMLResponse)
+async def asistencias_profesor(request: Request):
+    """Vista de asistencias para profesores"""
+    
+    # 1. ✅ OBTENER EL TOKEN DE LA COOKIE
+    token_str = request.cookies.get("access_token")
+    
+    if not token_str:
+        # Si no hay cookie, redirigir al login
+        return RedirectResponse(url="/")
+
+    try:
+        # 2. ✅ DECODIFICAR LA CADENA
+        payload = jwt.decode(token_str, SECRET_KEY, algorithms=[ALGORITHM])
+        
+        # 3. Verificar rol
+        rol = payload.get("rol")
+        
+        # NOTA: Ajusta la lista ["usuario", "admin"] según cómo llames al rol de profesor en tu BD.
+        # Si el rol es 'profesor', añádelo a la lista.
+        if rol not in ["usuario", "admin", "profesor"]:
+            logger.warning(f"Acceso denegado a /profesor para rol: {rol}")
+            return RedirectResponse(url="/")
+
+        return templates.TemplateResponse("asistencias_profesor.html", {
+            "request": request,
+            "user": payload
+        })
+
+    except JWTError as e:
+        logger.error(f"❌ Token inválido o expirado: {e}")
+        return RedirectResponse(url="/")
+    except Exception as e:
+        logger.error(f"Error en asistencias profesor: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/conserje", response_class=HTMLResponse)
@@ -75,10 +168,10 @@ async def panel_conserjes(request: Request):
         })
 
     except JWTError as e:
-        logger.error(f"❌ Token inválido o expirado: {e}")
+        logging.error(f"❌ Token inválido o expirado: {e}")
         return RedirectResponse(url="/")
     except Exception as e:
-        logger.error(f"❌ Error en panel conserjes: {e}")
+        logging.error(f"❌ Error en panel conserjes: {e}")
         # En caso de error grave, mejor redirigir que mostrar un 500 al usuario
         return RedirectResponse(url="/")
 

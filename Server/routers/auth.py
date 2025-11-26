@@ -79,19 +79,20 @@ async def login_usuario(correo:str= Form(...), password:str= Form(...)):
         user = await authenticate_user(correo, password)
         logger.info(f"✅ Usuario autenticado: {user.correo} (rol: {user.rol})")
         # Determinar scope según rol
-        scope = "admin" if user.rol == "admin" else "conserje" if user.rol == "conserje" else "usuario"
         # Crear token JWT con claims adicionales
         token_data = {
-            "sub": str(user.id),
-            "scope": scope,
+            "id": str(user.id),
             "rol": user.rol,
-            "correo": user.correo
+            "correo": user.correo,
+            "nombre": user.nombre,
         }
         token = create_access_token(token_data)
-        logger.info(f"🎟️ Token generado para {user.correo} (scope: {scope})")
+        logger.info(f"🎟️ Token generado para {user.correo} (rol: {user.rol})")
          # ✅ REDIRIGIR SEGÚN EL ROL
-        if user.rol == "admin":
-            redirect_url = "/admin"
+        if user.rol == "administrador":
+            redirect_url = "/adminPanel"
+        elif user.rol == "profesor":
+            redirect_url = "/profesor/asistencias"
         elif user.rol == "conserje":
             redirect_url = "/conserje"
         else:

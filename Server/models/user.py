@@ -14,6 +14,7 @@ class TokenData(BaseModel):
 
 class UserInDB(BaseModel):
     id: int
+    nombre: str
     correo: str
     rol: str
     password: str
