@@ -5,26 +5,20 @@
 let ws = null;
 let aulasData = {};
 
-// Obtener JWT token
-const JWT_TOKEN = sessionStorage.getItem('token') || localStorage.getItem('token');
 
-if (!JWT_TOKEN) {
-    console.error('❌ No hay token JWT disponible');
-    alert('Sesión no válida. Redirigiendo al login...');
-    window.location.href = '/';
-}
 
 // ========================================
 // WEBSOCKET - CONEXIÓN Y MANEJO
 // ========================================
 
 function connectWebSocket() {
+    // Nota: Ya no ponemos ?token=... en la URL si usamos cookies
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/ws/conserje?token=${JWT_TOKEN}`;
+    const wsUrl = `${protocol}//${window.location.host}/ws/conserje`; 
     
     console.log('🔌 Conectando a:', wsUrl);
     
-    ws = new WebSocket(wsUrl);
+    const ws = new WebSocket(wsUrl);
     
     ws.onopen = () => {
         console.log('✅ WebSocket conectado (Conserje)');

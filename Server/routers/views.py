@@ -1,8 +1,11 @@
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import APIRouter, Request, HTTPException, logger
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 import logging
 from pathlib import Path
+from routers.auth import verificar_token_web
+from jose import jwt, JWTError  # Librería real para decodificar
+from services.auth_service import SECRET_KEY, ALGORITHM # Configuración correcta
 
 router = APIRouter()
 templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / "templates"))
@@ -25,7 +28,7 @@ async def dashboard_view(request: Request):
         logging.error(f"Error en dashboard: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/administrador", response_class=HTMLResponse)
+@router.get("/admin", response_class=HTMLResponse)
 async def administrador_view(request: Request):
     """Vista de administrador"""
     try:
@@ -45,14 +48,39 @@ async def asistencias_profesor(request: Request):
         logging.error(f"Error en asistencias profesor: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/conserjes", response_class=HTMLResponse)
+@router.get("/conserje", response_class=HTMLResponse)
 async def panel_conserjes(request: Request):
     """Panel de conserjes"""
+    # 1. ✅ OBTENER EL TOKEN DE LA COOKIE
+    token_str = request.cookies.get("access_token")
+    if not token_str:
+        # Si no hay cookie, redirigir al login
+        return RedirectResponse(url="/")
     try:
-        return templates.TemplateResponse("conserjes.html", {"request": request})
+        # 2. ✅ DECODIFICAR LA CADENA (token_str), NO EL MÓDULO
+        payload = jwt.decode(token_str, SECRET_KEY, algorithms=[ALGORITHM])
+        
+        # 3. Verificar rol
+        rol = payload.get("rol")
+        scope = payload.get("scope")
+        
+        if rol != "conserje" and scope != "conserje":
+             logger.warning(f"Acceso denegado a /conserje para rol: {rol}")
+             return RedirectResponse(url="/")
+
+        # 4. Renderizar plantilla pasando el usuario
+        return templates.TemplateResponse("conserjes.html", {
+            "request": request,
+            "user": payload,
+        })
+
+    except JWTError as e:
+        logger.error(f"❌ Token inválido o expirado: {e}")
+        return RedirectResponse(url="/")
     except Exception as e:
-        logging.error(f"Error en panel conserjes: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"❌ Error en panel conserjes: {e}")
+        # En caso de error grave, mejor redirigir que mostrar un 500 al usuario
+        return RedirectResponse(url="/")
 
 @router.get("/gestion-aulas", response_class=HTMLResponse)
 async def gestion_aulas(request: Request):

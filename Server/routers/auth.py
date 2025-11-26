@@ -1,6 +1,9 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Form, HTTPException, Depends
 from fastapi.responses import RedirectResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from jose import JWTError
+from config import ALGORITHM, SECRET_KEY
+from security import jwt
 from models.user import UserLogin
 from security.jwt import verify_token
 from models.webTokens import DeviceAuthRequest, TokenResponse
@@ -10,6 +13,7 @@ from services.auth_service import create_access_token
 from utils.database_pool import get_db_pool
 import logging
 from repositories.usuarioRepository import get_usuario_por_mail
+from fastapi import APIRouter, Form, HTTPException, Depends, Request, status
 
 router = APIRouter()
 security = HTTPBearer()
@@ -68,13 +72,11 @@ async def test_auth():
     return {"status": "ok", "message": "Auth endpoint funcionando"}
 
 @router.post("/auth/login")
-async def login_usuario(credentials: UserLogin):
+async def login_usuario(correo:str= Form(...), password:str= Form(...)):
     """Login de usuarios web (admin/conserje)"""
-    logger.info(f"🔐 Login solicitado para usuario: {credentials.correo}")
-    
     try:
         # ✅ authenticate_user devuelve UserInDB (Pydantic model)
-        user = await authenticate_user(credentials.correo, credentials.password)
+        user = await authenticate_user(correo, password)
         logger.info(f"✅ Usuario autenticado: {user.correo} (rol: {user.rol})")
         # Determinar scope según rol
         scope = "admin" if user.rol == "admin" else "conserje" if user.rol == "conserje" else "usuario"
@@ -102,7 +104,7 @@ async def login_usuario(credentials: UserLogin):
             key="access_token",
             value=token,
             httponly=True,  # No accesible desde JavaScript
-            secure=True,    # Solo HTTPS (cambiar a False en desarrollo HTTP)
+            secure=False,    # Solo HTTPS (cambiar a False en desarrollo HTTP)
             samesite="lax",
             max_age=86400   # 24 horas
         )
@@ -115,4 +117,53 @@ async def login_usuario(credentials: UserLogin):
         raise HTTPException(
             status_code=500,
             detail="Error interno del servidor"
+        )
+    
+async def verificar_token_web(request: Request, rol_requerido: str = None):
+    """
+    Verifica el token almacenado en la cookie 'access_token'.
+    Valida la firma, la expiración y opcionalmente el rol.
+    """
+    # 1. Obtener el token de la cookie
+    token = request.cookies.get("access_token")
+    
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="No se encontró la sesión (Cookie faltante)"
+        )
+
+    try:
+        # 2. Decodificar el token
+        # Esto valida automáticamente la firma y la fecha de expiración (exp)
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        
+        user_rol = payload.get("rol")
+        user_email = payload.get("correo")
+        
+        if user_rol is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Token inválido: falta información de rol"
+            )
+
+        # 3. Verificar el Rol (si se requiere uno específico)
+        if rol_requerido:
+            # Si el rol requerido es 'admin', solo entra admin.
+            # Si es 'conserje', podría entrar conserje (y quizás admin si quisieras jerarquía)
+            if user_rol != rol_requerido:
+                logger.warning(f"⛔ Acceso denegado para {user_email}. Rol actual: {user_rol}, Requerido: {rol_requerido}")
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail=f"No tienes permisos suficientes. Se requiere rol: {rol_requerido}"
+                )
+
+        logger.info(f"✅ Token válido para usuario web: {user_email} ({user_rol})")
+        return payload
+
+    except JWTError as e:
+        logger.error(f"❌ Error decodificando token web: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Sesión inválida o expirada"
         )

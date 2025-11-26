@@ -1,5 +1,11 @@
 from utils.database_pool import get_db_pool
 import aiomysql
+import aiohttp
+import asyncio
+import logging
+from typing import Optional, Dict
+
+logger = logging.getLogger(__name__)
 
 async def get_clase_actual(aula: str):
     pool = await get_db_pool()
@@ -69,7 +75,7 @@ async def get_clase_from_webservice(aula: str) -> Optional[Dict]:
         
         async with aiohttp.ClientSession() as session:
             # Realizar petición GET con el parámetro aula
-            async with session.get(url, params={"aula": aula}, timeout=10) as response:
+            async with session.get(url, params={"aula": aula}, timeout=aiohttp.ClientTimeout(total=10)) as response:
                 
                 # Verificar código de respuesta HTTP
                 if response.status != 200:

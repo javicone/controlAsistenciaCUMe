@@ -4,6 +4,7 @@ from repositories.claseRepository import (
     get_clase_actual,
     get_clase_proxima_hoy,
     get_clase_siguiente,
+    get_clase_from_webservice
 )
 
 async def obtener_clase_actual(aula: str) -> dict:
@@ -44,12 +45,9 @@ async def obtener_clase_actual(aula: str) -> dict:
     )
 
 async def obtener_clase_test(aula: str) -> dict:
-    ahora = datetime.now()
-    hora_inicio = ahora + timedelta(hours=1)
-    hora_fin = hora_inicio + timedelta(hours=1, minutes=30)
-    
+    clase_siguiente = await get_clase_from_webservice(aula)
     return {
-        "asignatura": "Fundamentos de Programación",
-        "hora_inicio": hora_inicio.strftime("%H:%M:%S"),
-        "hora_fin": hora_fin.strftime("%H:%M:%S"),
+        "asignatura": clase_siguiente["asignatura"],
+        "hora_inicio": clase_siguiente["hora_inicio"].strftime("%H:%M:%S"),
+        "hora_fin": clase_siguiente["hora_fin"].strftime("%H:%M:%S"),
     }

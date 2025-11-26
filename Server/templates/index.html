@@ -13,21 +13,30 @@
         <h2>Acceso a Control de Asistencia</h2>
         <p>Dashboard de aulas</p>
         
-        <div class="form-group">
-            <label for="correo" class="visually-hidden">Correo Electrónico</label>
-            <input type="email" id="correo" class="form-control" placeholder="Correo Electrónico" required>
-        </div>
+        <!-- ✅ CAMBIO 1: Formulario estándar apuntando al endpoint de login -->
+        <form action="/auth/login" method="POST">
+            
+            <div class="form-group">
+                <label for="correo" class="visually-hidden">Correo Electrónico</label>
+                <!-- ✅ CAMBIO 2: Añadido name="correo" -->
+                <input type="email" id="correo" name="correo" class="form-control" placeholder="Correo Electrónico" required>
+            </div>
 
-        <div class="form-group">
-            <label for="password" class="visually-hidden">Contraseña</label>
-            <input type="password" id="password" class="form-control" placeholder="Contraseña" required>
-        </div>
+            <div class="form-group">
+                <label for="password" class="visually-hidden">Contraseña</label>
+                <!-- ✅ CAMBIO 3: Añadido name="password" -->
+                <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
+            </div>
 
-        <button type="button" class="btn-login" onclick="login()">Entrar</button>
+            <!-- ✅ CAMBIO 4: Botón submit sin onclick -->
+            <button type="submit" class="btn-login">Entrar</button>
+            
+        </form>
         
-        <p id="error-message"></p>
+        <!-- Nota: Los errores ahora los manejará el navegador o una página de error del backend -->
     </div>
 
-    <script src="{{ url_for('static', path='js/login.js') }}"></script>
+    <!-- Ya no necesitas login.js para la autenticación básica -->
+    <!-- <script src="{{ url_for('static', path='js/login.js') }}"></script> -->
 </body>
 </html>
