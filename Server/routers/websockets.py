@@ -45,7 +45,24 @@ async def websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
                 mensaje = json.loads(data)
                 tipo = mensaje.get("tipo")
 
-                if tipo == "conexion":
+                # ✅ AÑADE ESTE BLOQUE AQUÍ 👇
+                if tipo == "nodo_conectado":
+                    logging.info(f"👋 Saludo inicial recibido del dispositivo {device_id}")
+                    
+                    # 1. RESPONDER AL ESP32 (Vital para que no se desconecte)
+                    await websocket.send_json({
+                        "tipo": "ack_bienvenida",
+                        "mensaje": "Conexión establecida correctamente"
+                    })
+                    
+                    # 2. Avisar a los paneles web (Admin/Conserje)
+                    await manager.notify_staff({
+                        "tipo": "estado_dispositivo",
+                        "device_id": device_id,
+                        "estado": "online"
+                    })
+
+                elif tipo == "conexion":
                     aula = mensaje.get("aula")
                     logging.info(f"✅ ESP32 conectado: {aula} (device_id: {device_id})")
 
@@ -119,12 +136,41 @@ async def websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
 @router.websocket("/ws/admin")
 async def admin_websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
     """Endpoint WebSocket para administradores"""
-    # Validar token y verificar que sea admin
-    token_data = decode_access_token(token)
-    if token_data.rol != "administrador":
-        raise HTTPException(status_code=403, detail="Solo administradores")
+    # Definimos user_id por defecto
+    user_id = "desconocido"
+
+    # 1. Intentar obtener el token de la cookie
+    token = websocket.cookies.get("access_token")
     
-    user_id = token_data.id
+    if not token:
+        logging.warning("❌ WS: Intento de conexión sin cookie 'access_token'")
+        await websocket.close()
+        return
+    try:
+        # 2. Validar el token
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        rol = payload.get("rol")
+        user_id = payload.get("correo") or payload.get("sub") or "conserje"
+        
+        # 3. Verificar permisos
+        if rol != "conserje" and rol != "admin":
+            logging.warning(f"⛔ WS: Rol no autorizado ({rol}) intentando conectar")
+            await websocket.close()
+            return
+
+        # ❌ ELIMINADO: await websocket.accept() 
+        # (Ya lo hace manager.connect abajo)
+        
+        logging.info(f"✅ WS Conserje autorizado: {user_id}")
+
+    except JWTError as e:
+        logging.error(f"❌ WS: Token inválido: {e}")
+        await websocket.close()
+        return
+    except Exception as e:
+        logging.error(f"❌ WS: Error inesperado: {e}")
+        await websocket.close()
+        return
 
     client_host = websocket.client.host if websocket.client else "unknown"
     logging.info(f"🔌 Admin WebSocket conectando desde: {client_host}")

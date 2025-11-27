@@ -48,6 +48,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
         Serial.printf("   WiFi estado: %s\n", WiFi.status() == WL_CONNECTED ? "Conectado" : "Desconectado");
         Serial.printf("   RSSI: %d dBm\n", WiFi.RSSI());
         Serial.printf("   IP: %s\n", WiFi.localIP().toString().c_str());
+        wsConectado= false;
       }
       break;
 
@@ -291,20 +292,6 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
             }
           }
         }
-        
-        // ════════════════════════════════════════
-        // TIPO NO RECONOCIDO
-        // ════════════════════════════════════════
-        else {
-          Serial.printf("⚠️ Tipo de mensaje NO RECONOCIDO: '%s'\n", tipoMensaje.c_str());
-          Serial.println("   Tipos válidos:");
-          Serial.println("   - actualizacion_relay1");
-          Serial.println("   - actualizacion_relay2");
-          Serial.println("   - resetear_nodo");
-          Serial.println("   - test_conexion");
-          Serial.println("   - configurar_aula");
-          Serial.println("   - estado_inicial");
-        }
       }
       break;
 
@@ -334,7 +321,6 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 
     case WStype_PONG:
       Serial.println("🔹 PONG recibido del servidor");
-      Serial.printf("   Latencia estimada: ~%lu ms\n", millis() - timestamp);
       break;
       
     case WStype_ERROR:
@@ -404,10 +390,7 @@ void connectWS(){
   webSocket.setReconnectInterval(5000);
   
   // ✅ Configurar heartbeat
-  Serial.println("💓 Configurando heartbeat:");
-  Serial.println("   - Ping cada 15s");
-  Serial.println("   - Timeout: 3s");
-  Serial.println("   - Reintentos: 2");
+  Serial.println("💓 Configurando heartbeat: Ping cada 15s, Timeout: 3s, Reintentos: 2");
   webSocket.enableHeartbeat(15000, 3000, 2);
   
   // ⚠️ Certificado SSL (comentado)
@@ -423,4 +406,5 @@ void connectWS(){
   Serial.println("\n✅ WebSocket configurado correctamente");
   Serial.println("   Esperando evento CONNECTED...\n");
   Serial.println("╚════════════════════════════════════╝\n");
+  wsConectado = true;
 }

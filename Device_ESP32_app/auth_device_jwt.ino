@@ -23,8 +23,8 @@ bool fetchDeviceToken() {
   
   // Configurar cliente HTTPS
   WiFiClientSecure client;
-  client.setCACert(server_certificate);
-  //client.setInsecure(); // TODO: usar CA real con client.setCACert(...)
+  //client.setCACert(server_certificate);
+  client.setInsecure(); // TODO: usar CA real con client.setCACert(...)
   Serial.println("⚠️ Validación SSL deshabilitada (certificado autofirmado)");
   
   HTTPClient https;
@@ -154,7 +154,6 @@ bool fetchDeviceToken() {
 // Función que asegura tener un token JWT válido
 String ensureToken() {
   Serial.println("\n🔍 Verificando token JWT...");
-  
   // Verificar si el token existe y no ha expirado
   if (jwtToken.length() > 0 && millis() < tokenExpirationTime) {
     unsigned long timeLeft = (tokenExpirationTime - millis()) / 1000;

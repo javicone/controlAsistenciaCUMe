@@ -9,7 +9,8 @@ class DatosAula(BaseModel):
 
 class ControlRelay(BaseModel):
     aula: str
-    relay: bool
+    aerotermia: bool
+    iluminacion: bool
 
 class EstadoAula(BaseModel):
     temperatura: float

@@ -140,20 +140,14 @@ void HiloComunicadorcode(void* pvParameters) {
 
 //Loop principal que utilizaremos para toda la lógica de los sensores y actuadores
 void loop() {
-
-
    static unsigned long lastNFCCheck = 0;
-  
   // ============================================
   // MODO CON IRQ: Solo leer NFC cuando la flag esté activa
   // ============================================
   if (nfcCardDetected) {
     nfcCardDetected = false;  // ✅ Resetear flag INMEDIATAMENTE
-    
     Serial.println("🔔 IRQ: Tarjeta detectada");
-    
     NFCData nfc_data = leerNFC();
-    
     if (nfc_data.valido && nfc_data.tarjetaDetectada) {
       registrarAsistencia(nfc_data.uid);
       delay(2000);  // Evitar lecturas duplicadas

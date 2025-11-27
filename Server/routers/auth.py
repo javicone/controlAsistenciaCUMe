@@ -25,35 +25,41 @@ async def authenticate_device(auth_request: DeviceAuthRequest):
     Autenticar dispositivo ESP32 y generar token JWT
     """
     logger.info(f"🔐 Autenticación solicitada para: {auth_request.device_id}")
-    
     try:
-        # ✅ AÑADIR: Log de la petición recibida
         logger.info(f"   Device ID: {auth_request.device_id}")
-        logger.info(f"   API Key: {auth_request.api_key[:10]}...") # Solo primeros 10 chars
+        logger.info(f"   API Key: {auth_request.api_key[:10]}...") 
         
-        # Verificar que el nodo existe en la base de datos
-        conn = await get_db_pool()
-        try:
+        # 1. Obtener el POOL (la caja de conexiones)
+        pool = await get_db_pool()
+        
+        # 2. Adquirir una CONEXIÓN individual (sacar un cable de la caja)
+        async with pool.acquire() as conn:
+            # Pasamos la conexión real ('conn'), no el pool
             existe = await verificar_nodo_existe(conn, auth_request.device_id, auth_request.api_key)
-            # si no existe se le crea el JWT
+            
             if not existe:
                 logger.warning(f"❌ Credenciales inválidas para {auth_request.device_id}")
                 raise HTTPException(
                     status_code=401,
                     detail="Credenciales de dispositivo inválidas"
                 )
+            
             logger.info(f"✅ Nodo verificado: {auth_request.device_id}")
             
-            # Crear token JWT
-            token = create_access_token(auth_request.device_id)
+            # 3. Crear token JWT correctamente (como diccionario)
+            # Añadimos 'rol': 'device' para que el WebSocket sepa qué es
+            token_data = {
+                "sub": auth_request.device_id,
+                "rol": "device" 
+            }
+            token = create_access_token(token_data)
             
             logger.info(f"🎟️ Token generado para {auth_request.device_id}")
-            logger.info(f"   Longitud: {len(token)} caracteres")
             
-            return TokenResponse(token=token)
+            return TokenResponse(access_token=token, token_type="bearer")
             
-        finally:
-            conn.close()
+        # No hace falta finally: conn.close() porque el 'async with' 
+        # devuelve la conexión al pool automáticamente.
             
     except HTTPException:
         raise
