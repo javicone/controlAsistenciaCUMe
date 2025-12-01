@@ -25,11 +25,16 @@ def decode_access_token(token: str) -> TokenData:
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id: str = payload.get("sub")
+        
+        # ✅ FIX: Buscar en múltiples campos posibles
+        user_id: str = payload.get("sub") or payload.get("id") or payload.get("device_id")
         rol: str = payload.get("rol")
+        
         if user_id is None or rol is None:
             raise credentials_exception
+            
         return TokenData(id=user_id, rol=rol)
+        
     except JWTError:
         raise credentials_exception
 

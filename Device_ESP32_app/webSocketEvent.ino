@@ -48,7 +48,17 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
         Serial.printf("   WiFi estado: %s\n", WiFi.status() == WL_CONNECTED ? "Conectado" : "Desconectado");
         Serial.printf("   RSSI: %d dBm\n", WiFi.RSSI());
         Serial.printf("   IP: %s\n", WiFi.localIP().toString().c_str());
-        wsConectado= false;
+        // 🔍 DIAGNÓSTICO DEL PROBLEMA
+        // Si el WiFi está bien, pero el WebSocket se desconecta, suele ser 
+        // porque el servidor rechazó el token (Handshake 401/403).
+        if (WiFi.status() == WL_CONNECTED) {
+           Serial.println("⚠️ Desconexión con WiFi activo -> Posible error de Autenticación (Token inválido)");
+           
+           // AQUI ESTÁ LA MAGIA: Invalidamos el token para que la próxima vez pida uno nuevo
+           invalidateToken(); 
+        }
+
+        wsConectado = false;        
       }
       break;
 

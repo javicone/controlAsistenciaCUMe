@@ -36,7 +36,10 @@ async def authenticate_device(auth_request: DeviceAuthRequest):
         async with pool.acquire() as conn:
             # Pasamos la conexión real ('conn'), no el pool
             existe = await verificar_nodo_existe(conn, auth_request.device_id, auth_request.api_key)
-            
+            print(existe)
+            print("api key: ")
+            print(auth_request.api_key)
+
             if not existe:
                 logger.warning(f"❌ Credenciales inválidas para {auth_request.device_id}")
                 raise HTTPException(

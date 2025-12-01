@@ -201,3 +201,19 @@ String ensureToken() {
   Serial.println("❌ No se pudo obtener token");
   return "";
 }
+
+// Función para invalidar el token actual (forzar renovación)
+void invalidateToken() {
+  Serial.println("🗑️ Invalidando token actual y limpiando NVS...");
+  
+  // 1. Borrar de variables globales
+  jwtToken = "";
+  tokenExpirationTime = 0;
+  
+  // 2. Borrar de la memoria persistente (NVS)
+  prefs.begin("auth", false);
+  prefs.clear(); // Borra todas las claves del namespace "auth"
+  prefs.end();
+  
+  Serial.println("✅ Token eliminado. La próxima conexión solicitará uno nuevo.");
+}

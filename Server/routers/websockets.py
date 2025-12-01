@@ -14,13 +14,30 @@ router = APIRouter()
 async def websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
     # Validar JWT - puede ser device o usuario
     try:
-
         payload = verify_token(token, required_scope="device")
-        device_id = payload["sub"]
-    except:
+        
+        # ✅ FIX: Intentar múltiples campos para device_id
+        device_id = payload.get("sub") or payload.get("device_id") or payload.get("id")
+        
+        if not device_id:
+            logging.error(f"❌ Token válido pero sin identificador. Payload: {payload}")
+            await websocket.close(code=1008, reason="Token sin device_id")
+            return
+            
+        logging.info(f"✅ Token válido para device_id: {device_id}")
+
+    except Exception as e:
+        logging.error(f"❌ Error validando token device: {e}")
+        
         # Fallback: probar con el sistema de usuarios
-        token_data = decode_access_token(token)
-        device_id = token_data.id
+        try:
+            token_data = decode_access_token(token)
+            device_id = token_data.id
+            logging.info(f"✅ Token de usuario válido: {device_id}")
+        except Exception as e2:
+            logging.error(f"❌ Error validando token usuario: {e2}")
+            await websocket.close(code=1008, reason="Invalid token")
+            return
 
     client_host = websocket.client.host if websocket.client else "unknown"
     logging.info(f"🔌 Cliente WebSocket conectando desde: {client_host} (device_id: {device_id})")
