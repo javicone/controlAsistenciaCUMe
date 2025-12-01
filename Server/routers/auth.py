@@ -177,3 +177,11 @@ async def verificar_token_web(request: Request, rol_requerido: str = None):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Sesión inválida o expirada"
         )
+    
+
+@router.get("/logout")
+async def logout(request: Request):
+    logger.info(f"🔐 Logout solicitado: {request.client.host}")
+    response = RedirectResponse(url="/", status_code=303)
+    response.delete_cookie("access_token", path="/")
+    return response

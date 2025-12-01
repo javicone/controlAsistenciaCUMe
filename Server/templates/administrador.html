@@ -20,6 +20,8 @@
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <span id="ws-status" class="status-disconnected">🔴 Conectando...</span>
                 <a href="/dashboard" class="btn-back">← Volver al Dashboard</a>
+                <!-- ✅ Botón de cerrar sesión -->
+                <button id="btn-logout" class="btn btn-logout" type="button">Cerrar Sesión</button>
             </div>
         </div>
 
@@ -113,5 +115,20 @@
     </div>
 
     <script src="{{ url_for('static', path='js/administrador.js') }}"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const btnLogout = document.getElementById('btn-logout');
+    if (btnLogout) {
+        btnLogout.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (typeof cerrarSesion === "function") {
+                cerrarSesion();
+            } else {
+                window.location.href = '/logout';
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

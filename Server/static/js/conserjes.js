@@ -230,10 +230,26 @@ function renderAulas() {
 }
 
 function cerrarSesion() {
-    if (ws) ws.close();
-    sessionStorage.removeItem('token');
-    localStorage.removeItem('token');
-    window.location.href = '/';
+    // 1. Cerrar WebSocket si está abierto
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close(1000, 'Logout');
+    }
+     // 2. Limpiar almacenamiento local y de sesión
+    sessionStorage.clear();
+    localStorage.clear();
+
+    // 3. Llamar al endpoint de logout del servidor para borrar la cookie
+    fetch('/logout', {
+        method: 'GET',
+        credentials: 'include'
+    })
+    .then(() => {
+        // 4. Redirigir al usuario al inicio o login
+        window.location.href = '/';
+    })
+    .catch(() => {
+        window.location.href = '/';
+    });
 }
 
 // ========================================
@@ -248,6 +264,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnActualizar = document.getElementById('btn-actualizar');
     if (btnActualizar) {
         btnActualizar.addEventListener('click', actualizarLista);
+    }
+});
+document.addEventListener('DOMContentLoaded', () => {
+    // ...existing code...
+    const btnLogout = document.getElementById('btn-logout');
+    if (btnLogout) {
+        btnLogout.addEventListener('click', (e) => {
+            e.preventDefault();
+            cerrarSesion();
+        });
     }
 });
 

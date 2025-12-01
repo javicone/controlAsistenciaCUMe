@@ -506,7 +506,24 @@ window.addEventListener('beforeunload', () => {
 });
 
 function cerrarSesion() {
-    if (ws) ws.close();
-    document.cookie = 'access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    window.location.href = '/';
+    // 1. Cerrar WebSocket si está abierto
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close(1000, 'Logout');
+    }
+     // 2. Limpiar almacenamiento local y de sesión
+    sessionStorage.clear();
+    localStorage.clear();
+
+    // 3. Llamar al endpoint de logout del servidor para borrar la cookie
+    fetch('/logout', {
+        method: 'GET',
+        credentials: 'include'
+    })
+    .then(() => {
+        // 4. Redirigir al usuario al inicio o login
+        window.location.href = '/';
+    })
+    .catch(() => {
+        window.location.href = '/';
+    });
 }
