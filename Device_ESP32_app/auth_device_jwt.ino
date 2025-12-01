@@ -177,7 +177,13 @@ String ensureToken() {
     Serial.println("📦 Token encontrado en NVS");
     Serial.printf("   Longitud: %d chars\n", storedToken.length());
     Serial.printf("   Expira en timestamp: %lu ms\n", storedExp);
-    
+    // VALIDACIÓN EXTRA: Si el servidor rechazó el token antes, storedToken estará vacío
+    // gracias a invalidateToken(), pero por si acaso validamos longitud mínima
+    if (storedToken.length() < 10) { 
+        Serial.println("⚠️ Token en NVS parece corrupto o vacío.");
+        invalidateToken();
+        return ensureToken(); // Recursividad: intentar pedir uno nuevo
+    }
     if (millis() < storedExp) {
       unsigned long timeLeft = (storedExp - millis()) / 1000;
       Serial.printf("✅ Token de NVS válido (expira en %lu segundos)\n", timeLeft);

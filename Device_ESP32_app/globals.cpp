@@ -106,3 +106,6 @@ bool ledRedOn = false;
 // WebSocket
 bool wsConectado = false;
 
+// Estado de los reles
+bool relay1Estado = false;
+bool relay2Estado = false;

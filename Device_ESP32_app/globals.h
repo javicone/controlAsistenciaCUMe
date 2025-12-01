@@ -137,6 +137,9 @@ void activarRele1(bool estado);
 void activarRele2(bool estado);
 bool estadoRele1();
 bool estadoRele2();
+// Estados de los relés
+extern bool relay1Estado;
+extern bool relay2Estado;
 
 // Control individual de LEDs
 void ledVerde(bool estado);

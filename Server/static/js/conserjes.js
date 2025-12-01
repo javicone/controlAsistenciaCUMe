@@ -2,17 +2,14 @@
 // CONFIGURACIÓN Y VARIABLES GLOBALES
 // ========================================
 
-
 let aulasData = {};
 let ws = null;
-
 
 // ========================================
 // WEBSOCKET - CONEXIÓN Y MANEJO
 // ========================================
 
 function connectWebSocket() {
-
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = `${protocol}//${window.location.host}/ws/conserje`; 
     
@@ -32,12 +29,21 @@ function connectWebSocket() {
         switch (msg.tipo) {
             case 'conserje_bienvenida':
                 console.log('Dispositivos conectados:', msg.dispositivos_conectados);
-                aulasData = msg.aulas_estado || {};
+                // ✅ Convertir aulas_estado (clave=device_id) a aulasData (clave=nombre_aula)
+                aulasData = {};
+                if (msg.aulas_estado) {
+                    Object.keys(msg.aulas_estado).forEach(deviceId => {
+                        const aulaData = msg.aulas_estado[deviceId];
+                        const aulaNombre = aulaData.aula || aulaData.nombre || deviceId;
+                        aulasData[aulaNombre] = { ...aulaData, device_id: deviceId };
+                    });
+                }
+                console.log('📊 aulasData convertido:', aulasData);
                 renderAulas();
                 break;
             
             case 'comando_enviado':
-                console.log(`✅ Comando ${msg.accion} enviado`);
+                console.log(`✅ Comando ${msg.accion} enviado a ${msg.aula}`);
                 break;
             
             case 'error':
@@ -50,9 +56,26 @@ function connectWebSocket() {
                 actualizarAulaEnTiempoReal(msg);
                 break;
             
+            case 'confirmacion_relay':
+                // ✅ NUEVO: Confirmación del ESP32 de que el relé cambió
+                console.log(`✅ Relé confirmado: ${msg.aula} relay${msg.relay_num}=${msg.relay_state}`);
+                console.log('📊 Estado actual de aulasData antes de actualizar:', aulasData);
+                actualizarRelayEnUI(msg.aula, msg.relay_num, msg.relay_state);
+                console.log('📊 Estado actual de aulasData después de actualizar:', aulasData);
+                break;
+            
             case 'lista_dispositivos':
                 console.log('Dispositivos conectados:', msg.dispositivos_conectados);
-                aulasData = msg.aulas_estado || {};
+                // ✅ Convertir también aquí
+                aulasData = {};
+                if (msg.aulas_estado) {
+                    Object.keys(msg.aulas_estado).forEach(deviceId => {
+                        const aulaData = msg.aulas_estado[deviceId];
+                        const aulaNombre = aulaData.aula || aulaData.nombre || deviceId;
+                        aulasData[aulaNombre] = { ...aulaData, device_id: deviceId };
+                    });
+                }
+                console.log('📊 aulasData convertido:', aulasData);
                 renderAulas();
                 break;
         }
@@ -89,18 +112,12 @@ function cambiarRelay(aulaName, relayNum, nuevoEstado) {
         return false;
     }
     
-    // Buscar device_id del aula por su nombre
-    const aula = Object.values(aulasData).find(a => a.nombre === aulaName || a.aula === aulaName);
-    if (!aula || !aula.device_id) {
-        alert('No se encontró el device_id del aula');
-        return false;
-    }
-    
+    // ✅ FIX: Enviar por NOMBRE DE AULA, el servidor resuelve el device_id
     const mensaje = {
         action: 'toggle_relay',
-        device_id: aula.device_id,
-        relay_num: relayNum,
-        relay_state: nuevoEstado
+        aula: aulaName,          // ← Enviamos el nombre del aula
+        relay_num: relayNum,     // ← 1 = calefacción, 2 = iluminación
+        relay_state: nuevoEstado // ← true/false
     };
     
     ws.send(JSON.stringify(mensaje));
@@ -122,6 +139,18 @@ function actualizarLista() {
 // FUNCIONES DE UI
 // ========================================
 
+function actualizarRelayEnUI(aulaKey, relayNum, relayState) {
+    // ✅ Ahora aulasData usa el nombre del aula como clave directamente
+    if (aulasData[aulaKey]) {
+        if (relayNum === 1) aulasData[aulaKey].relay1 = relayState;
+        if (relayNum === 2) aulasData[aulaKey].relay2 = relayState;
+        console.log(`🔄 UI actualizada: ${aulaKey} relay${relayNum}=${relayState}`);
+        renderAulas();
+    } else {
+        console.warn(`⚠️ Aula '${aulaKey}' no encontrada en aulasData para actualizar relay`);
+    }
+}
+
 function actualizarAulaEnTiempoReal(msg) {
     const aulaKey = msg.aula;
     
@@ -139,6 +168,7 @@ function actualizarAulaEnTiempoReal(msg) {
     if (msg.relay2 !== undefined) aulasData[aulaKey].relay2 = msg.relay2;
     if (msg.clase_en_curso !== undefined) aulasData[aulaKey].clase_en_curso = msg.clase_en_curso;
     
+    console.log(`🔄 Aula actualizada en tiempo real: ${aulaKey}`, aulasData[aulaKey]);
     renderAulas();
 }
 
@@ -153,6 +183,8 @@ function renderAulas() {
         return;
     }
     
+    console.log('🎨 Renderizando aulas:', aulasData);
+    
     Object.keys(aulasData).forEach(aulaKey => {
         const aula = aulasData[aulaKey];
         const aulaDiv = document.createElement('div');
@@ -160,11 +192,13 @@ function renderAulas() {
         
         const aulaName = aula.nombre || aula.aula || aulaKey;
         const temp = aula.temperatura !== undefined ? `${aula.temperatura}°C` : 'N/A';
-        const luz = aula.luz !== undefined ? (aula.luz ? 'Encendida' : 'Apagada') : 'N/A';
+        const luz = aula.luz !== undefined ? `${aula.luz} lux` : 'N/A';
         const personas = aula.personas !== undefined ? aula.personas : 'N/A';
         const claseEnCurso = aula.clase_en_curso ? 'Sí' : 'No';
         const relay1State = aula.relay1 || false;
         const relay2State = aula.relay2 || false;
+        
+        console.log(`📊 Renderizando ${aulaName}: relay1=${relay1State}, relay2=${relay2State}`);
         
         aulaDiv.innerHTML = `
             <h3>${aulaName}</h3>

@@ -1,19 +1,23 @@
 from typing import Dict, Any
 from fastapi import HTTPException
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Estado en memoria (podría moverse a Redis en producción)
 aulas_estado: Dict[str, Any] = {}
 
-def actualizar_estado_aula(aula: str, datos: dict) -> dict:
-    """Actualiza el estado de un aula en memoria"""
-    aulas_estado[aula] = {
-        "temperatura": datos.get("temperatura"),
-        "luz": datos.get("luz"),
-        "personas": datos.get("personas"),
-        "clase_en_curso": datos.get("clase_en_curso"),
-        "relay": aulas_estado.get(aula, {}).get("relay", False),
-    }
-    return aulas_estado[aula]
+def actualizar_estado_aula(device_id: str, datos: dict) -> dict:
+    """Actualiza el estado de un aula en memoria usando device_id como clave"""
+    if device_id not in aulas_estado:
+        aulas_estado[device_id] = {}
+    
+    # Actualizar datos
+    aulas_estado[device_id].update(datos)
+    aulas_estado[device_id]["device_id"] = device_id  # Asegurar que siempre esté
+    
+    logger.debug(f"✅ Estado actualizado para device_id '{device_id}': {aulas_estado[device_id]}")
+    return aulas_estado[device_id]
 
 def obtener_estado_aulas() -> dict:
     """Obtiene el estado de todas las aulas"""
@@ -26,3 +30,28 @@ def actualizar_relay(aula: str, estado: bool) -> dict:
     
     aulas_estado[aula]["relay"] = estado
     return aulas_estado[aula]
+
+# Mapeo aula_nombre → device_id (puede venir de BD o de aulas_estado)
+def get_device_id_por_aula(aula_nombre: str) -> str | None:
+    """
+    Busca el device_id asociado a un nombre de aula.
+    Busca en aulas_estado (clave: device_id, valor: dict con campo 'aula').
+    """
+    logger.debug(f"🔍 Buscando device_id para aula: '{aula_nombre}'")
+    logger.debug(f"🔍 aulas_estado actual: {aulas_estado}")
+    
+    # Buscar por campo 'aula' en los datos de cada device_id
+    for device_id, aula_data in aulas_estado.items():
+        nombre = aula_data.get("aula") or aula_data.get("nombre")
+        logger.debug(f"🔍 Revisando device_id '{device_id}': nombre='{nombre}'")
+        if nombre and nombre.strip().lower() == aula_nombre.strip().lower():
+            logger.info(f"✅ Encontrado device_id '{device_id}' para aula '{aula_nombre}'")
+            return device_id
+
+    # Si el nombre de aula es igual a un device_id (caso raro)
+    if aula_nombre in aulas_estado:
+        logger.info(f"✅ aula_nombre '{aula_nombre}' es directamente un device_id")
+        return aula_nombre
+
+    logger.warning(f"❌ No se encontró device_id para aula '{aula_nombre}'")
+    return None

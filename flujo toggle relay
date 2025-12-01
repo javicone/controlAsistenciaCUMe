@@ -1,0 +1,29 @@
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│ Panel Web    │     │   Servidor   │     │    ESP32     │
+│ (Conserje)   │     │   FastAPI    │     │              │
+└──────┬───────┘     └──────┬───────┘     └──────┬───────┘
+       │                    │                    │
+       │ 1. toggle_relay    │                    │
+       │    aula: "Aula 101"│                    │
+       │    relay_num: 1    │                    │
+       │    relay_state: true                    │
+       │───────────────────>│                    │
+       │                    │                    │
+       │                    │ 2. Resuelve:       │
+       │                    │    "Aula 101" →    │
+       │                    │    "node-001"      │
+       │                    │                    │
+       │                    │ 3. actualizacion_relay1
+       │                    │    device_id: "node-001"
+       │                    │    relay: true     │
+       │                    │───────────────────>│
+       │                    │                    │
+       │                    │                    │ 4. digitalWrite()
+       │                    │                    │
+       │                    │ 5. confirmacion_relay
+       │                    │<───────────────────│
+       │                    │                    │
+       │ 6. confirmacion_relay                   │
+       │<───────────────────│                    │
+       │                    │                    │
+       │ 7. Actualiza UI    │                    │
