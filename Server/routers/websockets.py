@@ -195,127 +195,208 @@ async def websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
 
 
 @router.websocket("/ws/admin")
-async def admin_websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
+async def admin_websocket_endpoint(websocket: WebSocket):
     """Endpoint WebSocket para administradores"""
     # Definimos user_id por defecto
     user_id = "desconocido"
 
-    # 1. Intentar obtener el token de la cookie
+    # ✅ 1. Intentar obtener el token de la cookie
     token = websocket.cookies.get("access_token")
     
     if not token:
-        logging.warning("❌ WS: Intento de conexión sin cookie 'access_token'")
-        await websocket.close()
+        logging.warning("❌ WS Admin: Intento de conexión sin cookie 'access_token'")
+        await websocket.close(code=1008, reason="No token")
         return
+    
     try:
         # 2. Validar el token
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         rol = payload.get("rol")
-        user_id = payload.get("correo") or payload.get("sub") or "conserje"
+        user_id = payload.get("correo") or payload.get("sub") or payload.get("id") or "admin"
         
-        # 3. Verificar permisos
-        if rol != "conserje" and rol != "admin":
-            logging.warning(f"⛔ WS: Rol no autorizado ({rol}) intentando conectar")
-            await websocket.close()
+        logging.info(f"🔐 WS Admin: Token decodificado - rol={rol}, user={user_id}")
+        
+        # 3. Verificar permisos (solo admin)
+        if rol != "administrador":
+            logging.warning(f"⛔ WS Admin: Rol no autorizado ({rol}) para user {user_id}")
+            await websocket.close(code=1008, reason="Unauthorized role")
             return
-
-        # ❌ ELIMINADO: await websocket.accept() 
-        # (Ya lo hace manager.connect abajo)
         
-        logging.info(f"✅ WS Conserje autorizado: {user_id}")
+        logging.info(f"✅ WS Admin autorizado: {user_id}")
 
     except JWTError as e:
-        logging.error(f"❌ WS: Token inválido: {e}")
-        await websocket.close()
+        logging.error(f"❌ WS Admin: Token inválido: {e}")
+        await websocket.close(code=1008, reason="Invalid token")
         return
     except Exception as e:
-        logging.error(f"❌ WS: Error inesperado: {e}")
-        await websocket.close()
+        logging.error(f"❌ WS Admin: Error inesperado: {e}")
+        await websocket.close(code=1008, reason="Server error")
         return
 
     client_host = websocket.client.host if websocket.client else "unknown"
     logging.info(f"🔌 Admin WebSocket conectando desde: {client_host}")
 
-    # Registrar conexión de admin (sin client_id)
+    # ✅ Registrar conexión de admin
     await manager.connect(websocket, client_type="admin")
 
-    # Enviar estado inicial (lista de dispositivos conectados)
-    await websocket.send_json({
+    # ✅ Enviar estado inicial con LOGS
+    dispositivos = manager.get_connected_devices()
+    estado_aulas = dict(aulas_estado)  # Copia del diccionario
+    
+    mensaje_bienvenida = {
         "tipo": "admin_bienvenida",
-        "dispositivos_conectados": manager.get_connected_devices(),
-        "aulas_estado": aulas_estado
-    })
+        "dispositivos_conectados": dispositivos,
+        "aulas_estado": estado_aulas
+    }
+    
+    logging.info(f"📤 Enviando bienvenida a admin {user_id}:")
+    logging.info(f"   - Dispositivos conectados: {dispositivos}")
+    logging.info(f"   - Aulas estado keys: {list(estado_aulas.keys())}")
+    
+    await websocket.send_json(mensaje_bienvenida)
 
     try:
         while True:
             data = await websocket.receive_text()
-            logging.debug(f"📩 Mensaje admin WS recibido de {user_id}: {data[:100]}...")
+            logging.info(f"📩 Mensaje admin WS recibido de {user_id}: {data[:200]}...")
 
             try:
                 mensaje = json.loads(data)
                 accion = mensaje.get("action")
                 target_device_id = mensaje.get("device_id")
+                
+                logging.info(f"🎬 Admin acción: {accion}, target: {target_device_id}")
 
                 # Procesar acciones del admin
                 if accion == "actualizar_config":
                     config_data = mensaje.get("data", {})
+                    
+                    if not target_device_id:
+                        await websocket.send_json({
+                            "tipo": "error",
+                            "mensaje": "Falta device_id"
+                        })
+                        continue
+                    
                     success = await manager.send_to_device(target_device_id, {
                         "tipo": "configurar_aula",
                         "device_id": target_device_id,
                         "data": config_data
                     })
+                    
                     await websocket.send_json({
                         "tipo": "comando_enviado" if success else "error",
                         "accion": accion,
-                        "device_id": target_device_id
+                        "device_id": target_device_id,
+                        "mensaje": "Comando enviado" if success else "Dispositivo no conectado"
                     })
+                    
+                    logging.info(f"🔧 Config actualizada: {target_device_id} - success={success}")
 
                 elif accion == "resetear_nodo":
+                    if not target_device_id:
+                        await websocket.send_json({
+                            "tipo": "error",
+                            "mensaje": "Falta device_id"
+                        })
+                        continue
+                    
                     success = await manager.send_to_device(target_device_id, {
                         "tipo": "resetear_nodo",
                         "device_id": target_device_id
                     })
+                    
                     await websocket.send_json({
                         "tipo": "comando_enviado" if success else "error",
                         "accion": accion,
-                        "device_id": target_device_id
+                        "device_id": target_device_id,
+                        "mensaje": "Reset enviado" if success else "Dispositivo no conectado"
                     })
+                    
+                    logging.info(f"🔄 Reset enviado a: {target_device_id} - success={success}")
 
                 elif accion == "test_conexion":
+                    if not target_device_id:
+                        await websocket.send_json({
+                            "tipo": "error",
+                            "mensaje": "Falta device_id"
+                        })
+                        continue
+                    
                     success = await manager.send_to_device(target_device_id, {
                         "tipo": "test_conexion",
                         "device_id": target_device_id
                     })
+                    
                     await websocket.send_json({
                         "tipo": "comando_enviado" if success else "error",
                         "accion": accion,
-                        "device_id": target_device_id
+                        "device_id": target_device_id,
+                        "mensaje": "Test enviado" if success else "Dispositivo no conectado"
                     })
+                    
+                    logging.info(f"🧪 Test enviado a: {target_device_id} - success={success}")
 
                 elif accion == "toggle_relay":
+                    if not target_device_id:
+                        await websocket.send_json({
+                            "tipo": "error",
+                            "mensaje": "Falta device_id"
+                        })
+                        continue
+                    
                     relay_num = mensaje.get("relay_num", 1)
                     relay_state = mensaje.get("relay_state", False)
+                    
                     success = await manager.send_to_device(target_device_id, {
                         "tipo": f"actualizacion_relay{relay_num}",
                         "device_id": target_device_id,
+                        "relay_num": relay_num,
                         "relay": relay_state
                     })
+                    
                     await websocket.send_json({
                         "tipo": "comando_enviado" if success else "error",
                         "accion": accion,
-                        "device_id": target_device_id
+                        "device_id": target_device_id,
+                        "relay_num": relay_num,
+                        "relay_state": relay_state,
+                        "mensaje": "Relay actualizado" if success else "Dispositivo no conectado"
                     })
+                    
+                    logging.info(f"🔧 Toggle relay{relay_num}={relay_state} en {target_device_id} - success={success}")
 
                 elif accion == "listar_dispositivos":
+                    dispositivos_actuales = manager.get_connected_devices()
+                    estado_aulas_actual = dict(aulas_estado)
+                    
                     await websocket.send_json({
                         "tipo": "lista_dispositivos",
-                        "dispositivos_conectados": manager.get_connected_devices()
+                        "dispositivos_conectados": dispositivos_actuales,
+                        "aulas_estado": estado_aulas_actual
+                    })
+                    
+                    logging.info(f"📋 Lista dispositivos enviada a admin: {dispositivos_actuales}")
+
+                else:
+                    logging.warning(f"⚠️ Admin {user_id} intentó acción desconocida: {accion}")
+                    await websocket.send_json({
+                        "tipo": "error",
+                        "mensaje": f"Acción desconocida: {accion}"
                     })
 
             except json.JSONDecodeError:
-                logging.error(f"❌ JSON inválido del admin")
+                logging.error(f"❌ JSON inválido del admin: {data[:100]}")
+                await websocket.send_json({
+                    "tipo": "error",
+                    "mensaje": "JSON inválido"
+                })
             except Exception as e:
                 logging.error(f"❌ Error procesando mensaje admin: {e}")
+                await websocket.send_json({
+                    "tipo": "error",
+                    "mensaje": f"Error: {str(e)}"
+                })
 
     except WebSocketDisconnect:
         manager.disconnect(websocket)
