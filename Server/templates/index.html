@@ -13,22 +13,22 @@
         <h2>Acceso a Control de Asistencia</h2>
         <p>Dashboard de aulas</p>
         
-        <!-- ✅ CAMBIO 1: Formulario estándar apuntando al endpoint de login -->
+        <!-- Formulario estándar apuntando al endpoint de login -->
         <form action="/auth/login" method="POST">
             
             <div class="form-group">
                 <label for="correo" class="visually-hidden">Correo Electrónico</label>
-                <!-- ✅ CAMBIO 2: Añadido name="correo" -->
+                <!--  Añadido name="correo" -->
                 <input type="email" id="correo" name="correo" class="form-control" placeholder="Correo Electrónico" required>
             </div>
 
             <div class="form-group">
                 <label for="password" class="visually-hidden">Contraseña</label>
-                <!-- ✅ CAMBIO 3: Añadido name="password" -->
+                <!--  Añadido name="password" -->
                 <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
             </div>
 
-            <!-- ✅ CAMBIO 4: Botón submit sin onclick -->
+            <!-- Botón submit sin onclick -->
             <button type="submit" class="btn-login">Entrar</button>
             
         </form>
@@ -37,6 +37,5 @@
     </div>
 
     <!-- Ya no necesitas login.js para la autenticación básica -->
-    <!-- <script src="{{ url_for('static', path='js/login.js') }}"></script> -->
 </body>
 </html>

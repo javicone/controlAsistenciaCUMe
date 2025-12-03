@@ -55,7 +55,6 @@ extern const char* aula;
 #define SEALEVELPRESSURE_HPA (1013.25)
 #define RADAR_RX_PIN 16
 #define RADAR_TX_PIN 17
-#define RADAR_SERIAL Serial1
 
 // Conexiones SPI del ESP32
 #define PN532_SCK           (18)

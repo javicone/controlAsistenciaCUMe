@@ -1,15 +1,14 @@
 bool setupRadar(){
-    RADAR_SERIAL.begin(256000, SERIAL_8N1, RADAR_RX_PIN, RADAR_TX_PIN);  //UART for monitoring the radar
-    delay(1000);
-
+    Serial2.begin(256000, SERIAL_8N1, RADAR_RX_PIN, RADAR_TX_PIN);  //UART for monitoring the radar
+    radar.begin(Serial2, false); 
+    delay(500);
+    radar.read();//Initial read to check connection, como sea esto me arranco la cabeza
     Serial.print(F("\nConnect LD2410 radar TX to GPIO:"));
     Serial.println(RADAR_RX_PIN);
     Serial.print(F("Connect LD2410 radar RX to GPIO:"));
     Serial.println(RADAR_TX_PIN);
     Serial.print(F("LD2410 radar sensor initialising: "));
-
-
-    if (radar.begin(RADAR_SERIAL)) {
+    if (radar.isConnected()) {
         sensores.ld2410_ok = true;
         indicarEstado(NORMAL);
         Serial.println(F("OK"));

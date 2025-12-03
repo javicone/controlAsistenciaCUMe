@@ -69,6 +69,9 @@ void setup() {
   setupWiFiEvents(); //Configuramos los eventos de WiFi
   //Inicializamos Serial para comunicación en Arduino IDE
   Serial.begin(115200);
+  //Inicializamos Serial2 para el radar LD2410
+  // esta decision se debe a que si llamamos la funcion en runtime puede fallar al reiniciar la UART, por lo que
+
   //Inicializamos todos los sensores y actuadores que vamos a utilizar
   initSensores();
   //Creamos la tarea que se ejecutará en el Core 0 con prioridad 1
