@@ -2,224 +2,178 @@
 #include <HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include <ArduinoJson.h>
+#include <time.h> // Necesario para time()
 
 Preferences prefs;
 String jwtToken = "";
-unsigned long tokenExpirationTime = 0;
+
+// Variable para almacenar el timestamp absoluto de expiración (Unix Time)
+// Ejemplo: 1715095600 (equivale a una fecha/hora concreta)
+uint64_t tokenExpirationTimestamp = 0; 
+
+// Función auxiliar para verificar si el reloj está sincronizado
+bool isTimeSet() {
+  time_t now;
+  time(&now);
+  struct tm timeinfo;
+  localtime_r(&now, &timeinfo);
+  // Si el año es menor a 2020, asumimos que no se ha sincronizado (está en 1970)
+  return timeinfo.tm_year > (2020 - 1900);
+}
 
 // Función para obtener el token JWT desde el servidor
 bool fetchDeviceToken() {
   Serial.println("\n╔════════════════════════════════════╗");
-  Serial.println("║ 🔐 OBTENIENDO TOKEN JWT           ║");
+  Serial.println("║ 🔐 OBTENIENDO TOKEN JWT            ║");
   Serial.println("╚════════════════════════════════════╝");
   
-  // Verificar WiFi
   if (WiFi.status() != WL_CONNECTED) {
     Serial.println("❌ WiFi no conectado");
     return false;
   }
-  Serial.printf("✅ WiFi conectado: %s\n", WiFi.localIP().toString().c_str());
-  Serial.printf("   RSSI: %d dBm\n", WiFi.RSSI());
+
+  // 1. IMPORTANTE: Verificar que tenemos la hora antes de pedir token
+  // Si no tenemos hora, los cálculos de expiración serán erróneos
+  if (!isTimeSet()) {
+    Serial.println("⚠️ Hora no sincronizada. Intentando sincronizar NTP...");
+    configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+    delay(2000); // Dar un poco de tiempo
+    if(!isTimeSet()) {
+       Serial.println("❌ Error: No se pudo sincronizar la hora. No se puede calcular expiración.");
+       // Podrías decidir continuar sin guardar persistencia o retornar false
+    }
+  }
   
-  // Configurar cliente HTTPS
   WiFiClientSecure client;
-  //client.setCACert(server_certificate);
-  client.setInsecure(); // TODO: usar CA real con client.setCACert(...)
-  Serial.println("⚠️ Validación SSL deshabilitada (certificado autofirmado)");
-  
+  client.setInsecure(); 
   HTTPClient https;
   
-  // Construir URL
   String url = String(serverUrl) + "/auth/device";
-  Serial.println("\n📋 Configuración de petición:");
-  Serial.printf("   URL: %s\n", url.c_str());
-  Serial.printf("   Device ID: %s\n", deviceId.c_str());
-  Serial.printf("   API Key: %s...\n", apiKey.substring(0, 10).c_str());
   
-  // Iniciar conexión
-  Serial.println("\n🔌 Conectando al servidor...");
   if (!https.begin(client, url)) {
-    Serial.println("❌ https.begin() falló");
+    Serial.println("❌ Error de conexión");
     return false;
   }
-  Serial.println("✅ Conexión HTTP iniciada");
   
-  // Headers
   https.addHeader("Content-Type", "application/json");
-  Serial.println("📝 Header 'Content-Type: application/json' añadido");
 
-  // Crear JSON payload
   StaticJsonDocument<256> doc;
   doc["device_id"] = deviceId;
   doc["api_key"] = apiKey;
   String body;
   serializeJson(doc, body);
   
-  Serial.println("\n📤 Enviando petición POST:");
-  Serial.println("┌────────────────────────────────────┐");
-  serializeJsonPretty(doc, Serial);
-  Serial.println();
-  Serial.println("└────────────────────────────────────┘");
-
-  // Enviar petición
-  Serial.println("\n⏳ Esperando respuesta del servidor...");
   int code = https.POST(body);
   
-  Serial.printf("\n📊 Código HTTP: %d", code);
-  
   if (code == 200) {
-    Serial.println(" ✅ (OK)");
-  } else if (code == 401) {
-    Serial.println(" ❌ (UNAUTHORIZED - credenciales inválidas)");
-    https.end();
-    return false;
-  } else if (code == 404) {
-    Serial.println(" ❌ (NOT FOUND - endpoint no existe)");
-    https.end();
-    return false;
-  } else if (code == 500) {
-    Serial.println(" ❌ (SERVER ERROR - error del servidor)");
-    https.end();
-    return false;
-  } else if (code < 0) {
-    Serial.println(" ❌ (ERROR DE CONEXIÓN)");
-    Serial.printf("   Detalle: %s\n", https.errorToString(code).c_str());
-    https.end();
-    return false;
-  } else {
-    Serial.printf(" ⚠️ (código inesperado)\n");
-    https.end();
-    return false;
-  }
-  
-  // Obtener respuesta
-  String payload = https.getString();
-  https.end();
-  
-  Serial.println("\n📥 Respuesta recibida:");
-  Serial.printf("   Longitud: %d bytes\n", payload.length());
-  Serial.println("┌────────────────────────────────────┐");
-  Serial.println(payload);
-  Serial.println("└────────────────────────────────────┘");
-  
-  // Parsear JSON
-  DynamicJsonDocument res(512);
-  DeserializationError err = deserializeJson(res, payload);
-  
-  if (err) {
-    Serial.println("❌ Error parseando JSON de respuesta:");
-    Serial.printf("   %s\n", err.c_str());
-    return false;
-  }
-  Serial.println("✅ JSON parseado correctamente");
+    String payload = https.getString();
+    DynamicJsonDocument res(1024); // Aumentado un poco el buffer por seguridad
+    deserializeJson(res, payload);
+    
+    if (res.containsKey("access_token")) {
+      jwtToken = res["access_token"].as<String>();
+      
+      // 2. CÁLCULO DE EXPIRACIÓN ABSOLUTA
+      if (res.containsKey("expires_in")) {
+        unsigned long expiresInSeconds = res["expires_in"].as<unsigned long>();
+        
+        // Obtenemos la hora actual (Unix timestamp)
+        time_t now;
+        time(&now);
+        
+        // Calculamos el momento exacto en el futuro donde caduca
+        tokenExpirationTimestamp = (uint64_t)now + expiresInSeconds;
+        
+        Serial.printf("⏰ Token válido por: %lu segundos\n", expiresInSeconds);
+        Serial.printf("📅 Fecha actual (Unix): %lld\n", (uint64_t)now);
+        Serial.printf("📅 Fecha expiración (Unix): %lld\n", tokenExpirationTimestamp);
+        
+      } else {
+        // Fallback si no viene expires_in
+        time_t now; 
+        time(&now);
+        tokenExpirationTimestamp = (uint64_t)now + 86400; // 24 horas
+      }
 
-  // Extraer token
-  if (res.containsKey("access_token")) {
-    jwtToken = res["access_token"].as<String>();
-    Serial.printf("🎟️ Token obtenido (longitud: %d chars)\n", jwtToken.length());
-    Serial.printf("   Primeros 30 chars: %s...\n", jwtToken.substring(0, min(30, (int)jwtToken.length())).c_str());
-  } else {
-    Serial.println("❌ Respuesta no contiene campo 'access_token'");
-    Serial.println("   Campos disponibles:");
-    for (JsonPair kv : res.as<JsonObject>()) {
-      Serial.printf("   - %s\n", kv.key().c_str());
+      // 3. GUARDADO EN NVS
+      // Usamos putULong64 si tu versión de ESP32 board lo soporta (recomendado para timestamps)
+      // O guardamos como String si no quieres líos con tipos de datos, o putULong (cuidado año 2038)
+      prefs.begin("auth", false);
+      prefs.putString("jwt", jwtToken);
+      prefs.putULong64("exp_ts", tokenExpirationTimestamp); // Guardamos el timestamp absoluto
+      prefs.end();
+      
+      Serial.println("✅ Token y expiración guardados correctamente");
+      https.end();
+      return true;
     }
-    return false;
-  }
+  } 
   
-  // Extraer expiración
-  if (res.containsKey("expires_in")) {
-    unsigned long expiresIn = res["expires_in"].as<unsigned long>();
-    tokenExpirationTime = millis() + (expiresIn * 1000); // Convertir a ms
-    Serial.printf("⏰ Token expira en: %lu segundos\n", expiresIn);
-    Serial.printf("   Timestamp expiración: %lu ms\n", tokenExpirationTime);
-  } else {
-    Serial.println("⚠️ Respuesta no contiene 'expires_in', usando 24h por defecto");
-    tokenExpirationTime = millis() + (24UL * 60UL * 60UL * 1000UL);
-  }
-  
-  // Guardar en NVS
-  Serial.println("\n💾 Guardando en NVS...");
-  prefs.begin("auth", false);
-  prefs.putString("jwt", jwtToken);
-  prefs.putULong("exp", tokenExpirationTime);
-  prefs.end();
-  Serial.println("✅ Token guardado en NVS");
-  
-  Serial.println("\n╚════════════════════════════════════╝\n");
-  return true;
+  Serial.printf("❌ Error obteniendo token: %d\n", code);
+  https.end();
+  return false;
 }
 
-
-// Función que asegura tener un token JWT válido
 String ensureToken() {
-  Serial.println("\n🔍 Verificando token JWT...");
-  // Verificar si el token existe y no ha expirado
-  if (jwtToken.length() > 0 && millis() < tokenExpirationTime) {
-    unsigned long timeLeft = (tokenExpirationTime - millis()) / 1000;
-    Serial.printf("✅ Token válido (expira en %lu segundos)\n", timeLeft);
-    return jwtToken;
+  Serial.println("\n🔍 Verificando estado del token...");
+
+  // 1. Obtener hora actual
+  if (!isTimeSet()) {
+      Serial.println("⚠️ Reloj no sincronizado. Sincronizando NTP...");
+      configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+      // Pequeña espera bloqueante o lógica para reintentar luego
+      delay(1000); 
   }
-  
-  if (jwtToken.length() > 0) {
-    Serial.println("⚠️ Token expirado, renovando...");
-  } else {
-    Serial.println("⚠️ No hay token en memoria, verificando NVS...");
+
+  time_t now;
+  time(&now);
+  uint64_t currentTimestamp = (uint64_t)now;
+
+  // 2. Verificar variable en memoria RAM primero
+  // Añadimos un margen de seguridad (buffer) de 60 segundos
+  if (jwtToken.length() > 0 && currentTimestamp < (tokenExpirationTimestamp - 60)) {
+     Serial.println("✅ Token en RAM válido.");
+     return jwtToken;
   }
-  
-  // Intentar cargar desde NVS
+
+  // 3. Si no está en RAM o expiró, miramos NVS
   prefs.begin("auth", true);
   String storedToken = prefs.getString("jwt", "");
-  unsigned long storedExp = prefs.getULong("exp", 0);
+  uint64_t storedExp = prefs.getULong64("exp_ts", 0);
   prefs.end();
-  
+
   if (storedToken.length() > 0) {
-    Serial.println("📦 Token encontrado en NVS");
-    Serial.printf("   Longitud: %d chars\n", storedToken.length());
-    Serial.printf("   Expira en timestamp: %lu ms\n", storedExp);
-    // VALIDACIÓN EXTRA: Si el servidor rechazó el token antes, storedToken estará vacío
-    // gracias a invalidateToken(), pero por si acaso validamos longitud mínima
-    if (storedToken.length() < 10) { 
-        Serial.println("⚠️ Token en NVS parece corrupto o vacío.");
-        invalidateToken();
-        return ensureToken(); // Recursividad: intentar pedir uno nuevo
-    }
-    if (millis() < storedExp) {
-      unsigned long timeLeft = (storedExp - millis()) / 1000;
-      Serial.printf("✅ Token de NVS válido (expira en %lu segundos)\n", timeLeft);
-      jwtToken = storedToken;
-      tokenExpirationTime = storedExp;
-      return jwtToken;
+    // Verificamos contra la hora actual REAL
+    if (storedExp > 0 && currentTimestamp < (storedExp - 60)) {
+       Serial.printf("📦 Token recuperado de NVS válido.\n");
+       Serial.printf("   Expira en %lld segundos\n", (storedExp - currentTimestamp));
+       
+       // Restauramos a variables globales
+       jwtToken = storedToken;
+       tokenExpirationTimestamp = storedExp;
+       return jwtToken;
     } else {
-      Serial.println("⚠️ Token de NVS expirado");
+       Serial.println("⌛ El token guardado en NVS ha expirado (según fecha real).");
     }
   } else {
-    Serial.println("⚠️ No hay token en NVS");
+    Serial.println("⚠️ No hay token en NVS.");
   }
-  
-  // Obtener nuevo token
-  Serial.println("🔄 Solicitando nuevo token al servidor...");
+
+  // 4. Si llegamos aquí, necesitamos uno nuevo
+  Serial.println("🔄 Solicitando NUEVO token...");
   if (fetchDeviceToken()) {
-    Serial.println("✅ Token obtenido exitosamente");
     return jwtToken;
   }
   
-  Serial.println("❌ No se pudo obtener token");
   return "";
 }
 
-// Función para invalidar el token actual (forzar renovación)
 void invalidateToken() {
-  Serial.println("🗑️ Invalidando token actual y limpiando NVS...");
-  
-  // 1. Borrar de variables globales
+  Serial.println("🗑️ Invalidando token...");
   jwtToken = "";
-  tokenExpirationTime = 0;
+  tokenExpirationTimestamp = 0;
   
-  // 2. Borrar de la memoria persistente (NVS)
   prefs.begin("auth", false);
-  prefs.clear(); // Borra todas las claves del namespace "auth"
+  prefs.clear();
   prefs.end();
-  
-  Serial.println("✅ Token eliminado. La próxima conexión solicitará uno nuevo.");
 }

@@ -177,25 +177,15 @@ void loop() {
   // RENOVAR JWT SI ES NECESARIO
   // ============================================
   
-  static unsigned long lastTokenCheck = 0;
-
-// Suponiendo que tokenExpirationTime está en minutos desde ahora
-unsigned long nowMinutes = millis() / 60000; // minutos desde arranque
-
+static unsigned long lastTokenCheck = 0;
 if (millis() - lastTokenCheck > TOKEN_CHECK_INTERVAL) {
     lastTokenCheck = millis();
     Serial.println("⏰ Comprobando/renovando JWT por timer...");
-
-    // Comprueba si el token ha expirado
-    if (nowMinutes >= tokenExpirationTime) {
-        String newToken = ensureToken();
-        if (newToken.length() > 0) {
-            Serial.println("✅ JWT renovado correctamente");
-        } else {
-            Serial.println("❌ Error renovando JWT");
-        }
+    String newToken = ensureToken();
+    if (newToken.length() > 0) {
+        Serial.println("✅ JWT válido o renovado correctamente");
     } else {
-        Serial.println("🔒 JWT sigue siendo válido");
+        Serial.println("❌ Error renovando JWT");
     }
 }
 
