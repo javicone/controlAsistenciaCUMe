@@ -283,6 +283,7 @@ function actualizarAulaEnTiempoReal(msg) {
     // Actualizar campos del aula
     if (msg.temperatura !== undefined) aulasData[aulaKey].temperatura = msg.temperatura;
     if (msg.humedad !== undefined) aulasData[aulaKey].humedad = msg.humedad;
+    if (msg.presion !== undefined) aulasData[aulaKey].presion = msg.presion;
     if (msg.luz !== undefined) aulasData[aulaKey].luz = msg.luz;
     if (msg.personas !== undefined) aulasData[aulaKey].personas = msg.personas;
     if (msg.estado !== undefined) aulasData[aulaKey].estado = msg.estado;
@@ -322,6 +323,8 @@ function renderAulas() {
         const estado = aula.conectado ? 'conectado' : 'desconectado';
         const estadoClass = aula.conectado ? 'disponible' : 'desconectada';
         const temp = aula.temperatura !== undefined ? `${aula.temperatura}°C` : 'N/A';
+        const humedad = aula.humedad !== undefined ? `${aula.humedad}%` : 'N/A';
+        const presion = aula.presion !== undefined ? `${aula.presion} hPa` : 'N/A';
         const luz = aula.luz !== undefined ? `${aula.luz} lux` : 'N/A';
         const personas = aula.personas !== undefined ? aula.personas : 0;
         const capacidad = aula.capacidad || '?';
@@ -343,6 +346,15 @@ function renderAulas() {
                 <div class="info-item">
                     <span class="info-label">Temp:</span>
                     <span>${temp}</span>
+                </div>
+                
+                <div class="info-item">
+                    <span class="info-label">Humedad:</span>
+                    <span>${humedad}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Presión:</span>
+                    <span>${presion}</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Luz:</span>

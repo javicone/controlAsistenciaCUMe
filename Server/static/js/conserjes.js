@@ -193,6 +193,8 @@ function renderAulas() {
         const aulaName = aula.nombre || aula.aula || aulaKey;
         const temp = aula.temperatura !== undefined ? `${aula.temperatura}°C` : 'N/A';
         const luz = aula.luz !== undefined ? `${aula.luz} lux` : 'N/A';
+        const humedad = aula.humedad !== undefined ? `${aula.humedad}%` : 'N/A';
+        const presion = aula.presion !== undefined ? `${aula.presion} hPa` : 'N/A';
         const personas = aula.personas !== undefined ? aula.personas : 'N/A';
         const claseEnCurso = aula.clase_en_curso ? 'Sí' : 'No';
         const relay1State = aula.relay1 || false;
@@ -204,6 +206,8 @@ function renderAulas() {
             <h3>${aulaName}</h3>
             <p><strong>Temperatura:</strong> ${temp}</p>
             <p><strong>Luz:</strong> ${luz}</p>
+            <p><strong>Humedad:</strong> ${humedad}</p>
+            <p><strong>Presión:</strong> ${presion}</p>
             <p><strong>Personas:</strong> ${personas}</p>
             <p><strong>Clase en Curso:</strong> ${claseEnCurso}</p>
             <div class="relay-controls">
