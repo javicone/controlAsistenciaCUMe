@@ -20,7 +20,7 @@
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <span id="ws-status" class="status-disconnected">🔴 Conectando...</span>
                 <a href="/dashboard" class="btn-back">← Volver al Dashboard</a>
-                <!-- ✅ Botón de cerrar sesión -->
+                <!-- Botón de cerrar sesión -->
                 <button id="btn-logout" class="btn btn-logout" type="button">Cerrar Sesión</button>
             </div>
         </div>
@@ -30,6 +30,9 @@
             <!-- Lista de Aulas -->
             <div class="section">
                 <h2 class="section-title">🏫 Aulas Conectadas</h2>
+                <div style="margin-bottom: 15px;">
+                    <button id="btn-actualizar" class="btn btn-secondary">🔄 Actualizar Lista</button>
+                </div>
                 <div class="aulas-list" id="aulas-list">
                     <!-- Se llenará dinámicamente con JavaScript -->
                 </div>

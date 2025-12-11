@@ -464,6 +464,14 @@ function setupEventListeners() {
         });
     }
 
+    // Refrescar sensores
+    const btnRefresh = document.getElementById('btn-refresh');
+    if (btnRefresh) {
+        btnRefresh.addEventListener('click', () => {
+            refrescarSensores();
+        });
+    }
+
     // Toggle Calefacción desde el formulario
     const calefaccionCheckbox = document.getElementById('calefaccion-enabled');
     if (calefaccionCheckbox) {
@@ -542,4 +550,37 @@ function cerrarSesion() {
     .catch(() => {
         window.location.href = '/';
     });
+}
+
+// Función para refrescar sensores
+function refrescarSensores() {
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+        mostrarNotificacion('error', 'WebSocket no conectado');
+        return;
+    }
+
+    console.log('🔃 Solicitando actualización de sensores...');
+    
+    const mensaje = {
+        tipo: 'solicitar_estado',
+        timestamp: Date.now()
+    };
+
+    ws.send(JSON.stringify(mensaje));
+    console.log('📡 Solicitud de estado enviada:', mensaje);
+    
+    // Mostrar feedback visual
+    const btnRefresh = document.getElementById('btn-refresh');
+    if (btnRefresh) {
+        const textoOriginal = btnRefresh.innerHTML;
+        btnRefresh.innerHTML = '⏳ Actualizando...';
+        btnRefresh.disabled = true;
+        
+        setTimeout(() => {
+            btnRefresh.innerHTML = textoOriginal;
+            btnRefresh.disabled = false;
+        }, 2000);
+    }
+    
+    mostrarNotificacion('info', 'Solicitando actualización de sensores...');
 }

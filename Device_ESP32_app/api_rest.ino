@@ -186,7 +186,8 @@ void EnviaValoresAula() {
 
 // Nueva versión con timestamp y valores como parámetros
 bool enviarValoresConTimestamp(float temp, float hum, float lux, int personas, unsigned long eventTimestamp) {
-  if (!wsConectado) {
+  // ✅ Usar webSocket.isConnected() en lugar de variable wsConectado
+  if (!webSocket.isConnected()) {
     Serial.println("❌ WebSocket no conectado, no se envían datos");
     return false;
   }

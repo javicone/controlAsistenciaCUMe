@@ -198,6 +198,24 @@ async def websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
                 elif tipo == "reset_confirmado":
                     # Confirmación de reset del ESP32
                     logging.info(f"🔄 Reset confirmado por {device_id}")
+
+                elif tipo == "solicitar_estado":
+                    # Comando desde panel admin: solicitar actualización de datos a todos los ESP32
+                    logging.info(f"🔃 Solicitando actualización de estado a todos los dispositivos")
+                    
+                    # Enviar comando a todos los ESP32 conectados
+                    solicitud_msg = {
+                        "tipo": "enviar_datos_actuales",
+                        "timestamp": mensaje.get("timestamp", 0)
+                    }
+                    
+                    await manager.broadcast_to_devices(solicitud_msg)
+                    
+                    # Confirmar al admin que se envió la solicitud
+                    await websocket.send_json({
+                        "tipo": "solicitud_enviada",
+                        "mensaje": "Solicitud de actualización enviada a todos los dispositivos"
+                    })
                     # Reenviar solo a admins (no a conserjes)
                     await manager.notify_admins(mensaje)
 

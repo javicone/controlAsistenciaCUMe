@@ -49,7 +49,7 @@ async def administrador_view(request: Request):
         # NOTA: Ajusta la lista ["usuario", "admin"] según cómo llames al rol de profesor en tu BD.
         # Si el rol es 'profesor', añádelo a la lista.
         if rol not in ["usuario", "administrador", "profesor"]:
-            logger.warning(f"Acceso denegado a /profesor para rol: {rol}")
+            logging.error(f"Acceso denegado a /profesor para rol: {rol}")
             return RedirectResponse(url="/")
 
         return templates.TemplateResponse("administrador.html", {
@@ -58,10 +58,10 @@ async def administrador_view(request: Request):
         })
 
     except JWTError as e:
-        logger.error(f"❌ Token inválido o expirado: {e}")
+        logging.error(f"❌ Token inválido o expirado: {e}")
         return RedirectResponse(url="/")
     except Exception as e:
-        logger.error(f"Error en asistencias profesor: {e}")
+        logging.error(f"Error en asistencias profesor: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
