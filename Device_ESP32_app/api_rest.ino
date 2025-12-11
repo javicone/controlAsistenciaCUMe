@@ -194,6 +194,7 @@ bool enviarValoresConTimestamp(float temp, float hum, float lux, int personas, u
   StaticJsonDocument<256> doc;
   doc["tipo"] = "datos_aula";
   doc["aula"] = aula;
+  doc["ip"]= WiFi.localIP().toString();
   
   // Si los valores son 0, leer de sensores (modo normal)
   if (temp == 0 && hum == 0 && lux == 0 && personas == 0) {

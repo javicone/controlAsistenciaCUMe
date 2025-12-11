@@ -74,6 +74,8 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
         StaticJsonDocument<128> hello;
         hello["tipo"] = "nodo_conectado";
         hello["device_id"] = deviceId;
+        hello["aula"] = aula;
+        hello["ip"] = WiFi.localIP().toString();  // ⬅️ AGREGAR IP
         hello["uptime"] = millis() / 1000;
         String helloMsg;
         serializeJson(hello, helloMsg);

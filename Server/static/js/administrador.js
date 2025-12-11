@@ -289,6 +289,8 @@ function actualizarAulaEnTiempoReal(msg) {
     if (msg.estado !== undefined) aulasData[aulaKey].estado = msg.estado;
     if (msg.relay1 !== undefined) aulasData[aulaKey].relay1 = msg.relay1;
     if (msg.relay2 !== undefined) aulasData[aulaKey].relay2 = msg.relay2;
+    if (msg.ip !== undefined) aulasData[aulaKey].ip = msg.ip;  // ⬅️ AGREGAR
+
     
     console.log(`🔄 Aula actualizada en tiempo real: ${aulaKey}`, aulasData[aulaKey]);
     renderAulas();
@@ -326,6 +328,7 @@ function renderAulas() {
         const humedad = aula.humedad !== undefined ? `${aula.humedad}%` : 'N/A';
         const presion = aula.presion !== undefined ? `${aula.presion} hPa` : 'N/A';
         const luz = aula.luz !== undefined ? `${aula.luz} lux` : 'N/A';
+        
         const personas = aula.personas !== undefined ? aula.personas : 0;
         const capacidad = aula.capacidad || '?';
         
@@ -389,6 +392,7 @@ function seleccionarAula(aulaKey, aula) {
     document.getElementById('capacidad').value = aula.capacidad || '';
     document.getElementById('calefaccion-enabled').checked = aula.relay1 || false;
     document.getElementById('iluminacion-enabled').checked = aula.relay2 || false;
+    
     document.getElementById('ip-address').value = aula.ip || 'N/A';
     
     renderAulas();

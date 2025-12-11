@@ -116,21 +116,73 @@ async def websocket_endpoint(websocket: WebSocket, token: str = Query(...)):
                     logging.info(f"📤 Enviando confirmación a staff: {confirm_msg}")
                     await manager.notify_staff(confirm_msg)
                 elif tipo == "conexion":
+                    device_id = mensaje.get("device_id")
                     aula = mensaje.get("aula")
-                    logging.info(f"✅ ESP32 conectado: {aula} (device_id: {device_id})")
+                    ip = mensaje.get("ip")
+                    rssi = mensaje.get("rssi")
+                    uptime = mensaje.get("uptime")
+                    
+                    estado = actualizar_estado_aula(device_id, {
+                        "aula": aula,
+                        "device_id": device_id,
+                        "conectado": True,
+                        "ip": ip,
+                        "rssi": rssi,
+                        "uptime": uptime
+                    })
+
+                    # ✅ Solo admins reciben IP y datos técnicos
+                    await manager.notify_admins({
+                        "tipo": "dispositivo_conectado",
+                        "device_id": device_id,
+                        "aula": aula,
+                        "ip": ip,
+                        "rssi": rssi,
+                        "uptime": uptime
+                    })
+                    
+                    # ✅ Conserjes solo saben que el dispositivo se conectó
+                    await manager.notify_conserjes({
+                        "tipo": "dispositivo_conectado",
+                        "aula": aula,
+                        "conectado": True
+                    })
+                    
+                    logging.info(f"✅ ESP32 conectado: {aula} (device_id: {device_id}, ip: {ip})")
 
                 elif tipo == "datos_aula":
                     aula = mensaje.get("aula")
-                    # ✅ Usar device_id como clave, pero guardar el nombre del aula en los datos
+                    # Usar device_id como clave, pero guardar el nombre del aula en los datos
                     estado = actualizar_estado_aula(device_id, mensaje)
 
-                    # Broadcast a todos los clientes
-                    await manager.broadcast({
+                    # ✅ Mensaje completo para admins (incluye IP y datos sensibles)
+                    mensaje_admin = {
                         "tipo": "actualizacion_aula",
                         "aula": aula,
                         "device_id": device_id,
-                        **estado
-                    })
+                        **estado  # Incluye todo: ip, rssi, uptime, etc.
+                    }
+                    
+                    # ✅ Mensaje filtrado para conserjes (sin IP ni datos técnicos)
+                    mensaje_conserje = {
+                        "tipo": "actualizacion_aula",
+                        "aula": aula,
+                        "device_id": device_id,
+                        "temperatura": estado.get("temperatura"),
+                        "humedad": estado.get("humedad"),
+                        "presion": estado.get("presion"),
+                        "luz": estado.get("luz"),
+                        "personas": estado.get("personas"),
+                        "relay1": estado.get("relay1"),
+                        "relay2": estado.get("relay2"),
+                        "conectado": estado.get("conectado"),
+                        # ❌ NO incluir: ip, rssi, uptime
+                    }
+                    
+                    # Enviar según el rol
+                    await manager.notify_admins(mensaje_admin)
+                    await manager.notify_conserjes(mensaje_conserje)
+                    
                     logging.debug(f"📊 Datos actualizados para device_id '{device_id}' (aula: {aula})")
 
                 elif tipo == "ping":
