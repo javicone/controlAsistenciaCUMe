@@ -6,8 +6,14 @@
 // ISR (Interrupt Service Routine)
 // ============================================
 void IRAM_ATTR nfcIRQHandler() {
-  nfcCardDetected = true;  // Activar flag cuando el PN532 detecta tarjeta
-}
+    static unsigned long lastTriggerTime = 0;
+    unsigned long now = millis();
+    
+    // Debouncing: ignorar interrupciones muy seguidas (< 1 segundo)
+    if (now - lastTriggerTime > 1000) {
+        nfcCardDetected = true;
+        lastTriggerTime = now;
+    }}
 
 bool setupNFC() {
   Serial.println("🔧 Inicializando PN532 (SPI) con diagnóstico...");
@@ -26,7 +32,7 @@ bool setupNFC() {
     Serial.printf("📡 Intento PN532 #%d/%d\n", attempt, max_attempts);
     
     nfc.begin();
-    delay(100);  // ← Aumentado a 100ms para dar tiempo al chip
+    delay(500);  // ← Aumentado a 500ms para dar tiempo al chip
 
     uint32_t versiondata = nfc.getFirmwareVersion();
 
@@ -42,6 +48,16 @@ bool setupNFC() {
       
       // Configurar para leer tarjetas MIFARE
       nfc.SAMConfig();
+                
+      // ✅ Configurar pin IRQ
+      pinMode(PN532_IRQ, INPUT_PULLUP);
+      
+      // ✅ Iniciar detección pasiva (esto activa el IRQ cuando detecta tarjeta)
+      Serial.println("Iniciando detección pasiva...");
+      nfc.startPassiveTargetIDDetection(PN532_MIFARE_ISO14443A);
+      
+    
+    
       
       sensores.pn532_ok = true;
       sensores.pn532_errores = 0;
@@ -74,36 +90,35 @@ bool setupNFC() {
   return true;
 }
 
+void startListeningToNFC() {
+  if (!sensores.pn532_ok) return;
+  
+  Serial.println("📡 Iniciando escucha NFC...");
+  nfc.startPassiveTargetIDDetection(PN532_MIFARE_ISO14443A);
+}
+
 
 NFCData leerNFC() {
   NFCData datos = {false, false, ""};
   
-  // Verificar si el sensor está disponible
   if(!sensores.pn532_ok) {
-    Serial.println("⚠️ PN532 no disponible, reintentando...");
-    if(!setupNFC()) {
-      return datos;
-    }
+    Serial.println("⚠️ PN532 no disponible");
+    return datos;
   }
   
-  uint8_t success;
   uint8_t uid_local[] = {0, 0, 0, 0, 0, 0, 0};
   uint8_t uidLength;
   
-  // Leer tarjeta (timeout 500ms - balance entre responsividad y detección)
-  success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid_local, &uidLength, 1000);
+  // ✅ Leer el tag YA DETECTADO por el IRQ
+  uint8_t success = nfc.readDetectedPassiveTargetID(uid_local, &uidLength);
   
   if(success) {
-    // Validar longitud de UID (típicamente 4 o 7 bytes)
     if(uidLength != 4 && uidLength != 7) {
       Serial.printf("❌ UID longitud inválida: %d bytes\n", uidLength);
       return datos;
     }
     
-    // Log detallado
-    Serial.print("✅ Tarjeta detectada - UID (");
-    Serial.print(uidLength);
-    Serial.print(" bytes): ");
+    Serial.print("✅ Tarjeta detectada - UID: ");
     for(uint8_t i = 0; i < uidLength; i++) {
       Serial.print("0x");
       if(uid_local[i] < 0x10) Serial.print("0");
@@ -112,19 +127,13 @@ NFCData leerNFC() {
     }
     Serial.println();
     
-    // Convertir UID a String
     datos.uid = uidToString(uid_local, uidLength);
-    
-    // Validar que no esté vacío
-    if(datos.uid.length() == 0) {
-      Serial.println("❌ UID vacío tras conversión");
-      return datos;
-    }
-    
     datos.tarjetaDetectada = true;
     datos.valido = true;
     
     Serial.println("UID String: " + datos.uid);
+  } else {
+    Serial.println("⚠️ No se pudo leer tarjeta detectada");
   }
   
   return datos;

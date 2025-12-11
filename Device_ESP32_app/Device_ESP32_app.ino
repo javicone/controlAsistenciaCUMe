@@ -41,20 +41,13 @@ String urlencode(String str);
 unsigned long epochFromString(String fecha);
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);  // ✅ Callback para WebSocketsClient
 // Declaraciones faltantes para las funciones de otros archivos
-void setupWiFiEvents();           // ← AÑADIR
-bool fetchDeviceToken();          // ← AÑADIR
-void connectWS();                 // ← AÑADIR
-void checkWiFiConnection();       // ← AÑADIR
-void processQueue();              // ← AÑADIR
+void setupWiFiEvents();          
+bool fetchDeviceToken();         
+void connectWS();                
+void checkWiFiConnection();      
+void processQueue();             
 RadarData leerRadar();         
 
-// NO instanciar objetos aquí - ya están en globals.cpp
-// Las siguientes líneas se eliminan para evitar múltiples definiciones:
-// Adafruit_BME280 bme;
-// BH1750 lightMeter;
-// ld2410 radar;
-// UNIT_PN532 nfc(PN532_SS);
-// WebSocketsClient webSocket;
 
 //Handle del hilo de ejecución que vamos a fijar en el core 0 para llevar el tema de comunicaciones
 TaskHandle_t HiloComunicador;
@@ -143,17 +136,19 @@ void HiloComunicadorcode(void* pvParameters) {
 
 //Loop principal que utilizaremos para toda la lógica de los sensores y actuadores
 void loop() {
-   static unsigned long lastNFCCheck = 0;
+  static unsigned long nfcCooldown = 0;
+  
   // ============================================
   // MODO CON IRQ: Solo leer NFC cuando la flag esté activa
   // ============================================
-  if (nfcCardDetected) {
+  if (nfcCardDetected && (millis() - nfcCooldown > 2000)) {
     nfcCardDetected = false;  // ✅ Resetear flag INMEDIATAMENTE
     Serial.println("🔔 IRQ: Tarjeta detectada");
+    
     NFCData nfc_data = leerNFC();
     if (nfc_data.valido && nfc_data.tarjetaDetectada) {
       registrarAsistencia(nfc_data.uid);
-      delay(2000);  // Evitar lecturas duplicadas
+      nfcCooldown = millis();  // ✅ Cooldown de 2 segundos sin bloquear
     }
   }
 
