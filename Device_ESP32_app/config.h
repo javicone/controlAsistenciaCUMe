@@ -37,7 +37,6 @@ extern const char* aula;
 // CONSTANTES DE TIEMPO
 // ============================================
 #define QUEUE_PROCESS_INTERVAL 30000  // 30 segundos
-#define SENSOR_READ_INTERVAL   5000   // 5 segundos (delayTime)
 #define TOKEN_CHECK_INTERVAL  43200000 // 12 horas (12 * 60 * 60 * 1000 ms)
 
 // ============================================

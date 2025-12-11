@@ -33,12 +33,10 @@ extern const char* aula;
 // CONSTANTES DE TIEMPO
 // ============================================
 #define QUEUE_PROCESS_INTERVAL 30000  // 30 segundos
-#define SENSOR_READ_INTERVAL   5000   // 5 segundos (delayTime)
-#define CLASS_CHECK_INTERVAL   300000 // 5 minutos (delayTime2)
+#define SENSOR_READ_INTERVAL   5000   // 5 segundos 
+#define CLASS_CHECK_INTERVAL   5000 // 5 minutos 
 
-// Alias para compatibilidad con código antiguo
-#define delayTime  SENSOR_READ_INTERVAL
-#define delayTime2 CLASS_CHECK_INTERVAL
+
 
 // ============================================
 // ESTRUCTURAS DE DATOS

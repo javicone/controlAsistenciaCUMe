@@ -160,7 +160,7 @@ void loop() {
     // ============================================
   // OBTENER PRÓXIMA CLASE
   // ============================================
-  if (millis() - lastReading3 > delayTime2) {
+  if (millis() - lastReading3 > CLASS_CHECK_INTERVAL) {
     lastReading3 = millis();
     obtenerProximaClase();
   }
@@ -168,7 +168,7 @@ void loop() {
   // ============================================
   // ENVIAR DATOS DEL AULA
   // ============================================
-  if (millis() - lastReading2 > delayTime) {
+  if (millis() - lastReading2 > SENSOR_READ_INTERVAL) {
     lastReading2 = millis();
     EnviaValoresAula();
 }

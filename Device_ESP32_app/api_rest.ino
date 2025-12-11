@@ -105,7 +105,7 @@ void obtenerProximaClase() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient https;
     // Construir la URL con el parámetro aula (haciendo URL encode si es necesario)
-    String url = String(serverUrl) + "/proxima_clase_test?aula=" + urlencode(aula);
+    String url = String(serverUrl) + "/clases/actual?aula=" + urlencode(aula);
     Serial.print("📍 URL: "); Serial.println(url);
 
     https.setTimeout(15000); // 15 segundos timeout

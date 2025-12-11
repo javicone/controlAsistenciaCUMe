@@ -1,7 +1,12 @@
 from fastapi import APIRouter
-from services.clase_service import obtener_clase_actual, obtener_clase_test
+from services.clase_service import obtener_clase_actual, obtener_clase_test, get_clase_from_webservice
 
 router = APIRouter(prefix="/clases", tags=["Clases"])
+
+@router.get("/actual")
+async def clase_actual(aula: str):
+    """Obtiene la clase actual de un aula"""
+    return await get_clase_from_webservice(aula)
 
 @router.get("/proxima")
 async def proxima_clase(aula: str):
