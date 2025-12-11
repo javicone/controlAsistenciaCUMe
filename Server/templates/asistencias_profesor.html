@@ -383,60 +383,24 @@
     </svg>
 
     <script>
-        // --- Datos de Ejemplo ---
-        const mockFichajes = [
-            {
-                asignatura: 'Ingeniería del Software II',
-                clase: 'Grado en Ing. Informática (S.W.) - Tarde',
-                aula: 'A-05',
-                fecha: '2025-11-06T09:02:14'
-            },
-            {
-                asignatura: 'Sistemas de Información',
-                clase: 'Grado en Ing. Informática (Comp.) - Mañana',
-                aula: 'B-12',
-                fecha: '2025-11-05T11:58:40'
-            },
-            {
-                asignatura: 'Cálculo I',
-                clase: 'Grado en Ing. Telemática - Mañana',
-                aula: 'A-02',
-                fecha: '2025-11-04T09:05:22'
-            },
-            {
-                asignatura: 'Redes de Computadores',
-                clase: 'Grado en Ing. Informática (Comp.) - Tarde',
-                aula: 'Lab. Redes 1',
-                fecha: '2025-11-03T16:01:51'
-            },
-            {
-                asignatura: 'Ingeniería del Software II',
-                clase: 'Grado en Ing. Informática (S.W.) - Tarde',
-                aula: 'A-05',
-                fecha: '2025-11-03T09:01:05'
-            },
-            {
-                asignatura: 'Sistemas de Información',
-                clase: 'Grado en Ing. Informática (Comp.) - Mañana',
-                aula: 'B-12',
-                fecha: '2025-11-01T12:03:30'
-            },
-        ];
-        
         // --- Referencias a Elementos del DOM ---
-        const dashboardScreen = document.getElementById('dashboard-screen');
         const fichajesContainer = document.getElementById('fichajes-container');
         const userWelcome = document.getElementById('user-welcome');
 
-        // --- Función para renderizar los fichajes ---
-        function renderFichajes() {
+        // --- Función para renderizar los fichajes REALES desde la BD ---
+        function renderFichajes(asistencias) {
             fichajesContainer.innerHTML = ''; // Limpiar contenedor
             
+            if (!asistencias || asistencias.length === 0) {
+                fichajesContainer.innerHTML = '<p style="text-align:center; color: var(--texto-secundario); font-size: 1.2rem;">No hay asistencias registradas</p>';
+                return;
+            }
+
             // Ordenar por fecha (más reciente primero)
-            const fichajesOrdenados = mockFichajes.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+            const fichajesOrdenados = asistencias.sort((a, b) => new Date(b.fecha_hora) - new Date(a.fecha_hora));
 
             fichajesOrdenados.forEach(fichaje => {
-                const fecha = new Date(fichaje.fecha);
+                const fecha = new Date(fichaje.fecha_hora);
                 const fechaFormateada = fecha.toLocaleString('es-ES', {
                     dateStyle: 'full',
                     timeStyle: 'short'
@@ -445,7 +409,7 @@
                 const cardHTML = `
                     <div class="fichaje-card">
                         <div class="card-header">
-                            <h4>${fichaje.asignatura}</h4>
+                            <h4>${fichaje.asignatura || 'Clase sin asignar'}</h4>
                         </div>
                         <div class="card-body">
                             <div class="card-detail card-detail-main">
@@ -454,11 +418,11 @@
                             </div>
                             <div class="card-detail">
                                 <svg class="icon"><use href="#icon-users"></use></svg>
-                                <span>${fichaje.clase}</span>
+                                <span>${fichaje.nombre_usuario || 'Usuario'}</span>
                             </div>
                             <div class="card-detail">
                                 <svg class="icon"><use href="#icon-location"></use></svg>
-                                <span>Aula: <strong>${fichaje.aula}</strong></span>
+                                <span>Aula: <strong>${fichaje.nombre_aula || 'N/A'}</strong></span>
                             </div>
                         </div>
                     </div>
@@ -467,20 +431,61 @@
             });
         }
 
-        // --- Funciones de Login y Logout ---
+        // --- Cargar asistencias desde el servidor ---
+        async function cargarAsistencias() {
+            try {
+                console.log('🔄 Cargando asistencias...');
+                
+                const response = await fetch('/asistencias/mis-asistencias', {
+                    method: 'GET',
+                    credentials: 'include'  // Incluir cookies
+                });
+                
+                console.log('📡 Respuesta recibida:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('✅ Asistencias cargadas:', data);
+                
+                renderFichajes(data.asistencias);
+                
+            } catch (error) {
+                console.error('❌ Error al cargar asistencias:', error);
+                fichajesContainer.innerHTML = `
+                    <p style="text-align:center; color: #d93025; font-size: 1.1rem;">
+                        Error al cargar las asistencias. Por favor, recarga la página.
+                    </p>
+                `;
+            }
+        }
+
+        // --- Función de logout ---
         function logout() {
-            // Limpiar sesión
             sessionStorage.clear();
             localStorage.clear();
-            
-            // Redirigir al login
             window.location.href = '/';
         }
 
-        // --- Asignar Event Listeners ---
-        document.addEventListener('DOMContentLoaded', () => {
-            userWelcome.textContent = 'Bienvenido, Docente'; // Nombre genérico
-            renderFichajes(); // Renderizar al cargar la página
+        // --- Al cargar la página ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('📄 Página cargada');
+            
+            // ✅ Obtener nombre del usuario desde el token
+            const nombreUsuario = obtenerNombreUsuario();
+            if (nombreUsuario) {
+                userWelcome.textContent = `Bienvenido, ${nombreUsuario}`;
+            } else {
+                userWelcome.textContent = 'Bienvenido, Docente';
+            }
+            
+            // Mostrar mensaje de carga
+            fichajesContainer.innerHTML = '<p style="text-align:center; color: var(--texto-secundario); font-size: 1.2rem;">Cargando asistencias...</p>';
+            
+            // Cargar asistencias reales
+            await cargarAsistencias();
             
             // Event listener para cerrar sesión
             const btnLogout = document.getElementById('btn-logout');
@@ -489,6 +494,36 @@
             }
         });
 
+        // ✅ Nueva función para obtener el nombre del usuario desde el token
+        function obtenerNombreUsuario() {
+            try {
+                // Obtener todas las cookies
+                const cookies = document.cookie.split(';');
+                
+                // Buscar la cookie access_token
+                const tokenCookie = cookies.find(c => c.trim().startsWith('access_token='));
+                
+                if (!tokenCookie) {
+                    console.warn('⚠️ Cookie access_token no encontrada');
+                    return null;
+                }
+                
+                // Extraer el valor del token
+                const token = tokenCookie.split('=')[1];
+                
+                // Decodificar el payload del JWT (parte central)
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                
+                console.log('👤 Payload del token:', payload);
+                
+                // Retornar el nombre (ajusta según el campo que uses en tu token)
+                return payload.nombre || payload.correo || 'Docente';
+                
+            } catch (error) {
+                console.error('❌ Error al decodificar token:', error);
+                return null;
+            }
+        }
     </script>
 </body>
 </html>

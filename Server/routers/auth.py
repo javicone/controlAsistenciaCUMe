@@ -54,6 +54,7 @@ async def authenticate_device(auth_request: DeviceAuthRequest):
             token_data = {
                 "sub": auth_request.device_id,
                 "rol": "device" 
+                
             }
             token = create_access_token(token_data)
             
