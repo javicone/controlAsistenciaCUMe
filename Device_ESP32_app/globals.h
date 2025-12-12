@@ -108,6 +108,15 @@ extern bool wsConectado;
 extern volatile bool nfcCardDetected;
 
 // ============================================
+// VARIABLES NFC PARA POLLING (estilo ejemplo oficial)
+// ============================================
+extern int nfcIrqCurr;
+extern int nfcIrqPrev;
+extern bool nfcReaderDisabled;
+extern unsigned long nfcTimeLastCardRead;
+extern unsigned long nfcCooldown;
+
+// ============================================
 // ESTADOS DE LEDs
 // ============================================
 enum EstadoLED {

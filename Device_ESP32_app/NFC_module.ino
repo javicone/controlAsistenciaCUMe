@@ -1,19 +1,8 @@
 #include "globals.h"
 
-
-
 // ============================================
-// ISR (Interrupt Service Routine)
+// FUNCIONES NFC (sin ISR - polling del ejemplo oficial)
 // ============================================
-void IRAM_ATTR nfcIRQHandler() {
-    static unsigned long lastTriggerTime = 0;
-    unsigned long now = millis();
-    
-    // Debouncing: ignorar interrupciones muy seguidas (< 1 segundo)
-    if (now - lastTriggerTime > 1000) {
-        nfcCardDetected = true;
-        lastTriggerTime = now;
-    }}
 
 bool setupNFC() {
   Serial.println("🔧 Inicializando PN532 (SPI) con diagnóstico...");
@@ -48,8 +37,8 @@ bool setupNFC() {
       
       // Configurar para leer tarjetas MIFARE
       nfc.SAMConfig();
-                
-      // ✅ Configurar pin IRQ
+      
+      // ✅ Configurar pin IRQ (solo INPUT_PULLUP, sin attachInterrupt)
       pinMode(PN532_IRQ, INPUT_PULLUP);
       
       // ✅ Iniciar detección pasiva (esto activa el IRQ cuando detecta tarjeta)

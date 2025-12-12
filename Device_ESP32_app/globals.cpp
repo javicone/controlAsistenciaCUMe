@@ -85,6 +85,15 @@ unsigned long lastTokenCheck = 0;
 
 volatile bool nfcCardDetected = false; 
 
+// ============================================
+// VARIABLES NFC PARA POLLING (estilo ejemplo oficial)
+// ============================================
+int nfcIrqCurr = HIGH;
+int nfcIrqPrev = HIGH;
+bool nfcReaderDisabled = false;
+unsigned long nfcTimeLastCardRead = 0;
+unsigned long nfcCooldown = 0;
+
 unsigned long lastReading = 0;
 unsigned long lastReading2 = 0;
 unsigned long lastReading3 = 0;

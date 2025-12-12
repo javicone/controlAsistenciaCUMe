@@ -24,14 +24,6 @@ void initSensores() {
   Serial.printf("LD2410: %s\n", sensores.ld2410_ok ? "✅" : "❌");
   Serial.printf("PN532:  %s\n", sensores.pn532_ok ? "✅" : "❌");
   Serial.println("==============================\n");
-    // ✅ ACTIVAR IRQ AL FINAL, después de que todo esté inicializado
-  if (sensores.pn532_ok) {
-    pinMode(PN532_IRQ, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(PN532_IRQ), nfcIRQHandler, FALLING);
-    Serial.println("✅ IRQ configurado en pin " + String(PN532_IRQ));
-  } else {
-    Serial.println("⚠️ PN532 no disponible, IRQ no configurado");
-  }
 
 
   // Indicar estado inicial

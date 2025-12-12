@@ -137,19 +137,34 @@ void HiloComunicadorcode(void* pvParameters) {
 //Loop principal que utilizaremos para toda la lógica de los sensores y actuadores
 void loop() {
   static unsigned long nfcCooldown = 0;
+  // ============================================
+  // POLLING NFC (estilo ejemplo oficial Adafruit)
+  // ============================================
+  const int DELAY_BETWEEN_CARDS = 2000; // 2 segundos entre lecturas
   
-  // ============================================
-  // MODO CON IRQ: Solo leer NFC cuando la flag esté activa
-  // ============================================
-  if (nfcCardDetected && (millis() - nfcCooldown > 2000)) {
-    nfcCardDetected = false;  // ✅ Resetear flag INMEDIATAMENTE
-    Serial.println("🔔 IRQ: Tarjeta detectada");
-    
-    NFCData nfc_data = leerNFC();
-    if (nfc_data.valido && nfc_data.tarjetaDetectada) {
-      registrarAsistencia(nfc_data.uid);
-      nfcCooldown = millis();  // ✅ Cooldown de 2 segundos sin bloquear
+  if (nfcReaderDisabled) {
+    // Cooldown activo - esperar antes de reiniciar detección
+    if (millis() - nfcTimeLastCardRead > DELAY_BETWEEN_CARDS) {
+      nfcReaderDisabled = false;
+      startListeningToNFC(); // Reiniciar detección pasiva
     }
+  } else {
+    // Leer estado actual del pin IRQ
+    nfcIrqCurr = digitalRead(PN532_IRQ);
+    
+    // Detectar flanco descendente (HIGH → LOW = tarjeta detectada)
+    if (nfcIrqCurr == LOW && nfcIrqPrev == HIGH) {
+      Serial.println("🔔 IRQ: Tarjeta detectada");
+      
+      NFCData nfc_data = leerNFC();
+      if (nfc_data.valido && nfc_data.tarjetaDetectada) {
+        registrarAsistencia(nfc_data.uid);
+        nfcTimeLastCardRead = millis();
+        nfcReaderDisabled = true; // Activar cooldown
+      }
+    }
+    
+    nfcIrqPrev = nfcIrqCurr; // Actualizar estado previo
   }
 
     // ============================================
