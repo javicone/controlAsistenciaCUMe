@@ -21,7 +21,7 @@ const char* wsPath = "/ws/device";
 // Configuración para HTTP
 const char* serverUrl = "https://192.168.137.1:5000";
 const char* datos_aula = "/datos_aula";
-const char* registro = "/registro";
+const char* registro = "/asistencias/registro";
 
 // Certificado del Servidor (Root CA Certificate)
 const char* server_certificate = \
@@ -64,7 +64,7 @@ const char* server_certificate = \
 const char* tzInfo = "CET-1CEST,M3.5.0/2,M10.5.0/3";
 
 // Aula
-const char* aula = "Aula 101";
+const char* aula = "Aula 209";
 
 // ============================================
 // OBJETOS DE SENSORES

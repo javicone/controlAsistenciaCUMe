@@ -3,9 +3,11 @@ void initSensores() {
   Serial.println("║  INICIALIZACIÓN DE SENSORES    ║");
   Serial.println("╚════════════════════════════════╝\n");
 
-
+  setupIndicators();  //Inicializamos los indicadores (LEDs y buzzer)
+  Serial.println("🔧 Inicializando sensores...");
   // Configurar pines de reles
   // Los reles son activos en LOW y bajo en High
+
   pinMode(relayPin1, OUTPUT);
   digitalWrite(relayPin1, HIGH); // Relé de la calefaccion
   pinMode(relayPin2, OUTPUT);

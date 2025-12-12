@@ -64,7 +64,7 @@ void setup() {
   Serial.begin(115200);
   //Inicializamos Serial2 para el radar LD2410
   // esta decision se debe a que si llamamos la funcion en runtime puede fallar al reiniciar la UART, por lo que
-
+  secuenciaInicio();
   //Inicializamos todos los sensores y actuadores que vamos a utilizar
   initSensores();
   //Creamos la tarea que se ejecutará en el Core 0 con prioridad 1
@@ -155,9 +155,11 @@ void loop() {
     // Detectar flanco descendente (HIGH → LOW = tarjeta detectada)
     if (nfcIrqCurr == LOW && nfcIrqPrev == HIGH) {
       Serial.println("🔔 IRQ: Tarjeta detectada");
-      
+      ledAmarillo(true); // Encender LED amarillo al detectar tarjeta
+      delay(300);
       NFCData nfc_data = leerNFC();
       if (nfc_data.valido && nfc_data.tarjetaDetectada) {
+      
         registrarAsistencia(nfc_data.uid);
         nfcTimeLastCardRead = millis();
         nfcReaderDisabled = true; // Activar cooldown

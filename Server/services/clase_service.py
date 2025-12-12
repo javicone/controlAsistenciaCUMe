@@ -46,6 +46,14 @@ async def obtener_clase_actual(aula: str) -> dict:
 
 async def obtener_clase_test(aula: str) -> dict:
     clase_siguiente = await get_clase_from_webservice(aula)
+    
+    # Si el webservice devuelve un mensaje (no hay clases), devolverlo
+    if "mensaje" in clase_siguiente:
+        return {
+            "mensaje": clase_siguiente["mensaje"]
+        }
+    
+    # Si hay datos de clase, formatearlos
     return {
         "asignatura": clase_siguiente["asignatura"],
         "hora_inicio": clase_siguiente["hora_inicio"].strftime("%H:%M:%S"),

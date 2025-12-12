@@ -94,6 +94,12 @@ async def get_clase_from_webservice(aula: str) -> Optional[Dict]:
                             "hora_inicio": data["hora_inicio"],
                             "hora_fin": data["hora_fin"]
                         }
+                    # Si no hay campos de clase pero hay mensaje, devolver el mensaje
+                    elif "mensaje" in data:
+                        logger.info(f"ℹ️ Mensaje del webservice: {data['mensaje']}")
+                        return {
+                            "mensaje": data["mensaje"]
+                        }
                     else:
                         logger.warning(f"⚠️ Respuesta JSON sin campos esperados: {data}")
                         return None

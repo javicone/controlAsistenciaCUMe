@@ -1,5 +1,6 @@
 // Versión original (mantener para compatibilidad)
 void registrarAsistencia(String tarjetaUID) {
+  
   registrarAsistenciaConTimestamp(tarjetaUID, 0);  // 0 = usar timestamp actual
 }
 
@@ -10,7 +11,7 @@ bool registrarAsistenciaConTimestamp(String tarjetaUID, unsigned long eventTimes
   WiFiClientSecure client;
   client.setCACert(server_certificate);
   //
-  // client.setInsecure(); // ⚠️ TEMPORAL: Desactiva validación SSL para debugging
+   client.setInsecure(); // ⚠️ TEMPORAL: Desactiva validación SSL para debugging
   
   Serial.println("🔍 DEBUG: Validación SSL desactivada temporalmente");
   
@@ -55,18 +56,30 @@ bool registrarAsistenciaConTimestamp(String tarjetaUID, unsigned long eventTimes
   
   if (httpResponseCode > 0) {
     if (httpResponseCode == 200) {
+      ledVerde(true); // Encender LED verde al registrar asistencia correctamente
       String respuesta = https.getString();
       Serial.print("✅ Respuesta HTTP "); Serial.print(httpResponseCode); Serial.println(":");
       Serial.println(respuesta);
       Serial.println("✅ Asistencia registrada correctamente");
       exito = true;
+      delay(500);
+      ledVerde(false); // Apagar LED verde
     } else if (httpResponseCode == 403) {
+      ledRojo(true); // Encender LED rojo al error de acceso denegado
+      delay(1000);
+      ledRojo(false); // Apagar LED rojo
       Serial.println("❌ Acceso denegado: Tarjeta no autorizada");
     } else if (httpResponseCode == 404) {
+      ledRojo(true); // Encender LED rojo al error de acceso denegado
+      delay(1000);
       Serial.println("❌ Error 404: Tarjeta desconocida");
     } else if (httpResponseCode == 500) {
+      ledRojo(true); // Encender LED rojo al error de acceso denegado
+      delay(1000);
       Serial.println("❌ Error 500: Error interno del servidor");
     } else {
+      ledRojo(true); // Encender LED rojo al error de acceso denegado
+      delay(1000);
       Serial.print("❌ Error HTTP inesperado: "); Serial.println(httpResponseCode);
       if (eventTimestamp == 0) {  // Solo guardar en cola si es un evento nuevo
         saveToQueue("fichaje", jsonPayload, millis());
@@ -74,13 +87,16 @@ bool registrarAsistenciaConTimestamp(String tarjetaUID, unsigned long eventTimes
       }
     }
   } else {
+    ledRojo(true); // Encender LED rojo al error de acceso denegado
+      delay(1000);
     Serial.print("❌ Error HTTP: "); Serial.println(httpResponseCode);
     if (eventTimestamp == 0) {  // Solo guardar en cola si es un evento nuevo
       saveToQueue("fichaje", jsonPayload, millis());
       Serial.println("⚠️ Asistencia guardada en cola para reintento");
     }
   }
-
+  ledRojo(false); // Apagar LED rojo
+  ledAmarillo(false); // Apagar LED amarillo
   https.end();
   Serial.println("=================================\n");
   
@@ -98,7 +114,7 @@ void obtenerProximaClase() {
   if(usingHTTPS) {
   WiFiClientSecure client;
   client.setCACert(server_certificate);
-  //client.setInsecure(); // ⚠️ TEMPORAL: Desactiva validación SSL para debugging
+  client.setInsecure(); // ⚠️ TEMPORAL: Desactiva validación SSL para debugging
   
   Serial.println("🔍 DEBUG: Validación SSL desactivada temporalmente");
   
