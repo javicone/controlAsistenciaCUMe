@@ -23,6 +23,7 @@ extern const char* wsPath;
 extern const char* serverUrl;
 extern const char* datos_aula;
 extern const char* registro;
+extern const char* clases_actual;
 
 // --- Certificado del Servidor (Root CA Certificate) ---
 extern const char* server_certificate;
@@ -31,7 +32,7 @@ extern const char* server_certificate;
 extern const char* tzInfo;
 
 // Aula
-extern const char* aula;
+extern String aula;
 
 // ============================================
 // CONSTANTES DE TIEMPO

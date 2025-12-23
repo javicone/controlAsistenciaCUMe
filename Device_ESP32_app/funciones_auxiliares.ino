@@ -41,9 +41,10 @@ String uidToString(uint8_t *uidArray, size_t uidLength) {
 }
 
 // Función para hacer URL encode (simple)
-String urlencode(const char* msg) {
+String urlencode(String str) {
   const char *hex = "0123456789ABCDEF";
   String encodedMsg = "";
+  const char* msg = str.c_str();
   while (*msg != '\0') {
     if (('a' <= *msg && *msg <= 'z') ||
         ('A' <= *msg && *msg <= 'Z') ||

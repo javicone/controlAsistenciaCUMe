@@ -1,14 +1,16 @@
 #include "globals.h"
 
 // ============================================
-// FUNCIONES NFC (sin ISR - polling del ejemplo oficial)
+// FUNCIONES NFC (Polling directo - más estable en ESP32)
 // ============================================
+
+// Tiempo de espera corto para polling (ms)
+#define NFC_POLL_TIMEOUT 100
 
 bool setupNFC() {
   Serial.println("🔧 Inicializando PN532 (SPI) con diagnóstico...");
   
   // ✅ Inicializar SPI con pines explícitos
-  
   SPI.begin(PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
 
   delay(1000);
@@ -21,7 +23,7 @@ bool setupNFC() {
     Serial.printf("📡 Intento PN532 #%d/%d\n", attempt, max_attempts);
     
     nfc.begin();
-    delay(500);  // ← Aumentado a 500ms para dar tiempo al chip
+    delay(500);
 
     uint32_t versiondata = nfc.getFirmwareVersion();
 
@@ -38,15 +40,8 @@ bool setupNFC() {
       // Configurar para leer tarjetas MIFARE
       nfc.SAMConfig();
       
-      // ✅ Configurar pin IRQ (solo INPUT_PULLUP, sin attachInterrupt)
-      pinMode(PN532_IRQ, INPUT_PULLUP);
-      
-      // ✅ Iniciar detección pasiva (esto activa el IRQ cuando detecta tarjeta)
-      Serial.println("Iniciando detección pasiva...");
-      nfc.startPassiveTargetIDDetection(PN532_MIFARE_ISO14443A);
-      
-    
-    
+      // ✅ Reducir reintentos para polling rápido (no bloquea)
+      nfc.setPassiveActivationRetries(0x01);
       
       sensores.pn532_ok = true;
       sensores.pn532_errores = 0;
@@ -80,10 +75,7 @@ bool setupNFC() {
 }
 
 void startListeningToNFC() {
-  if (!sensores.pn532_ok) return;
-  
-  Serial.println("📡 Iniciando escucha NFC...");
-  nfc.startPassiveTargetIDDetection(PN532_MIFARE_ISO14443A);
+  // Ya no necesitamos hacer nada especial - usamos polling directo
 }
 
 
@@ -96,10 +88,11 @@ NFCData leerNFC() {
   }
   
   uint8_t uid_local[] = {0, 0, 0, 0, 0, 0, 0};
-  uint8_t uidLength;
+  uint8_t uidLength = 0;
   
-  // ✅ Leer el tag YA DETECTADO por el IRQ
-  uint8_t success = nfc.readDetectedPassiveTargetID(uid_local, &uidLength);
+  // ✅ POLLING DIRECTO: readPassiveTargetID con timeout corto
+  // Timeout de 100ms - no bloquea si no hay tarjeta
+  uint8_t success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid_local, &uidLength, NFC_POLL_TIMEOUT);
   
   if(success) {
     if(uidLength != 4 && uidLength != 7) {
@@ -121,9 +114,8 @@ NFCData leerNFC() {
     datos.valido = true;
     
     Serial.println("UID String: " + datos.uid);
-  } else {
-    Serial.println("⚠️ No se pudo leer tarjeta detectada");
   }
+  // Si no hay tarjeta, simplemente retorna datos con valido=false (sin mensaje de error)
   
   return datos;
 }

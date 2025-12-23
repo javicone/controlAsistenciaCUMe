@@ -6,8 +6,13 @@
 // ============================================
 
 // ID del dispositivo y API Key segura
-String deviceId = "node-001";
-String apiKey = "A2fP7zU4tD1sH6kE9wR0mN3cQ5vB8xYgO";
+String deviceId = "node-002";
+
+// Aula (mutable, puede ser cargada/guardada en NVS)
+String aula = "Aula 8";
+
+// Cada nodo tendrá su propia api_key en la bbdd.
+String apiKey = "V3cC5xZ8mN1bB4vL9kH2jG7fD6sA0pQ";
 
 // WiFi y servidor
 const char* ssid = "SERVER";
@@ -20,8 +25,17 @@ const char* wsPath = "/ws/device";
 
 // Configuración para HTTP
 const char* serverUrl = "https://192.168.137.1:5000";
-const char* datos_aula = "/datos_aula";
+
+// ----------- RUTA ENVIO DE DATOS SENSORES ----------
+const char* datos_aula = "/datos_aula"; 
+
+//------------ RUTA PARA REALIZAR FICHAJE ------------
 const char* registro = "/asistencias/registro";
+
+// ----------- RUTA CAPTAR CLASE ACTUAL --------------
+// const char* clases_actual = "/clases/test"; si es para testeo 
+// const char* clases_actual = "/clases/actual"; si es pera despliegue  
+const char* clases_actual = "/clases/test";
 
 // Certificado del Servidor (Root CA Certificate)
 const char* server_certificate = \
@@ -63,8 +77,6 @@ const char* server_certificate = \
 // Zona horaria
 const char* tzInfo = "CET-1CEST,M3.5.0/2,M10.5.0/3";
 
-// Aula
-const char* aula = "Aula 209";
 
 // ============================================
 // OBJETOS DE SENSORES
@@ -118,3 +130,9 @@ bool wsConectado = false;
 // Estado de los reles
 bool relay1Estado = false;
 bool relay2Estado = false;
+
+// variables para la gestión de clases
+extern String claseActual= "";
+extern String horaInicioClase= "";
+extern String horaFinClase= "";
+extern bool claseEnCurso= false;

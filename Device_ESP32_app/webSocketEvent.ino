@@ -1,3 +1,6 @@
+// Usamos Preferences para persistencia de configuración
+#include <Preferences.h>
+
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
   // ✅ Log inicial con timestamp
   unsigned long timestamp = millis();
@@ -260,6 +263,13 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
           if (data.containsKey("nombre")) {
             String nombre = data["nombre"].as<String>();
             Serial.printf("   📌 Nombre: %s\n", nombre.c_str());
+            // Guardar en NVS (Preferences) y actualizar variable global
+            Preferences preferences;
+            preferences.begin("config", false);
+            preferences.putString("aula", nombre);
+            preferences.end();
+            aula = nombre;
+            Serial.printf("💾 Nombre de aula persistido en NVS: %s\n", nombre.c_str());
           }
           if (data.containsKey("edificio")) {
             String edificio = data["edificio"].as<String>();

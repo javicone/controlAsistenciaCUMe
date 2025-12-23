@@ -25,7 +25,7 @@ bool setupLightMeter(){
 
 
 LuzData leerLuz() {
-  LuzData datos = {-999.0, false};
+  LuzData datos = {false, -999.0};
   
   // Verificar si el sensor está disponible
   if(!sensores.bh1750_ok) {

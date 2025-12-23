@@ -62,6 +62,19 @@ void setup() {
   setupWiFiEvents(); //Configuramos los eventos de WiFi
   //Inicializamos Serial para comunicación en Arduino IDE
   Serial.begin(115200);
+  // Cargar nombre de aula desde NVS (Preferences) si existe
+  {
+    Preferences preferences;
+    preferences.begin("config", true);
+    String savedAula = preferences.getString("aula", "");
+    if (savedAula.length() > 0) {
+      aula = savedAula;
+      Serial.printf("📦 Aula cargada desde NVS: %s\n", aula.c_str());
+    } else {
+      Serial.println("⚠️ No hay aula guardada en NVS; usando valor por defecto");
+    }
+    preferences.end();
+  }
   //Inicializamos Serial2 para el radar LD2410
   // esta decision se debe a que si llamamos la funcion en runtime puede fallar al reiniciar la UART, por lo que
   secuenciaInicio();
@@ -136,38 +149,33 @@ void HiloComunicadorcode(void* pvParameters) {
 
 //Loop principal que utilizaremos para toda la lógica de los sensores y actuadores
 void loop() {
-  static unsigned long nfcCooldown = 0;
-  // ============================================
-  // POLLING NFC (estilo ejemplo oficial Adafruit)
-  // ============================================
-  const int DELAY_BETWEEN_CARDS = 2000; // 2 segundos entre lecturas
   
-  if (nfcReaderDisabled) {
-    // Cooldown activo - esperar antes de reiniciar detección
-    if (millis() - nfcTimeLastCardRead > DELAY_BETWEEN_CARDS) {
-      nfcReaderDisabled = false;
-      startListeningToNFC(); // Reiniciar detección pasiva
-    }
-  } else {
-    // Leer estado actual del pin IRQ
-    nfcIrqCurr = digitalRead(PN532_IRQ);
-    
-    // Detectar flanco descendente (HIGH → LOW = tarjeta detectada)
-    if (nfcIrqCurr == LOW && nfcIrqPrev == HIGH) {
-      Serial.println("🔔 IRQ: Tarjeta detectada");
-      ledAmarillo(true); // Encender LED amarillo al detectar tarjeta
-      delay(300);
-      NFCData nfc_data = leerNFC();
-      if (nfc_data.valido && nfc_data.tarjetaDetectada) {
-      
-        registrarAsistencia(nfc_data.uid);
-        nfcTimeLastCardRead = millis();
-        nfcReaderDisabled = true; // Activar cooldown
-      }
+
+  // ============================================
+  // POLLING NFC DIRECTO (sin IRQ - más estable)
+  // ============================================
+  
+  if(claseEnCurso){
+    // Gestionar cooldown entre lecturas de tarjetas
+    if (nfcReaderDisabled && millis() - nfcTimeLastCardRead > DELAY_BETWEEN_CARDS) {
+        nfcReaderDisabled = false;
     }
     
-    nfcIrqPrev = nfcIrqCurr; // Actualizar estado previo
+    // Si no está en cooldown, intentar leer tarjeta
+    if (!nfcReaderDisabled) {
+        NFCData nfc_data = leerNFC();  // Polling directo con timeout corto
+        
+        if (nfc_data.valido && nfc_data.tarjetaDetectada) {
+            Serial.println("🔔 Tarjeta detectada por polling");
+            ledAmarillo(true);
+            registrarAsistencia(nfc_data.uid);
+            ledAmarillo(false);
+            nfcTimeLastCardRead = millis();
+            nfcReaderDisabled = true;
+        }
+    }
   }
+  
 
     // ============================================
   // OBTENER PRÓXIMA CLASE

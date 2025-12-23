@@ -25,17 +25,24 @@ extern const char* wsPath;
 extern const char* serverUrl;
 extern const char* datos_aula;
 extern const char* registro;
+extern const char* clases_actual;
 extern const char* server_certificate;
 extern const char* tzInfo;
-extern const char* aula;
+extern String aula;
+
+// variables para la gestión de clases
+extern String claseActual;
+extern String horaInicioClase;
+extern String horaFinClase;
+extern bool claseEnCurso;
 
 // ============================================
 // CONSTANTES DE TIEMPO
 // ============================================
 #define QUEUE_PROCESS_INTERVAL 30000  // 30 segundos
 #define SENSOR_READ_INTERVAL   5000   // 5 segundos 
-#define CLASS_CHECK_INTERVAL   5000 // 5 minutos 
-
+#define CLASS_CHECK_INTERVAL   60000 // 5 minutos 
+#define DELAY_BETWEEN_CARDS  3000 // 3 segundos entre lecturas
 
 
 // ============================================

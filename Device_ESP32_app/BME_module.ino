@@ -27,7 +27,7 @@ bool setupBME(){
 
 
 BME280Data leerBME280() {
-  BME280Data datos = {-999.0, -999.0, -999.0, false};
+  BME280Data datos = {false, -999.0, -999.0, -999.0};
   
   // Verificar si el sensor está disponible
   if(!sensores.bme280_ok) {
