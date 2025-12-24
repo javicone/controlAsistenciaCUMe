@@ -60,6 +60,91 @@ String urlencode(String str) {
   return encodedMsg;
 }
 
+// ============================================
+// SISTEMA DE TIMER PARA FIN DE CLASE
+// ============================================
+
+// ISR del timer - se ejecuta cuando termina la clase
+void IRAM_ATTR onTimerFinClase() {
+  timerFinClaseDisparado = true;  // Solo marcar el flag, el procesamiento se hace en loop()
+}
+
+// Calcula el tiempo restante hasta fin de clase e inicia el timer
+void iniciarTimerFinClase() {
+  if (horaFinClase.length() == 0) {
+    Serial.println("⚠️ No hay hora de fin de clase definida");
+    return;
+  }
+  
+  // Obtener hora actual
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo)) {
+    Serial.println("❌ Error obteniendo hora local para timer");
+    return;
+  }
+  
+  // Parsear hora de fin de clase (formato "HH:MM" o "HH:MM:SS")
+  int horaFin = horaFinClase.substring(0, 2).toInt();
+  int minFin = horaFinClase.substring(3, 5).toInt();
+  int segFin = 0;
+  if (horaFinClase.length() >= 8) {
+    segFin = horaFinClase.substring(6, 8).toInt();
+  }
+  
+  // Calcular segundos restantes hasta fin de clase
+  int segundosActual = timeinfo.tm_hour * 3600 + timeinfo.tm_min * 60 + timeinfo.tm_sec;
+  int segundosFin = horaFin * 3600 + minFin * 60 + segFin;
+  int segundosRestantes = segundosFin - segundosActual;
+  
+  // Si ya pasó la hora de fin, no iniciar timer
+  if (segundosRestantes <= 0) {
+    Serial.println("⚠️ La clase ya debería haber terminado");
+    timerFinClaseDisparado = true;  // Forzar consulta de nueva clase
+    return;
+  }
+  
+  Serial.printf("⏱️ Timer configurado: %d minutos %d segundos hasta fin de clase (%s)\n", 
+                segundosRestantes / 60, segundosRestantes % 60, horaFinClase.c_str());
+  
+  // Detener timer anterior si existe
+  if (timerFinClase != NULL) {
+    timerAlarmDisable(timerFinClase);
+    timerDetachInterrupt(timerFinClase);
+    timerEnd(timerFinClase);
+  }
+  
+  // Configurar timer hardware (timer 0, divisor 80 para 1MHz = 1 tick por microsegundo)
+  timerFinClase = timerBegin(0, 80, true);  // Timer 0, prescaler 80 (1us por tick), contar hacia arriba
+  timerAttachInterrupt(timerFinClase, &onTimerFinClase, true);  // Adjuntar ISR
+  timerAlarmWrite(timerFinClase, (uint64_t)segundosRestantes * 1000000, false);  // Alarma en microsegundos, no repetir
+  timerAlarmEnable(timerFinClase);  // Habilitar alarma
+  
+  Serial.println("✅ Timer de fin de clase iniciado");
+}
+
+// Resetea el estado de fichaje y consulta nueva clase
+void resetearEstadoFichaje() {
+  Serial.println("\n🔄 === RESET DE ESTADO DE FICHAJE ===");
+  
+  // Resetear flags
+  fichajeClaseCompletado = false;
+  timerFinClaseDisparado = false;
+  
+  // Detener timer si está corriendo
+  if (timerFinClase != NULL) {
+    timerAlarmDisable(timerFinClase);
+  }
+  
+  // Consultar nueva clase
+  obtenerProximaClase();
+  
+  if (claseEnCurso) {
+    Serial.println("📚 Nueva clase detectada - NFC habilitado para fichaje");
+  } else {
+    Serial.println("😴 No hay clase - NFC permanece deshabilitado");
+  }
+}
+
 // ====== MANEJO DE ERRORES DE SENSORES ======
 // indicarEstado() se implementa en indicators.ino
 // Eliminada definición duplicada

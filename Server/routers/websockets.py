@@ -154,12 +154,20 @@ async def sincronizar_estado_reles(device_id: str, mensaje: dict, websocket: Web
     relay_state = mensaje.get("relay_state")
     aula = mensaje.get("aula")
     
-    logging.info(f"✅ Sincronizando relé físico: {device_id} R{relay_num}={relay_state}")
+    logging.info(f"🔄 CONFIRMACION RELAY recibida de {device_id}:")
+    logging.info(f"   Aula: {aula}")
+    logging.info(f"   Relay: {relay_num}")
+    logging.info(f"   Estado: {relay_state}")
 
     if device_id in aulas_estado:
         key = "relay1" if relay_num == 1 else "relay2"
+        estado_previo = aulas_estado[device_id].get(key)
         aulas_estado[device_id][key] = relay_state
+        logging.info(f"   Estado en servidor actualizado: {estado_previo} → {relay_state}")
+    else:
+        logging.warning(f"   ⚠️ Device {device_id} no encontrado en aulas_estado")
 
+    logging.info(f"📢 Notificando a staff sobre cambio de relay")
     await manager.notify_staff({
         "tipo": "confirmacion_relay", "aula": aula, "device_id": device_id,
         "relay_num": relay_num, "relay_state": relay_state
@@ -225,12 +233,16 @@ MAPA_ACCIONES_DISPOSITIVO = {
 
 async def ejecutar_cambio_relay(usuario_id: str, mensaje: dict, websocket: WebSocket):
     """Busca el dispositivo y envía orden de cambio de relé."""
+    logging.info(f"🎛️ Ejecutar cambio relay - Usuario: {usuario_id}, Mensaje: {mensaje}")
+    
     # 1. Resolver Device ID
     target_id = mensaje.get("device_id")
     if not target_id and mensaje.get("aula"):
         target_id = get_device_id_por_aula(mensaje.get("aula"))
+        logging.info(f"   Device ID resuelto por aula: {target_id}")
     
     if not target_id:
+        logging.warning(f"❌ Device ID no encontrado para: {mensaje}")
         await websocket.send_json({"tipo": "error", "mensaje": "Dispositivo no encontrado"})
         return
 
@@ -238,10 +250,14 @@ async def ejecutar_cambio_relay(usuario_id: str, mensaje: dict, websocket: WebSo
     r_num = mensaje.get("relay_num", 1)
     r_state = mensaje.get("relay_state", False)
     
+    logging.info(f"📤 Enviando a {target_id}: relay{r_num} = {r_state}")
+    
     success = await manager.send_to_device(target_id, {
         "tipo": f"actualizacion_relay{r_num}", "device_id": target_id,
         "relay_num": r_num, "relay": r_state
     })
+    
+    logging.info(f"   Resultado envío: {'✅ Éxito' if success else '❌ Falló'}")
     
     # 3. Feedback al usuario
     await websocket.send_json({

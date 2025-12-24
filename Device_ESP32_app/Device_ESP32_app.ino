@@ -35,7 +35,7 @@ void HiloComunicadorcode(void* pvParameters);
 NFCData leerNFC();  // Devuelve NFCData
 void obtenerProximaClase();
 void EnviaValoresAula();
-void registrarAsistencia(String tarjetaUID);
+bool registrarAsistencia(String tarjetaUID);  // Devuelve true si fichaje exitoso
 String uidToString(byte *uid, unsigned int longitud);
 String urlencode(String str);
 unsigned long epochFromString(String fecha);
@@ -150,12 +150,20 @@ void HiloComunicadorcode(void* pvParameters) {
 //Loop principal que utilizaremos para toda la lógica de los sensores y actuadores
 void loop() {
   
+  // ============================================
+  // VERIFICAR SI EL TIMER DE FIN DE CLASE SE DISPARÓ
+  // ============================================
+  if (timerFinClaseDisparado) {
+    Serial.println("⏰ Timer de fin de clase disparado!");
+    resetearEstadoFichaje();  // Resetea estado y consulta nueva clase
+  }
 
   // ============================================
   // POLLING NFC DIRECTO (sin IRQ - más estable)
+  // Solo activo si hay clase en curso Y no se ha fichado aún
   // ============================================
   
-  if(claseEnCurso){
+  if(claseEnCurso && !fichajeClaseCompletado){
     // Gestionar cooldown entre lecturas de tarjetas
     if (nfcReaderDisabled && millis() - nfcTimeLastCardRead > DELAY_BETWEEN_CARDS) {
         nfcReaderDisabled = false;
@@ -167,20 +175,46 @@ void loop() {
         
         if (nfc_data.valido && nfc_data.tarjetaDetectada) {
             Serial.println("🔔 Tarjeta detectada por polling");
+            
+            // Proceder con el fichaje
             ledAmarillo(true);
-            registrarAsistencia(nfc_data.uid);
+            bool fichajeExitoso = registrarAsistencia(nfc_data.uid);
             ledAmarillo(false);
+            
+            if (fichajeExitoso) {
+                fichajeClaseCompletado = true;  // Deshabilitar NFC
+                Serial.println("✅ Fichaje verificado. NFC deshabilitado hasta fin de clase.");
+                
+                // Iniciar timer hasta fin de clase
+                iniciarTimerFinClase();
+            }
+            
             nfcTimeLastCardRead = millis();
             nfcReaderDisabled = true;
         }
     }
+  } else if (fichajeClaseCompletado && claseEnCurso) {
+    // Mostrar mensaje periódicamente mientras espera fin de clase
+    static unsigned long lastMsgTime = 0;
+    if (millis() - lastMsgTime > 60000) {  // Cada minuto
+      Serial.printf("ℹ️ NFC deshabilitado - esperando fin de clase (%s)\n", horaFinClase.c_str());
+      lastMsgTime = millis();
+    }
+  } else if (!claseEnCurso) {
+    // No hay clase - NFC permanece inactivo
+    static unsigned long lastNoClassMsg = 0;
+    if (millis() - lastNoClassMsg > 120000) {  // Cada 2 minutos
+      Serial.println("😴 Sin clase activa - NFC inactivo");
+      lastNoClassMsg = millis();
+    }
   }
   
 
-    // ============================================
-  // OBTENER PRÓXIMA CLASE
   // ============================================
-  if (millis() - lastReading3 > CLASS_CHECK_INTERVAL) {
+  // OBTENER PRÓXIMA CLASE (solo si no hay fichaje pendiente de timer)
+  // Cuando el timer está activo, él se encarga de la transición
+  // ============================================
+  if (!fichajeClaseCompletado && millis() - lastReading3 > CLASS_CHECK_INTERVAL) {
     lastReading3 = millis();
     obtenerProximaClase();
   }

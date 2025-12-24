@@ -166,11 +166,17 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
             bool relayState = doc["relay"];
             int relayNum = doc["relay_num"] | 1;
             
-            Serial.print("✅ Relay 1 (Calefacción) => ");
-            Serial.println(relayState ? "ENCENDIDO" : "APAGADO");
+            Serial.println("╔════════════════════════════════════╗");
+            Serial.println("║ 🔥 ACTUALIZACION RELAY 1           ║");
+            Serial.println("╚════════════════════════════════════╝");
+            Serial.printf("   Estado solicitado: %s\n", relayState ? "ON" : "OFF");
+            Serial.printf("   Estado previo: %s\n", relay1Estado ? "ON" : "OFF");
+            Serial.printf("   Pin: %d\n", RELAY_PIN_1);
             
             digitalWrite(RELAY_PIN_1, relayState ? HIGH : LOW);
             relay1Estado = relayState;
+            
+            Serial.printf("✅ Relay 1 aplicado: %s\n", relayState ? "ENCENDIDO" : "APAGADO");
             
             // Confirmar al servidor
             enviarConfirmacionRelay(1, relayState);
@@ -184,12 +190,18 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
             bool relayState = doc["relay"];
             int relayNum = doc["relay_num"] | 2;
             
-            Serial.print("✅ Relay 2 (Iluminación) => ");
-            Serial.println(relayState ? "ENCENDIDO" : "APAGADO");
+            Serial.println("╔════════════════════════════════════╗");
+            Serial.println("║ 💡 ACTUALIZACION RELAY 2           ║");
+            Serial.println("╚════════════════════════════════════╝");
+            Serial.printf("   Estado solicitado: %s\n", relayState ? "ON" : "OFF");
+            Serial.printf("   Estado previo: %s\n", relay2Estado ? "ON" : "OFF");
+            Serial.printf("   Pin: %d\n", RELAY_PIN_2);
             
             digitalWrite(RELAY_PIN_2, relayState ? HIGH : LOW);
             relay2Estado = relayState;
 
+            Serial.printf("✅ Relay 2 aplicado: %s\n", relayState ? "ENCENDIDO" : "APAGADO");
+            
             // Confirmar al servidor
             enviarConfirmacionRelay(2, relayState);
         }
@@ -511,6 +523,10 @@ void connectWS(){
 
 // ✅ NUEVA FUNCIÓN: Confirmar cambio de relé al servidor
 void enviarConfirmacionRelay(int relayNum, bool relayState) {
+    Serial.println("╔════════════════════════════════════╗");
+    Serial.println("║ 📤 ENVIANDO CONFIRMACION RELAY     ║");
+    Serial.println("╚════════════════════════════════════╝");
+    
     StaticJsonDocument<256> doc;
     doc["tipo"] = "confirmacion_relay";
     doc["device_id"] = deviceId;
@@ -521,11 +537,15 @@ void enviarConfirmacionRelay(int relayNum, bool relayState) {
 
     String jsonString;
     serializeJson(doc, jsonString);
+    
+    Serial.printf("   Relay: %d\n", relayNum);
+    Serial.printf("   Estado: %s\n", relayState ? "ON" : "OFF");
+    Serial.printf("   JSON: %s\n", jsonString.c_str());
+    
     webSocket.sendTXT(jsonString);
     
-    Serial.print("📤 Confirmación relay");
-    Serial.print(relayNum);
-    Serial.println(" enviada");
+    Serial.println("✅ Confirmación enviada al servidor");
+    Serial.println("╚════════════════════════════════════╝\n");
 }
 
 void enviarSaludoInicial() {

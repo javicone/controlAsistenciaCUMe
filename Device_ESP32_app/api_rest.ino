@@ -1,6 +1,6 @@
-// Versión original (mantener para compatibilidad)
-void registrarAsistencia(String tarjetaUID) {
-  registrarAsistenciaConTimestamp(tarjetaUID, 0);  // 0 = usar timestamp actual
+// Versión original (mantener para compatibilidad) - ahora devuelve bool
+bool registrarAsistencia(String tarjetaUID) {
+  return registrarAsistenciaConTimestamp(tarjetaUID, 0);  // 0 = usar timestamp actual
 }
 
 // Nueva versión con timestamp
@@ -197,6 +197,7 @@ bool enviarValoresConTimestamp(float temp, float hum, float lux, int personas, u
 
 void obtenerProximaClase() {
   Serial.println("\n📅 === ACTUALIZANDO DATOS DE CLASE ===");
+  
   // Verificar conexión WiFi
   if (WiFi.status() == WL_CONNECTED) {    
     WiFiClientSecure client;
@@ -230,8 +231,6 @@ void obtenerProximaClase() {
 
           } else {
             // --- CASO 2: MENSAJE DE "NO HAY CLASE" ---
-            // Intentamos leer el mensaje por si quieres verlo en el log
-            // Probamos claves comunes como "mensaje", "message" o "msg"
             String msgServidor = "";
             if (doc.containsKey("mensaje")) msgServidor = doc["mensaje"].as<String>();
             else if (doc.containsKey("message")) msgServidor = doc["message"].as<String>();

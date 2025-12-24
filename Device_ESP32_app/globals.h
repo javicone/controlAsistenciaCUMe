@@ -124,6 +124,18 @@ extern unsigned long nfcTimeLastCardRead;
 extern unsigned long nfcCooldown;
 
 // ============================================
+// CONTROL DE FICHAJE CON TIMER HASTA FIN DE CLASE
+// ============================================
+extern bool fichajeClaseCompletado;        // Si ya se fichó en esta clase
+extern volatile bool timerFinClaseDisparado; // Flag del timer (volatile para ISR)
+extern hw_timer_t *timerFinClase;          // Timer hardware del ESP32
+
+// Funciones de control de fichaje
+void iniciarTimerFinClase();               // Calcula tiempo hasta fin de clase e inicia timer
+void IRAM_ATTR onTimerFinClase();          // ISR del timer
+void resetearEstadoFichaje();              // Resetea estado y consulta nueva clase
+
+// ============================================
 // ESTADOS DE LEDs
 // ============================================
 enum EstadoLED {

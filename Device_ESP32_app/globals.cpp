@@ -106,6 +106,13 @@ bool nfcReaderDisabled = false;
 unsigned long nfcTimeLastCardRead = 0;
 unsigned long nfcCooldown = 0;
 
+// ============================================
+// CONTROL DE FICHAJE CON TIMER HASTA FIN DE CLASE
+// ============================================
+bool fichajeClaseCompletado = false;           // Si ya se fichó en esta clase
+volatile bool timerFinClaseDisparado = false;  // Flag del timer (volatile para ISR)
+hw_timer_t *timerFinClase = NULL;              // Timer hardware del ESP32
+
 unsigned long lastReading = 0;
 unsigned long lastReading2 = 0;
 unsigned long lastReading3 = 0;
