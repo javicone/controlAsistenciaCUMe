@@ -118,5 +118,9 @@ if __name__ == "__main__":
         port=5000,
         reload=True,
         ssl_keyfile=ssl_keyfile,
-        ssl_certfile=ssl_certfile
+        ssl_certfile=ssl_certfile,
+        # WebSocket config - desactivar ping del servidor para evitar conflictos
+        # con el heartbeat del ESP32
+        ws_ping_interval=None,  # Desactivar ping del servidor
+        ws_ping_timeout=None,   # Sin timeout de ping
     )

@@ -2,16 +2,20 @@ import json
 from typing import List, Dict, Any, Optional
 from fastapi import WebSocket
 import logging
+import time
 
 class ConnectionManager:
     def __init__(self):
         # 1. Dispositivos (ESP32): Diccionario para acceder rápido por ID
         self.device_connections: Dict[str, WebSocket] = {}
         
-        # 2. Admins: Lista simple (pueden haber varios admins conectados a la vez)
+        # 2. Última actividad de cada dispositivo (para heartbeat)
+        self.device_last_activity: Dict[str, float] = {}
+        
+        # 3. Admins: Lista simple (pueden haber varios admins conectados a la vez)
         self.admin_websockets: List[WebSocket] = []
         
-        # 3. Conserjes: Lista simple
+        # 4. Conserjes: Lista simple
         self.conserje_websockets: List[WebSocket] = []
 
     async def connect(self, websocket: WebSocket, client_type: str, client_id: Optional[str] = None):
@@ -23,6 +27,7 @@ class ConnectionManager:
         
         if client_type == "device" and client_id:
             self.device_connections[client_id] = websocket
+            self.device_last_activity[client_id] = time.time()
             logging.info(f"✅ Dispositivo conectado: {client_id}. Total: {len(self.device_connections)}")
             
         elif client_type == "admin":
@@ -35,8 +40,11 @@ class ConnectionManager:
             
         else:
             logging.warning(f"⚠️ Tipo de cliente desconocido intentó conectar: {client_type}")
-            # Opcional: Cerrar conexión si no es un rol válido
-            # await websocket.close() 
+
+    def update_activity(self, client_id: str):
+        """Actualiza el timestamp de última actividad de un dispositivo."""
+        if client_id:
+            self.device_last_activity[client_id] = time.time()
 
     def disconnect(self, websocket: WebSocket, client_id: Optional[str] = None):
         """
@@ -45,6 +53,8 @@ class ConnectionManager:
         # 1. Desconectar Dispositivo
         if client_id and client_id in self.device_connections:
             del self.device_connections[client_id]
+            if client_id in self.device_last_activity:
+                del self.device_last_activity[client_id]
             logging.info(f"❌ Dispositivo desconectado: {client_id}")
         
         # 2. Desconectar Admin

@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from fastapi import HTTPException
 import logging
 
@@ -30,6 +30,31 @@ def actualizar_relay(aula: str, estado: bool) -> dict:
     
     aulas_estado[aula]["relay"] = estado
     return aulas_estado[aula]
+
+def verificar_nombre_aula_disponible(nuevo_nombre: str, device_id_excluir: Optional[str] = None) -> tuple[bool, Optional[str]]:
+    """
+    Verifica si un nombre de aula está disponible (no usado por otro dispositivo).
+    
+    Args:
+        nuevo_nombre: El nombre que se quiere asignar
+        device_id_excluir: El device_id que está intentando usar el nombre (para excluirlo de la búsqueda)
+    
+    Returns:
+        (disponible, device_id_que_lo_usa) - Si no está disponible, retorna el device_id que ya lo usa
+    """
+    nuevo_nombre_lower = nuevo_nombre.strip().lower()
+    
+    for device_id, aula_data in aulas_estado.items():
+        # Excluir el propio dispositivo que está cambiando su nombre
+        if device_id == device_id_excluir:
+            continue
+            
+        nombre_actual = aula_data.get("aula") or aula_data.get("nombre", "")
+        if nombre_actual and nombre_actual.strip().lower() == nuevo_nombre_lower:
+            logger.warning(f"⚠️ Nombre '{nuevo_nombre}' ya está en uso por {device_id}")
+            return False, device_id
+    
+    return True, None
 
 # Mapeo aula_nombre → device_id (puede venir de BD o de aulas_estado)
 def get_device_id_por_aula(aula_nombre: str) -> str | None:

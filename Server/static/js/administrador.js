@@ -476,8 +476,23 @@ function setupEventListeners() {
     const calefaccionCheckbox = document.getElementById('calefaccion-enabled');
     if (calefaccionCheckbox) {
         calefaccionCheckbox.addEventListener('change', (e) => {
-            if (!aulaSeleccionada) return;
-            enviarToggleRelay(aulaSeleccionada.device_id, 1, e.target.checked);
+            if (!aulaSeleccionada) {
+                e.preventDefault();
+                e.target.checked = !e.target.checked;
+                return;
+            }
+            
+            const nuevoEstado = e.target.checked;
+            console.log(`🔥 Toggle calefacción: ${nuevoEstado} para ${aulaSeleccionada.device_id}`);
+            
+            // Enviar comando
+            const exito = enviarToggleRelay(aulaSeleccionada.device_id, 1, nuevoEstado);
+            
+            // Si falla el envío, revertir el checkbox
+            if (!exito) {
+                console.warn('❌ Fallo al enviar comando, revirtiendo checkbox');
+                e.target.checked = !nuevoEstado;
+            }
         });
     }
 
@@ -485,8 +500,23 @@ function setupEventListeners() {
     const iluminacionCheckbox = document.getElementById('iluminacion-enabled');
     if (iluminacionCheckbox) {
         iluminacionCheckbox.addEventListener('change', (e) => {
-            if (!aulaSeleccionada) return;
-            enviarToggleRelay(aulaSeleccionada.device_id, 2, e.target.checked);
+            if (!aulaSeleccionada) {
+                e.preventDefault();
+                e.target.checked = !e.target.checked;
+                return;
+            }
+            
+            const nuevoEstado = e.target.checked;
+            console.log(`💡 Toggle iluminación: ${nuevoEstado} para ${aulaSeleccionada.device_id}`);
+            
+            // Enviar comando
+            const exito = enviarToggleRelay(aulaSeleccionada.device_id, 2, nuevoEstado);
+            
+            // Si falla el envío, revertir el checkbox
+            if (!exito) {
+                console.warn('❌ Fallo al enviar comando, revirtiendo checkbox');
+                e.target.checked = !nuevoEstado;
+            }
         });
     }
 

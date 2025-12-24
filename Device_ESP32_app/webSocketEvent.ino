@@ -1,6 +1,10 @@
 // Usamos Preferences para persistencia de configuración
 #include <Preferences.h>
 
+// Contador de intentos de reconexión fallidos
+static int wsReconnectAttempts = 0;
+const int MAX_RECONNECT_ATTEMPTS = 5;  // Después de 5 intentos, invalidar token
+
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
   // ✅ Log inicial con timestamp
   unsigned long timestamp = millis();
@@ -47,21 +51,25 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
   switch (type) {
     case WStype_DISCONNECTED:
       {
+        wsReconnectAttempts++;
         Serial.println("❌ WebSocket DESCONECTADO");
         Serial.printf("   WiFi estado: %s\n", WiFi.status() == WL_CONNECTED ? "Conectado" : "Desconectado");
         Serial.printf("   RSSI: %d dBm\n", WiFi.RSSI());
         Serial.printf("   IP: %s\n", WiFi.localIP().toString().c_str());
-        // 🔍 DIAGNÓSTICO DEL PROBLEMA
-        // Si el WiFi está bien, pero el WebSocket se desconecta, suele ser 
-        // porque el servidor rechazó el token (Handshake 401/403).
+        Serial.printf("   Intento de reconexión: %d/%d\n", wsReconnectAttempts, MAX_RECONNECT_ATTEMPTS);
+        
+        wsConectado = false;
+        
+        // 🔍 DIAGNÓSTICO: Solo invalidar token después de varios intentos fallidos
         if (WiFi.status() == WL_CONNECTED) {
-           Serial.println("⚠️ Desconexión con WiFi activo -> Posible error de Autenticación (Token inválido)");
-           
-           // AQUI ESTÁ LA MAGIA: Invalidamos el token para que la próxima vez pida uno nuevo
-           invalidateToken(); 
+           if (wsReconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+              Serial.println("⚠️ Demasiados intentos fallidos - Invalidando token");
+              invalidateToken();
+              wsReconnectAttempts = 0;  // Reset contador
+           } else {
+              Serial.println("   Manteniendo token, reconexión automática en 5s...");
+           }
         }
-
-        wsConectado = false;        
       }
       break;
 
@@ -73,13 +81,19 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
         Serial.printf("   WiFi RSSI: %d dBm\n", WiFi.RSSI());
         Serial.printf("   Free heap: %d bytes\n", ESP.getFreeHeap());
         
-        // Opcional: enviar mensaje de confirmación al servidor
-        StaticJsonDocument<128> hello;
+        // Reset contador de reconexiones al conectar exitosamente
+        wsReconnectAttempts = 0;
+        wsConectado = true;
+        
+        // Enviar mensaje de vinculación al servidor
+        StaticJsonDocument<200> hello;
         hello["tipo"] = "nodo_conectado";
         hello["device_id"] = deviceId;
         hello["aula"] = aula;
-        hello["ip"] = WiFi.localIP().toString();  // ⬅️ AGREGAR IP
+        hello["ip"] = WiFi.localIP().toString();
         hello["uptime"] = millis() / 1000;
+        hello["relay1"] = relay1Estado;
+        hello["relay2"] = relay2Estado;
         String helloMsg;
         serializeJson(hello, helloMsg);
         
@@ -259,6 +273,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
           }
           
           Serial.println("📝 Nuevos valores:");
+          bool nombreCambiado = false;
           
           if (data.containsKey("nombre")) {
             String nombre = data["nombre"].as<String>();
@@ -269,6 +284,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
             preferences.putString("aula", nombre);
             preferences.end();
             aula = nombre;
+            nombreCambiado = true;
             Serial.printf("💾 Nombre de aula persistido en NVS: %s\n", nombre.c_str());
           }
           if (data.containsKey("edificio")) {
@@ -292,10 +308,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
             Serial.printf("   💡 Iluminación: %s\n", iluminacion ? "Habilitada" : "Deshabilitada");
           }
           
-          // TODO: Guardar en NVS/EEPROM
-          Serial.println("⚠️ TODO: Guardar configuración en NVS");
-          
-          // Confirmar
+          // Confirmar configuración
           StaticJsonDocument<128> respuesta;
           respuesta["tipo"] = "config_confirmada";
           respuesta["device_id"] = deviceId;
@@ -305,6 +318,26 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
           Serial.printf("📤 Enviando confirmación: %s\n", jsonStr.c_str());
           webSocket.sendTXT(jsonStr);
           
+          // 🔄 Si cambió el nombre, re-registrar el nodo para sincronizar con el servidor
+          if (nombreCambiado) {
+            Serial.println("🔄 Nombre de aula cambiado, re-registrando nodo...");
+            delay(100); // Pequeño delay para asegurar que la confirmación llegue primero
+            
+            StaticJsonDocument<200> reregistro;
+            reregistro["tipo"] = "nodo_conectado";
+            reregistro["device_id"] = deviceId;
+            reregistro["aula"] = aula;
+            reregistro["ip"] = WiFi.localIP().toString();
+            reregistro["uptime"] = millis() / 1000;
+            reregistro["relay1"] = relay1Estado;
+            reregistro["relay2"] = relay2Estado;
+            
+            String reregistroJson;
+            serializeJson(reregistro, reregistroJson);
+            Serial.printf("📤 Re-registrando con nuevo nombre: %s\n", reregistroJson.c_str());
+            webSocket.sendTXT(reregistroJson);
+          }
+          
           Serial.println("✅ Configuración aplicada");
         }
         
@@ -313,6 +346,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
         // ════════════════════════════════════════
         else if (tipoMensaje == "estado_inicial") {
           Serial.println("📦 Estado inicial recibido del servidor");
+          wsConectado = true;  // Marcar como conectado
           
           if (doc.containsKey("data")) {
             JsonObject data = doc["data"];
@@ -323,6 +357,24 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
               Serial.printf("   - %s\n", kv.key().c_str());
             }
           }
+        }
+        
+        // ════════════════════════════════════════
+        // ACK BIENVENIDA (confirmación del servidor)
+        // ════════════════════════════════════════
+        else if (tipoMensaje == "ack_bienvenida") {
+          Serial.println("✅ Servidor confirmó vinculación de aula");
+          wsConectado = true;  // Confirmar conexión establecida
+          if (doc.containsKey("mensaje")) {
+            Serial.printf("   Mensaje: %s\n", doc["mensaje"].as<const char*>());
+          }
+        }
+        
+        // ════════════════════════════════════════
+        // MENSAJE DESCONOCIDO
+        // ════════════════════════════════════════
+        else {
+          Serial.printf("⚠️ Tipo de mensaje no reconocido: '%s'\n", tipoMensaje.c_str());
         }
       }
       break;
@@ -362,7 +414,22 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
           Serial.print("   Mensaje: ");
           Serial.write(payload, length);
           Serial.println();
+          
+          // Convertir payload a string para análisis
+          String errorMsg = String((char*)payload);
+          errorMsg.toLowerCase();
+          
+          // Si es error de autenticación, invalidar token
+          if (errorMsg.indexOf("401") >= 0 || 
+              errorMsg.indexOf("403") >= 0 || 
+              errorMsg.indexOf("unauthorized") >= 0 ||
+              errorMsg.indexOf("forbidden") >= 0 ||
+              errorMsg.indexOf("invalid token") >= 0) {
+            Serial.println("🔑 Error de autenticación detectado - Invalidando token");
+            invalidateToken();
+          }
         }
+        wsConectado = false;
       }
       break;
 
