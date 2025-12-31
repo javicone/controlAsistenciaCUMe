@@ -173,10 +173,11 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
             Serial.printf("   Estado previo: %s\n", relay1Estado ? "ON" : "OFF");
             Serial.printf("   Pin: %d\n", RELAY_PIN_1);
             
-            digitalWrite(RELAY_PIN_1, relayState ? HIGH : LOW);
+            // Relés activos en LOW: true=ON=LOW, false=OFF=HIGH
+            digitalWrite(RELAY_PIN_1, relayState ? LOW : HIGH);
             relay1Estado = relayState;
             
-            Serial.printf("✅ Relay 1 aplicado: %s\n", relayState ? "ENCENDIDO" : "APAGADO");
+            Serial.printf("✅ Relay 1 aplicado: %s (Pin: %s)\n", relayState ? "ENCENDIDO" : "APAGADO", relayState ? "LOW" : "HIGH");
             
             // Confirmar al servidor
             enviarConfirmacionRelay(1, relayState);
@@ -197,10 +198,11 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
             Serial.printf("   Estado previo: %s\n", relay2Estado ? "ON" : "OFF");
             Serial.printf("   Pin: %d\n", RELAY_PIN_2);
             
-            digitalWrite(RELAY_PIN_2, relayState ? HIGH : LOW);
+            // Relés activos en LOW: true=ON=LOW, false=OFF=HIGH
+            digitalWrite(RELAY_PIN_2, relayState ? LOW : HIGH);
             relay2Estado = relayState;
 
-            Serial.printf("✅ Relay 2 aplicado: %s\n", relayState ? "ENCENDIDO" : "APAGADO");
+            Serial.printf("✅ Relay 2 aplicado: %s (Pin: %s)\n", relayState ? "ENCENDIDO" : "APAGADO", relayState ? "LOW" : "HIGH");
             
             // Confirmar al servidor
             enviarConfirmacionRelay(2, relayState);
@@ -210,11 +212,12 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
                     int relayNum = doc["relay_num"] | 1;
                     bool relayState = doc["relay"];
                     
+                    // Relés activos en LOW: true=ON=LOW, false=OFF=HIGH
                     if (relayNum == 1) {
-                        digitalWrite(RELAY_PIN_1, relayState ? HIGH : LOW);
+                        digitalWrite(RELAY_PIN_1, relayState ? LOW : HIGH);
                         relay1Estado = relayState;
                     } else if (relayNum == 2) {
-                        digitalWrite(RELAY_PIN_2, relayState ? HIGH : LOW);
+                        digitalWrite(RELAY_PIN_2, relayState ? LOW : HIGH);
                         relay2Estado = relayState;
                     }
                     

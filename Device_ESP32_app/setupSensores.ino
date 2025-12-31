@@ -5,13 +5,19 @@ void initSensores() {
 
   setupIndicators();  //Inicializamos los indicadores (LEDs y buzzer)
   Serial.println("🔧 Inicializando sensores...");
+  
   // Configurar pines de reles
-  // Los reles son activos en LOW y bajo en High
-
+  // Los reles son activos en LOW: LOW=ON, HIGH=OFF
   pinMode(relayPin1, OUTPUT);
-  digitalWrite(relayPin1, HIGH); // Relé de la calefaccion
+  digitalWrite(relayPin1, HIGH); // Relé 1 APAGADO (HIGH = OFF para relés activos en LOW)
+  relay1Estado = false;          // Sincronizar estado: false = APAGADO
+  
   pinMode(relayPin2, OUTPUT);
-  digitalWrite(relayPin2, HIGH); // Relé de la luz 
+  digitalWrite(relayPin2, HIGH); // Relé 2 APAGADO (HIGH = OFF para relés activos en LOW)
+  relay2Estado = false;          // Sincronizar estado: false = APAGADO
+  
+  Serial.println("✅ Relés inicializados (ambos APAGADOS)");
+  
   setupNFC();
   delay(200);  //Inicializamos el lector NFC
   setupRadar();  //Inicializamos el radar de presencia
