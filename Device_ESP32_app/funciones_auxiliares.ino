@@ -108,16 +108,17 @@ void iniciarTimerFinClase() {
   
   // Detener timer anterior si existe
   if (timerFinClase != NULL) {
-    timerAlarmDisable(timerFinClase);
+    timerStop(timerFinClase);
     timerDetachInterrupt(timerFinClase);
     timerEnd(timerFinClase);
   }
   
-  // Configurar timer hardware (timer 0, divisor 80 para 1MHz = 1 tick por microsegundo)
-  timerFinClase = timerBegin(0, 80, true);  // Timer 0, prescaler 80 (1us por tick), contar hacia arriba
-  timerAttachInterrupt(timerFinClase, &onTimerFinClase, true);  // Adjuntar ISR
-  timerAlarmWrite(timerFinClase, (uint64_t)segundosRestantes * 1000000, false);  // Alarma en microsegundos, no repetir
-  timerAlarmEnable(timerFinClase);  // Habilitar alarma
+  // Configurar timer hardware con la nueva API (ESP32 Core 3.x)
+  // Frecuencia: 1 MHz (1 tick por microsegundo)
+  timerFinClase = timerBegin(1000000);  // 1 MHz
+  timerAttachInterrupt(timerFinClase, &onTimerFinClase);  // Adjuntar ISR
+  timerAlarm(timerFinClase, (uint64_t)segundosRestantes * 1000000, false, 0);  // Alarma en microsegundos, no repetir
+  timerStart(timerFinClase);  // Iniciar timer
   
   Serial.println("✅ Timer de fin de clase iniciado");
 }
@@ -132,7 +133,7 @@ void resetearEstadoFichaje() {
   
   // Detener timer si está corriendo
   if (timerFinClase != NULL) {
-    timerAlarmDisable(timerFinClase);
+    timerStop(timerFinClase);
   }
   
   // Consultar nueva clase

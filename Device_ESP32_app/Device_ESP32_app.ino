@@ -176,17 +176,20 @@ void loop() {
         if (nfc_data.valido && nfc_data.tarjetaDetectada) {
             Serial.println("🔔 Tarjeta detectada por polling");
             
-            // Proceder con el fichaje
-            ledAmarillo(true);
+           
             bool fichajeExitoso = registrarAsistencia(nfc_data.uid);
-            ledAmarillo(false);
             
             if (fichajeExitoso) {
+                secuenciaExito();
                 fichajeClaseCompletado = true;  // Deshabilitar NFC
                 Serial.println("✅ Fichaje verificado. NFC deshabilitado hasta fin de clase.");
                 
                 // Iniciar timer hasta fin de clase
                 iniciarTimerFinClase();
+            }
+            else {
+                secuenciaError();
+                Serial.println("❌ Fichaje fallido. Intente nuevamente.");
             }
             
             nfcTimeLastCardRead = millis();

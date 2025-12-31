@@ -22,10 +22,10 @@ bool registrarAsistenciaConTimestamp(String tarjetaUID, unsigned long eventTimes
   https.begin(client, fullUrl);
   https.addHeader("Content-Type", "application/json");
   
-  // Preparar JSON con timestamp
+  // Preparar JSON con device_id, uid y timestamp
   StaticJsonDocument<256> doc;
   doc["uid"] = tarjetaUID;
-  doc["nombre_aula"] = aula;
+  doc["device_id"] = deviceId;  // Enviar device_id en lugar de nombre_aula
   
   // Si eventTimestamp es 0, usar timestamp actual
   if (eventTimestamp == 0) {
@@ -63,38 +63,46 @@ bool registrarAsistenciaConTimestamp(String tarjetaUID, unsigned long eventTimes
       exito = true;
       delay(500);
       ledVerde(false); // Apagar LED verde
+    } else if (httpResponseCode == 400) {
+      ledAmarillo(true); // Encender LED amarillo - no hay clase programada
+      Serial.println("⚠️ Error 400: No hay clase programada en este aula en este momento");
+      delay(1500);
+      ledAmarillo(false);
     } else if (httpResponseCode == 403) {
       ledRojo(true); // Encender LED rojo al error de acceso denegado
+      Serial.println("❌ Acceso denegado: No puedes fichar en esta clase (profesor incorrecto)");
       delay(1000);
       ledRojo(false); // Apagar LED rojo
-      Serial.println("❌ Acceso denegado: Tarjeta no autorizada");
     } else if (httpResponseCode == 404) {
-      ledRojo(true); // Encender LED rojo al error de acceso denegado
+      ledRojo(true); // Encender LED rojo al error de tarjeta no encontrada
+      Serial.println("❌ Error 404: Tarjeta o aula no encontrada");
       delay(1000);
-      Serial.println("❌ Error 404: Tarjeta desconocida");
+      ledRojo(false);
     } else if (httpResponseCode == 500) {
-      ledRojo(true); // Encender LED rojo al error de acceso denegado
-      delay(1000);
+      ledRojo(true); // Encender LED rojo al error interno
       Serial.println("❌ Error 500: Error interno del servidor");
-    } else {
-      ledRojo(true); // Encender LED rojo al error de acceso denegado
       delay(1000);
+      ledRojo(false);
+    } else {
+      ledRojo(true); // Encender LED rojo al error inesperado
       Serial.print("❌ Error HTTP inesperado: "); Serial.println(httpResponseCode);
+      delay(1000);
       if (eventTimestamp == 0) {  // Solo guardar en cola si es un evento nuevo
         saveToQueue("fichaje", jsonPayload, millis());
         Serial.println("⚠️ Asistencia guardada en cola para reintento");
       }
+      ledRojo(false);
     }
   } else {
-    ledRojo(true); // Encender LED rojo al error de acceso denegado
-      delay(1000);
+    ledRojo(true); // Encender LED rojo al error de conexión
     Serial.print("❌ Error HTTP: "); Serial.println(httpResponseCode);
+    delay(1000);
     if (eventTimestamp == 0) {  // Solo guardar en cola si es un evento nuevo
       saveToQueue("fichaje", jsonPayload, millis());
       Serial.println("⚠️ Asistencia guardada en cola para reintento");
     }
+    ledRojo(false);
   }
-  ledRojo(false); // Apagar LED rojo
   ledAmarillo(false); // Apagar LED amarillo
   https.end();
   Serial.println("=================================\n");

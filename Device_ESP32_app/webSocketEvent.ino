@@ -461,6 +461,24 @@ void connectWS(){
   Serial.println("║ 🌐 CONECTANDO WEBSOCKET            ║");
   Serial.println("╚════════════════════════════════════╝");
   
+  // ✅ Verificar si ya está conectado
+  if (webSocket.isConnected()) {
+    Serial.println("⚠️ WebSocket ya está conectado - omitiendo reconexión");
+    return;
+  }
+  
+  // ✅ Verificar conexión WiFi
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("❌ ERROR: WiFi no conectado");
+    Serial.println("   No se puede conectar WebSocket sin WiFi");
+    return;
+  }
+  
+  // ✅ Desconectar WebSocket anterior si existe
+  Serial.println("🔌 Cerrando conexión anterior (si existe)...");
+  webSocket.disconnect();
+  delay(500);
+  
   // ✅ Obtener token
   Serial.println("🔐 Solicitando token JWT...");
   String token = ensureToken();
@@ -496,7 +514,7 @@ void connectWS(){
   Serial.println("📡 Configurando event handler...");
   webSocket.onEvent(webSocketEvent);
   
-  // ✅ Configurar reconexión
+  // ✅ Configurar reconexión automática
   Serial.println("🔄 Configurando reconexión automática (5s)...");
   webSocket.setReconnectInterval(5000);
   
@@ -517,7 +535,6 @@ void connectWS(){
   Serial.println("\n✅ WebSocket configurado correctamente");
   Serial.println("   Esperando evento CONNECTED...\n");
   Serial.println("╚════════════════════════════════════╝\n");
-  wsConectado = true;
 }
 
 
