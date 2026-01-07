@@ -9,7 +9,7 @@ from repositories.asistenciaRepository import (
     fetch_asistencias_by_usuario,
     fetch_all_asistencias,
 )
-from repositories.claseRepository import get_clase_from_webservice
+from repositories.claseRepository import get_clase_from_webservice, guardar_clase_webservice
 
 logger = logging.getLogger(__name__)
 
@@ -46,15 +46,35 @@ async def registrar_asistencia(uid: str, device_id: str, timestamp: datetime = N
         clase_ws = await get_clase_from_webservice(nombre_aula)
         
         if clase_ws and "asignatura" in clase_ws:
-            # Convertir respuesta del webservice a formato esperado
-            clase = {
-                "id": None,  # No tenemos ID de la BD
-                "profesor_id": usuario_id,  # Asumimos que es el profesor correcto
-                "asignatura": clase_ws["asignatura"],
-                "hora_inicio": clase_ws.get("hora_inicio"),
-                "hora_fin": clase_ws.get("hora_fin")
-            }
-            logger.info(f"✅ Clase obtenida desde webservice: {clase['asignatura']}")
+            # ✅ GUARDAR la clase del webservice en la BD para futuras consultas y estadísticas
+            try:
+                clase_id_guardada = await guardar_clase_webservice(
+                    aula_id=aula_id,
+                    profesor_id=usuario_id,
+                    asignatura=clase_ws["asignatura"],
+                    hora_inicio=clase_ws["hora_inicio"],
+                    hora_fin=clase_ws["hora_fin"]
+                )
+                
+                # Convertir respuesta del webservice a formato esperado
+                clase = {
+                    "id": clase_id_guardada,  # Ahora tenemos el ID de la BD
+                    "profesor_id": usuario_id,
+                    "asignatura": clase_ws["asignatura"],
+                    "hora_inicio": clase_ws.get("hora_inicio"),
+                    "hora_fin": clase_ws.get("hora_fin")
+                }
+                logger.info(f"✅ Clase obtenida desde webservice y guardada en BD: {clase['asignatura']} (ID: {clase_id_guardada})")
+            except Exception as e:
+                logger.error(f"❌ Error guardando clase del webservice: {e}")
+                # Continuar sin guardar pero permitir el fichaje
+                clase = {
+                    "id": None,
+                    "profesor_id": usuario_id,
+                    "asignatura": clase_ws["asignatura"],
+                    "hora_inicio": clase_ws.get("hora_inicio"),
+                    "hora_fin": clase_ws.get("hora_fin")
+                }
     
     clase_id = None
     asignatura = None
@@ -99,10 +119,43 @@ async def registrar_asistencia(uid: str, device_id: str, timestamp: datetime = N
         "fecha_hora": fecha_hora
     }
 
-async def obtener_asistencias(user_id: str, rol: str) -> list:
+async def obtener_asistencias(user_id: str, rol: str) -> dict:
+    """
+    Obtiene las asistencias según el rol del usuario.
+    Devuelve: { "nombre": "...", "asistencias": [...] }
+    """
+    from repositories.asistenciaRepository import get_nombre_usuario_by_id
+    
+    # Obtener nombre del usuario
+    nombre_usuario = await get_nombre_usuario_by_id(user_id)
+    
     if rol == "profesor":
-        return await fetch_asistencias_by_usuario(user_id)
+        asistencias = await fetch_asistencias_by_usuario(user_id)
     elif rol in ["conserje", "administrador"]:
-        return await fetch_all_asistencias()
+        asistencias = await fetch_all_asistencias()
     else:
         raise HTTPException(status_code=403, detail="Acceso denegado")
+    
+    # Serializar datetime para JSON
+    asistencias_serializadas = []
+    for asist in asistencias:
+        asist_dict = dict(asist)
+        # Convertir datetime a string ISO
+        for key in ['fecha_hora', 'hora_inicio', 'hora_fin']:
+            if key in asist_dict and asist_dict[key]:
+                asist_dict[key] = asist_dict[key].isoformat()
+        asistencias_serializadas.append(asist_dict)
+    
+    # Obtener estadísticas mensuales para profesores
+    estadisticas = None
+    if rol == "profesor":
+        from repositories.asistenciaRepository import fetch_estadisticas_mensuales
+        from datetime import datetime
+        ahora = datetime.now()
+        estadisticas = await fetch_estadisticas_mensuales(user_id, ahora.year, ahora.month)
+    
+    return {
+        "nombre": nombre_usuario or "Docente",
+        "estadisticas": estadisticas,
+        "asistencias": asistencias_serializadas
+    }

@@ -113,6 +113,7 @@ async def registrar_vinculacion_aula(device_id: str, mensaje: dict, websocket: W
             "aula": aula_nombre,
             "device_id": device_id,
             "conectado": True,
+            "ip": mensaje.get("ip"),
             "uptime": mensaje.get("uptime", 0),
             "relay1": mensaje.get("relay1", False),
             "relay2": mensaje.get("relay2", False)

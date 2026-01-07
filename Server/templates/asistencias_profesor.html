@@ -338,6 +338,106 @@
             .dashboard-header { padding: 1rem; }
             .btn-logout { width: 100%; }
             #fichajes-container { grid-template-columns: 1fr; } /* Una columna en móviles */
+            .estadisticas-grid { flex-direction: column; }
+            .semanas-container { flex-direction: column; }
+        }
+
+        /* --- Estilos de Estadísticas Mensuales --- */
+        .estadisticas-container {
+            background: linear-gradient(135deg, var(--uex-verde) 0%, var(--uex-verde-oscuro) 100%);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 8px 24px rgba(0, 89, 66, 0.3);
+        }
+
+        .estadisticas-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .estadisticas-grid {
+            display: flex;
+            gap: 1.5rem;
+            align-items: stretch;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-total {
+            min-width: 140px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .semanas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            flex: 1;
+        }
+
+        .semana-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            min-width: 120px;
+            flex: 1;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .semana-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .semana-header {
+            font-size: 0.8rem;
+            opacity: 0.85;
+            margin-bottom: 0.3rem;
+        }
+
+        .semana-horas {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .semana-horas small {
+            font-size: 0.8rem;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        .fichajes-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--uex-verde);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(0, 89, 66, 0.1);
         }
     </style>
 </head>
@@ -357,6 +457,21 @@
         <main class="dashboard-main">
             <h2 id="user-welcome">Bienvenido, ...</h2>
             
+            <!-- Sección de Estadísticas Mensuales -->
+            <div id="estadisticas-section" class="estadisticas-container" style="display: none;">
+                <h3 class="estadisticas-title">📊 Resumen Mensual: <span id="mes-actual"></span></h3>
+                <div class="estadisticas-grid">
+                    <div class="stat-card stat-total">
+                        <div class="stat-value" id="total-horas">0</div>
+                        <div class="stat-label">Horas totales</div>
+                    </div>
+                    <div class="semanas-container" id="semanas-container">
+                        <!-- Las semanas se insertarán aquí -->
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="fichajes-title">📋 Historial de Fichajes</h3>
             <div id="fichajes-container">
                 <!-- Las tarjetas de fichaje se insertarán aquí por JavaScript -->
             </div>
@@ -386,6 +501,34 @@
         // --- Referencias a Elementos del DOM ---
         const fichajesContainer = document.getElementById('fichajes-container');
         const userWelcome = document.getElementById('user-welcome');
+        const estadisticasSection = document.getElementById('estadisticas-section');
+        const mesActual = document.getElementById('mes-actual');
+        const totalHoras = document.getElementById('total-horas');
+        const semanasContainer = document.getElementById('semanas-container');
+
+        // --- Función para renderizar las estadísticas mensuales ---
+        function renderEstadisticas(estadisticas) {
+            if (!estadisticas) {
+                estadisticasSection.style.display = 'none';
+                return;
+            }
+
+            estadisticasSection.style.display = 'block';
+            mesActual.textContent = estadisticas.mes;
+            totalHoras.textContent = estadisticas.total_mes + 'h';
+
+            semanasContainer.innerHTML = '';
+            estadisticas.semanas.forEach(semana => {
+                const semanaHTML = `
+                    <div class="semana-card">
+                        <div class="semana-header">Semana ${semana.semana}</div>
+                        <div class="semana-fechas" style="font-size: 0.75rem; opacity: 0.8;">${semana.fecha_inicio} - ${semana.fecha_fin}</div>
+                        <div class="semana-horas">${semana.horas}<small>h</small></div>
+                    </div>
+                `;
+                semanasContainer.innerHTML += semanaHTML;
+            });
+        }
 
         // --- Función para renderizar los fichajes REALES desde la BD ---
         function renderFichajes(asistencias) {
@@ -400,16 +543,24 @@
             const fichajesOrdenados = asistencias.sort((a, b) => new Date(b.fecha_hora) - new Date(a.fecha_hora));
 
             fichajesOrdenados.forEach(fichaje => {
-                const fecha = new Date(fichaje.fecha_hora);
-                const fechaFormateada = fecha.toLocaleString('es-ES', {
+                const fechaFichaje = new Date(fichaje.fecha_hora);
+                const fechaFormateada = fechaFichaje.toLocaleString('es-ES', {
                     dateStyle: 'full',
                     timeStyle: 'short'
                 });
 
+                // Formatear hora_inicio y hora_fin
+                let horarioClase = 'Sin clase asignada';
+                if (fichaje.hora_inicio && fichaje.hora_fin) {
+                    const horaInicio = new Date(fichaje.hora_inicio).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                    const horaFin = new Date(fichaje.hora_fin).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                    horarioClase = `${horaInicio} - ${horaFin}`;
+                }
+
                 const cardHTML = `
                     <div class="fichaje-card">
                         <div class="card-header">
-                            <h4>${fichaje.asignatura || 'Clase sin asignar'}</h4>
+                            <h4>${fichaje.asignatura || 'Sin asignatura'}</h4>
                         </div>
                         <div class="card-body">
                             <div class="card-detail card-detail-main">
@@ -417,13 +568,19 @@
                                 <strong>${fechaFormateada}</strong>
                             </div>
                             <div class="card-detail">
-                                <svg class="icon"><use href="#icon-users"></use></svg>
-                                <span>${fichaje.nombre_usuario || 'Usuario'}</span>
-                            </div>
-                            <div class="card-detail">
                                 <svg class="icon"><use href="#icon-location"></use></svg>
                                 <span>Aula: <strong>${fichaje.nombre_aula || 'N/A'}</strong></span>
                             </div>
+                            <div class="card-detail">
+                                <svg class="icon"><use href="#icon-book"></use></svg>
+                                <span>Horario clase: <strong>${horarioClase}</strong></span>
+                            </div>
+                            ${fichaje.nombre_usuario ? `
+                            <div class="card-detail">
+                                <svg class="icon"><use href="#icon-users"></use></svg>
+                                <span>${fichaje.nombre_usuario}</span>
+                            </div>
+                            ` : ''}
                         </div>
                     </div>
                 `;
@@ -448,8 +605,17 @@
                 }
                 
                 const data = await response.json();
-                console.log('✅ Asistencias cargadas:', data);
+                console.log('✅ Datos cargados:', data);
                 
+                // Actualizar nombre del usuario desde la respuesta del servidor
+                if (data.nombre) {
+                    userWelcome.textContent = `Bienvenido, ${data.nombre}`;
+                }
+                
+                // Renderizar estadísticas mensuales
+                renderEstadisticas(data.estadisticas);
+                
+                // Renderizar fichajes
                 renderFichajes(data.asistencias);
                 
             } catch (error) {
@@ -473,18 +639,11 @@
         document.addEventListener('DOMContentLoaded', async () => {
             console.log('📄 Página cargada');
             
-            // ✅ Obtener nombre del usuario desde el token
-            const nombreUsuario = obtenerNombreUsuario();
-            if (nombreUsuario) {
-                userWelcome.textContent = `Bienvenido, ${nombreUsuario}`;
-            } else {
-                userWelcome.textContent = 'Bienvenido, Docente';
-            }
-            
-            // Mostrar mensaje de carga
+            // Mostrar mensaje de carga inicial
+            userWelcome.textContent = 'Cargando...';
             fichajesContainer.innerHTML = '<p style="text-align:center; color: var(--texto-secundario); font-size: 1.2rem;">Cargando asistencias...</p>';
             
-            // Cargar asistencias reales
+            // Cargar asistencias reales (también actualiza el nombre del usuario)
             await cargarAsistencias();
             
             // Event listener para cerrar sesión
@@ -493,37 +652,6 @@
                 btnLogout.addEventListener('click', logout);
             }
         });
-
-        // ✅ Nueva función para obtener el nombre del usuario desde el token
-        function obtenerNombreUsuario() {
-            try {
-                // Obtener todas las cookies
-                const cookies = document.cookie.split(';');
-                
-                // Buscar la cookie access_token
-                const tokenCookie = cookies.find(c => c.trim().startsWith('access_token='));
-                
-                if (!tokenCookie) {
-                    console.warn('⚠️ Cookie access_token no encontrada');
-                    return null;
-                }
-                
-                // Extraer el valor del token
-                const token = tokenCookie.split('=')[1];
-                
-                // Decodificar el payload del JWT (parte central)
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                
-                console.log('👤 Payload del token:', payload);
-                
-                // Retornar el nombre (ajusta según el campo que uses en tu token)
-                return payload.nombre || payload.correo || 'Docente';
-                
-            } catch (error) {
-                console.error('❌ Error al decodificar token:', error);
-                return null;
-            }
-        }
     </script>
 </body>
 </html>

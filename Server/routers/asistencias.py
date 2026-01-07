@@ -18,7 +18,7 @@ async def registro_asistencia(registro: RegistroAsistencia):
 
 @router.get("/mis-asistencias")
 async def mis_asistencias(request: Request):
-    """Obtiene las asistencias del usuario autenticado"""
+    """Obtiene las asistencias del usuario autenticado con información detallada"""
     # DEBUG: Ver todas las cookies
     logger.info(f"🍪 Cookies recibidas: {request.cookies}")
     
@@ -42,9 +42,9 @@ async def mis_asistencias(request: Request):
         if not user_id or not rol:
             raise HTTPException(status_code=401, detail="Token inválido")
         
-        # Obtener asistencias según el rol
-        asistencias = await obtener_asistencias(user_id, rol)
-        return {"asistencias": asistencias}
+        # Obtener asistencias según el rol (ahora devuelve dict con nombre y asistencias)
+        resultado = await obtener_asistencias(user_id, rol)
+        return resultado
         
     except JWTError as e:
         logger.error(f"❌ Error JWT: {e}")
