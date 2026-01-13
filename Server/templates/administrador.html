@@ -65,19 +65,31 @@
                             <input type="text" id="aula-nombre" placeholder="Ej: Aula 101" required>
                         </div>
 
-                        <div class="form-group">
-                            <label for="edificio">🏢 Edificio</label>
-                            <input type="text" id="edificio" placeholder="Ej: Edificio A">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="planta">📶 Planta</label>
-                            <input type="number" id="planta" placeholder="Ej: 1" min="0" max="10">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="capacidad">👥 Capacidad</label>
-                            <input type="number" id="capacidad" placeholder="Número de personas" min="1">
+                        <!-- Sección de Sensores -->
+                        <div class="sensores-section">
+                            <h3 style="margin: 15px 0 10px; color: #555; font-size: 0.95em;">📊 Datos de Sensores</h3>
+                            <div class="sensores-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                                <div class="sensor-item" style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                                    <span style="font-size: 0.85em; color: #666;">🌡️ Temperatura</span>
+                                    <div id="sensor-temp" style="font-size: 1.1em; font-weight: 600; color: #333;">N/A</div>
+                                </div>
+                                <div class="sensor-item" style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                                    <span style="font-size: 0.85em; color: #666;">💧 Humedad</span>
+                                    <div id="sensor-humedad" style="font-size: 1.1em; font-weight: 600; color: #333;">N/A</div>
+                                </div>
+                                <div class="sensor-item" style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                                    <span style="font-size: 0.85em; color: #666;">🌀 Presión</span>
+                                    <div id="sensor-presion" style="font-size: 1.1em; font-weight: 600; color: #333;">N/A</div>
+                                </div>
+                                <div class="sensor-item" style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                                    <span style="font-size: 0.85em; color: #666;">☀️ Luz</span>
+                                    <div id="sensor-luz" style="font-size: 1.1em; font-weight: 600; color: #333;">N/A</div>
+                                </div>
+                                <div class="sensor-item" style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                                    <span style="font-size: 0.85em; color: #666;">👥 Personas</span>
+                                    <div id="sensor-personas" style="font-size: 1.1em; font-weight: 600; color: #333;">N/A</div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -105,11 +117,90 @@
                             <input type="text" id="ip-address" disabled>
                         </div>
 
+                        <!-- Sección de Diagnóstico de Sensores -->
+                        <div class="diagnostico-section" id="diagnostico-section" style="display: none;">
+                            <h3 style="margin: 20px 0 15px; color: #333; font-size: 1em; border-bottom: 2px solid #667eea; padding-bottom: 8px;">
+                                🔧 Diagnóstico del Nodo
+                            </h3>
+                            
+                            <!-- Info del sistema -->
+                            <div class="sistema-info" style="background: linear-gradient(135deg, #667eea15, #764ba215); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center;">
+                                    <div>
+                                        <span style="font-size: 0.75em; color: #666;">📶 WiFi RSSI</span>
+                                        <div id="diag-rssi" style="font-weight: 600; color: #333;">--</div>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 0.75em; color: #666;">⏱️ Uptime</span>
+                                        <div id="diag-uptime" style="font-weight: 600; color: #333;">--</div>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 0.75em; color: #666;">💾 Heap Libre</span>
+                                        <div id="diag-heap" style="font-weight: 600; color: #333;">--</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Estado de sensores -->
+                            <div class="sensores-estado">
+                                <p style="font-size: 0.85em; color: #555; margin-bottom: 10px;">Estado de Sensores:</p>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                                    <div class="sensor-status" id="status-nfc" style="display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8f9fa; border-radius: 6px; border-left: 3px solid #ccc;">
+                                        <span style="font-size: 1.2em;">💳</span>
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 0.9em;">NFC (PN532)</div>
+                                            <div class="status-text" style="font-size: 0.8em; color: #666;">Sin datos</div>
+                                        </div>
+                                    </div>
+                                    <div class="sensor-status" id="status-radar" style="display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8f9fa; border-radius: 6px; border-left: 3px solid #ccc;">
+                                        <span style="font-size: 1.2em;">📡</span>
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 0.9em;">Radar (LD2410)</div>
+                                            <div class="status-text" style="font-size: 0.8em; color: #666;">Sin datos</div>
+                                        </div>
+                                    </div>
+                                    <div class="sensor-status" id="status-bme" style="display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8f9fa; border-radius: 6px; border-left: 3px solid #ccc;">
+                                        <span style="font-size: 1.2em;">🌡️</span>
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 0.9em;">Temp/Hum (BME280)</div>
+                                            <div class="status-text" style="font-size: 0.8em; color: #666;">Sin datos</div>
+                                        </div>
+                                    </div>
+                                    <div class="sensor-status" id="status-luz" style="display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8f9fa; border-radius: 6px; border-left: 3px solid #ccc;">
+                                        <span style="font-size: 1.2em;">☀️</span>
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 0.9em;">Luz (BH1750)</div>
+                                            <div class="status-text" style="font-size: 0.8em; color: #666;">Sin datos</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Estado de relés -->
+                            <div class="reles-estado" style="margin-top: 15px;">
+                                <p style="font-size: 0.85em; color: #555; margin-bottom: 10px;">Estado de Relés:</p>
+                                <div style="display: flex; gap: 10px;">
+                                    <div id="status-relay1" style="flex: 1; padding: 10px; background: #f8f9fa; border-radius: 6px; text-align: center; border: 2px solid #e0e0e0;">
+                                        <span style="font-size: 1.5em;">🔥</span>
+                                        <div style="font-weight: 600; font-size: 0.85em;">Calefacción</div>
+                                        <div class="relay-state" style="font-size: 0.8em; color: #666;">--</div>
+                                    </div>
+                                    <div id="status-relay2" style="flex: 1; padding: 10px; background: #f8f9fa; border-radius: 6px; text-align: center; border: 2px solid #e0e0e0;">
+                                        <span style="font-size: 1.5em;">💡</span>
+                                        <div style="font-weight: 600; font-size: 0.85em;">Iluminación</div>
+                                        <div class="relay-state" style="font-size: 0.8em; color: #666;">--</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p id="diag-timestamp" style="font-size: 0.75em; color: #999; text-align: right; margin-top: 10px;"></p>
+                        </div>
+
                         <div class="button-group">
                             <button type="submit" class="btn btn-primary">💾 Guardar Cambios</button>
+                            <button type="button" class="btn btn-info" id="btn-diagnostico">🔧 Diagnóstico</button>
                             <button type="button" class="btn btn-danger" id="btn-reset">🔄 Resetear Nodo</button>
                             <button type="button" class="btn btn-secondary" id="btn-cancel">✖️ Cancelar</button>
-                            <button type="button" class="btn btn-secondary" id="btn-test">🧪 Test Conexión</button>
                         </div>
                     </form>
                 </div>

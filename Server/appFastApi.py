@@ -99,9 +99,9 @@ if __name__ == "__main__":
     # 3. Asignar los valores para uvicorn
     if ssl_enabled:
         print("🔒 SSL/TLS HABILITADO ✅")
-        print(f"   📍 https://0.0.0.0:5000")
-        print(f"   📚 https://0.0.0.0:5000/docs")
-        print(f"   🔌 wss://0.0.0.0:5000/ws")
+        print(f"   📍 https://0.0.0.0:8000")
+        print(f"   📚 https://0.0.0.0:8000/docs")
+        print(f"   🔌 wss://0.0.0.0:8000/ws")
         # Convertir Path objects a string para uvicorn
         ssl_keyfile = str(KEY_FILE_PATH)
         ssl_certfile = str(CERT_FILE_PATH)
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     uvicorn.run(
         "appFastApi:app",
         host="0.0.0.0",
-        port=5000,
+        port=8000,
         reload=True,
         ssl_keyfile=ssl_keyfile,
         ssl_certfile=ssl_certfile,

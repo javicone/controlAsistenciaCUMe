@@ -179,6 +179,23 @@ async def responder_ping(device_id: str, mensaje: dict, websocket: WebSocket):
 
 async def reenviar_log_admin(device_id: str, mensaje: dict, websocket: WebSocket):
     """Para mensajes de depuración como 'test_respuesta' o 'reset_confirmado'."""
+    # Asegurar que el device_id esté en el mensaje
+    mensaje["device_id"] = device_id
+    
+    # Si es test_respuesta, obtener información adicional del estado
+    if mensaje.get("tipo") == "test_respuesta":
+        if device_id in aulas_estado:
+            aula_data = aulas_estado[device_id]
+            # Añadir nombre del aula si no viene en el mensaje
+            if "aula" not in mensaje:
+                mensaje["aula"] = aula_data.get("aula", device_id)
+            # Añadir estado de relés del estado guardado si no vienen
+            if "relay1" not in mensaje:
+                mensaje["relay1"] = aula_data.get("relay1", False)
+            if "relay2" not in mensaje:
+                mensaje["relay2"] = aula_data.get("relay2", False)
+    
+    logging.info(f"📡 Reenviando a admins: {mensaje.get('tipo')} de {device_id}")
     await manager.notify_admins(mensaje)
 
 async def procesar_config_confirmada(device_id: str, mensaje: dict, websocket: WebSocket):

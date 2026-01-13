@@ -6,13 +6,13 @@
 // ============================================
 
 // ID del dispositivo y API Key segura
-String deviceId = "node-002";
+String deviceId = "node-001";  // ← CAMBIA ESTO SEGÚN TU ESP32
 
 // Aula (mutable, puede ser cargada/guardada en NVS)
-String aula = "Aula 8";
+String aula = "Aula 1";  // ← Y ESTO TAMBIÉN
 
 // Cada nodo tendrá su propia api_key en la bbdd.
-String apiKey = "V3cC5xZ8mN1bB4vL9kH2jG7fD6sA0pQ";
+String apiKey = "A2fP7zU4tD1sH6kE9wR0mN3cQ5vB8xYgO";
 
 // WiFi y servidor
 const char* ssid = "SERVER";
@@ -20,11 +20,11 @@ const char* password = "12345678";
 
 // Configuración WebSocket Seguro (WSS)
 const char* wsHost = "192.168.137.1";
-const int wsPort = 5000;
+const int wsPort = 8000;
 const char* wsPath = "/ws/device";
 
 // Configuración para HTTP
-const char* serverUrl = "https://192.168.137.1:5000";
+const char* serverUrl = "https://192.168.137.1:8000";
 
 // ----------- RUTA ENVIO DE DATOS SENSORES ----------
 const char* datos_aula = "/datos_aula"; 

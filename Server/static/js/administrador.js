@@ -235,12 +235,101 @@ function mostrarNotificacion(tipo, mensaje) {
 }
 
 function mostrarResultadoTest(resultado) {
-    const uptimeMin = resultado.uptime ? Math.floor(resultado.uptime / 60000) : 'N/A';
-    const heapKB = resultado.free_heap ? Math.floor(resultado.free_heap / 1024) : 'N/A';
+    console.log('🔧 Mostrando diagnóstico:', resultado);
     
-    mostrarNotificacion('info', 
-        `Test ${resultado.device_id}: ${resultado.status || 'OK'} | Uptime: ${uptimeMin} min`
-    );
+    // Mostrar sección de diagnóstico
+    const diagSection = document.getElementById('diagnostico-section');
+    if (diagSection) {
+        diagSection.style.display = 'block';
+    }
+    
+    // Info del sistema
+    const rssi = resultado.wifi_rssi;
+    const rssiText = rssi ? `${rssi} dBm` : '--';
+    document.getElementById('diag-rssi').textContent = rssiText;
+    
+    // Uptime: puede venir en milisegundos o segundos
+    let uptimeSec = resultado.uptime || 0;
+    // Si es mayor a 100000, probablemente está en milisegundos
+    if (uptimeSec > 100000) {
+        uptimeSec = Math.floor(uptimeSec / 1000);
+    }
+    const uptimeText = formatUptime(uptimeSec);
+    document.getElementById('diag-uptime').textContent = uptimeText;
+    
+    const heapBytes = resultado.free_heap || 0;
+    const heapText = heapBytes ? `${Math.floor(heapBytes / 1024)} KB` : '--';
+    document.getElementById('diag-heap').textContent = heapText;
+    
+    // Estado de sensores
+    const sensores = resultado.sensores || {};
+    actualizarEstadoSensor('status-nfc', sensores.nfc);
+    actualizarEstadoSensor('status-radar', sensores.radar);
+    actualizarEstadoSensor('status-bme', sensores.bme280);
+    actualizarEstadoSensor('status-luz', sensores.bh1750);
+    
+    // Estado de relés (si viene en la respuesta)
+    actualizarEstadoRelay('status-relay1', resultado.relay1);
+    actualizarEstadoRelay('status-relay2', resultado.relay2);
+    
+    // Timestamp
+    const timestamp = new Date().toLocaleTimeString('es-ES');
+    document.getElementById('diag-timestamp').textContent = `Última consulta: ${timestamp}`;
+    
+    mostrarNotificacion('success', `Diagnóstico de ${resultado.device_id} completado`);
+}
+
+function formatUptime(segundos) {
+    if (!segundos) return '--';
+    const dias = Math.floor(segundos / 86400);
+    const horas = Math.floor((segundos % 86400) / 3600);
+    const minutos = Math.floor((segundos % 3600) / 60);
+    
+    if (dias > 0) return `${dias}d ${horas}h ${minutos}m`;
+    if (horas > 0) return `${horas}h ${minutos}m`;
+    return `${minutos}m`;
+}
+
+function actualizarEstadoSensor(elementId, estado) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    const statusText = element.querySelector('.status-text');
+    
+    if (estado === true) {
+        element.style.borderLeftColor = '#28a745';
+        element.style.background = '#d4edda';
+        if (statusText) statusText.textContent = '✅ Operativo';
+    } else if (estado === false) {
+        element.style.borderLeftColor = '#dc3545';
+        element.style.background = '#f8d7da';
+        if (statusText) statusText.textContent = '❌ Error';
+    } else {
+        element.style.borderLeftColor = '#ffc107';
+        element.style.background = '#fff3cd';
+        if (statusText) statusText.textContent = '⚠️ Sin datos';
+    }
+}
+
+function actualizarEstadoRelay(elementId, estado) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    const stateText = element.querySelector('.relay-state');
+    
+    if (estado === true) {
+        element.style.borderColor = '#28a745';
+        element.style.background = '#d4edda';
+        if (stateText) stateText.textContent = '🟢 ENCENDIDO';
+    } else if (estado === false) {
+        element.style.borderColor = '#6c757d';
+        element.style.background = '#f8f9fa';
+        if (stateText) stateText.textContent = '⚫ APAGADO';
+    } else {
+        element.style.borderColor = '#e0e0e0';
+        element.style.background = '#f8f9fa';
+        if (stateText) stateText.textContent = '--';
+    }
 }
 
 // ========================================
@@ -266,9 +355,16 @@ function actualizarRelayEnUI(aulaKey, relayNum, relayState) {
         renderAulas();
         
         // Si el aula seleccionada es la que se actualizó, refrescar formulario
-        if (aulaSeleccionada && aulaSeleccionada.aula === aulaKey) {
+        if (aulaSeleccionada && (aulaSeleccionada.aula === aulaKey || aulaSeleccionada.aulaKey === aulaKey)) {
             document.getElementById('calefaccion-enabled').checked = aulasData[aulaKey].relay1 || false;
             document.getElementById('iluminacion-enabled').checked = aulasData[aulaKey].relay2 || false;
+            // Actualizar sensores también
+            const aula = aulasData[aulaKey];
+            document.getElementById('sensor-temp').textContent = aula.temperatura !== undefined ? `${aula.temperatura}°C` : 'N/A';
+            document.getElementById('sensor-humedad').textContent = aula.humedad !== undefined ? `${aula.humedad}%` : 'N/A';
+            document.getElementById('sensor-presion').textContent = aula.presion !== undefined ? `${aula.presion} hPa` : 'N/A';
+            document.getElementById('sensor-luz').textContent = aula.luz !== undefined ? `${aula.luz} lux` : 'N/A';
+            document.getElementById('sensor-personas').textContent = aula.personas !== undefined ? aula.personas : 'N/A';
         }
     }
 }
@@ -289,11 +385,23 @@ function actualizarAulaEnTiempoReal(msg) {
     if (msg.estado !== undefined) aulasData[aulaKey].estado = msg.estado;
     if (msg.relay1 !== undefined) aulasData[aulaKey].relay1 = msg.relay1;
     if (msg.relay2 !== undefined) aulasData[aulaKey].relay2 = msg.relay2;
-    if (msg.ip !== undefined) aulasData[aulaKey].ip = msg.ip;  // ⬅️ AGREGAR
-
+    if (msg.ip !== undefined) aulasData[aulaKey].ip = msg.ip;
     
     console.log(`🔄 Aula actualizada en tiempo real: ${aulaKey}`, aulasData[aulaKey]);
     renderAulas();
+    
+    // Si el aula seleccionada es la que se actualizó, refrescar sensores en el panel
+    if (aulaSeleccionada && (aulaSeleccionada.aulaKey === aulaKey || aulaSeleccionada.aula === aulaKey)) {
+        const aula = aulasData[aulaKey];
+        document.getElementById('sensor-temp').textContent = aula.temperatura !== undefined ? `${aula.temperatura}°C` : 'N/A';
+        document.getElementById('sensor-humedad').textContent = aula.humedad !== undefined ? `${aula.humedad}%` : 'N/A';
+        document.getElementById('sensor-presion').textContent = aula.presion !== undefined ? `${aula.presion} hPa` : 'N/A';
+        document.getElementById('sensor-luz').textContent = aula.luz !== undefined ? `${aula.luz} lux` : 'N/A';
+        document.getElementById('sensor-personas').textContent = aula.personas !== undefined ? aula.personas : 'N/A';
+        document.getElementById('ip-address').value = aula.ip || 'N/A';
+        document.getElementById('calefaccion-enabled').checked = aula.relay1 || false;
+        document.getElementById('iluminacion-enabled').checked = aula.relay2 || false;
+    }
 }
 
 // ========================================
@@ -324,13 +432,9 @@ function renderAulas() {
         
         const estado = aula.conectado ? 'conectado' : 'desconectado';
         const estadoClass = aula.conectado ? 'disponible' : 'desconectada';
-        const temp = aula.temperatura !== undefined ? `${aula.temperatura}°C` : 'N/A';
-        const humedad = aula.humedad !== undefined ? `${aula.humedad}%` : 'N/A';
-        const presion = aula.presion !== undefined ? `${aula.presion} hPa` : 'N/A';
-        const luz = aula.luz !== undefined ? `${aula.luz} lux` : 'N/A';
         
         const personas = aula.personas !== undefined ? aula.personas : 0;
-        const capacidad = aula.capacidad || '?';
+        const hayClase = personas > 0;
         
         card.innerHTML = `
             <div class="aula-header">
@@ -343,25 +447,8 @@ function renderAulas() {
                     <span>${aula.device_id || 'N/A'}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Personas:</span>
-                    <span>${personas}/${capacidad}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Temp:</span>
-                    <span>${temp}</span>
-                </div>
-                
-                <div class="info-item">
-                    <span class="info-label">Humedad:</span>
-                    <span>${humedad}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Presión:</span>
-                    <span>${presion}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Luz:</span>
-                    <span>${luz}</span>
+                    <span class="info-label">Clase:</span>
+                    <span>${hayClase ? '📚 EN CLASE' : '🚫 SIN CLASE'}</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Calefacción:</span>
@@ -381,19 +468,26 @@ function renderAulas() {
 function seleccionarAula(aulaKey, aula) {
     aulaSeleccionada = { ...aula, aulaKey: aulaKey };
     
-    document.getElementById('empty-state').classList.remove('active');
+    document.getElementById('empty-state').classList.add('hidden');
     document.getElementById('form-container').classList.add('active');
+    
+    // Ocultar sección de diagnóstico al cambiar de aula
+    const diagSection = document.getElementById('diagnostico-section');
+    if (diagSection) diagSection.style.display = 'none';
     
     // Llenar formulario
     document.getElementById('device-id').value = aula.device_id || '';
     document.getElementById('aula-nombre').value = aulaKey;
-    document.getElementById('edificio').value = aula.edificio || '';
-    document.getElementById('planta').value = aula.planta || '';
-    document.getElementById('capacidad').value = aula.capacidad || '';
     document.getElementById('calefaccion-enabled').checked = aula.relay1 || false;
     document.getElementById('iluminacion-enabled').checked = aula.relay2 || false;
-    
     document.getElementById('ip-address').value = aula.ip || 'N/A';
+    
+    // Llenar datos de sensores
+    document.getElementById('sensor-temp').textContent = aula.temperatura !== undefined ? `${aula.temperatura}°C` : 'N/A';
+    document.getElementById('sensor-humedad').textContent = aula.humedad !== undefined ? `${aula.humedad}%` : 'N/A';
+    document.getElementById('sensor-presion').textContent = aula.presion !== undefined ? `${aula.presion} hPa` : 'N/A';
+    document.getElementById('sensor-luz').textContent = aula.luz !== undefined ? `${aula.luz} lux` : 'N/A';
+    document.getElementById('sensor-personas').textContent = aula.personas !== undefined ? aula.personas : 'N/A';
     
     renderAulas();
 }
@@ -413,9 +507,6 @@ function setupEventListeners() {
             
             const config = {
                 nombre: document.getElementById('aula-nombre').value,
-                edificio: document.getElementById('edificio').value,
-                planta: parseInt(document.getElementById('planta').value) || 0,
-                capacidad: parseInt(document.getElementById('capacidad').value) || 0,
                 calefaccion: document.getElementById('calefaccion-enabled').checked,
                 iluminacion: document.getElementById('iluminacion-enabled').checked
             };
@@ -449,18 +540,32 @@ function setupEventListeners() {
         btnCancel.addEventListener('click', () => {
             aulaSeleccionada = null;
             document.getElementById('form-container').classList.remove('active');
-            document.getElementById('empty-state').classList.add('active');
+            document.getElementById('empty-state').classList.remove('hidden');
+            // Ocultar diagnóstico
+            const diagSection = document.getElementById('diagnostico-section');
+            if (diagSection) diagSection.style.display = 'none';
             renderAulas();
         });
     }
 
-    // Test de conexión
-    const btnTest = document.getElementById('btn-test');
-    if (btnTest) {
-        btnTest.addEventListener('click', () => {
+    // Diagnóstico de sensores
+    const btnDiagnostico = document.getElementById('btn-diagnostico');
+    if (btnDiagnostico) {
+        btnDiagnostico.addEventListener('click', () => {
             if (!aulaSeleccionada) return;
+            
+            // Feedback visual
+            btnDiagnostico.disabled = true;
+            btnDiagnostico.innerHTML = '⏳ Consultando...';
+            
             enviarComando('test_conexion', aulaSeleccionada.device_id);
-            mostrarNotificacion('info', 'Enviando test de conexión...');
+            mostrarNotificacion('info', 'Solicitando diagnóstico del nodo...');
+            
+            // Restaurar botón después de 3 segundos
+            setTimeout(() => {
+                btnDiagnostico.disabled = false;
+                btnDiagnostico.innerHTML = '🔧 Diagnóstico';
+            }, 3000);
         });
     }
 
