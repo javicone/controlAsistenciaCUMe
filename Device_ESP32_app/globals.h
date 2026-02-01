@@ -41,7 +41,7 @@ extern bool claseEnCurso;
 // ============================================
 #define QUEUE_PROCESS_INTERVAL 30000  // 30 segundos
 #define SENSOR_READ_INTERVAL   5000   // 5 segundos 
-#define CLASS_CHECK_INTERVAL   60000 // 5 minutos 
+#define CLASS_CHECK_INTERVAL   5000 // 5 minutos 
 #define DELAY_BETWEEN_CARDS  3000 // 3 segundos entre lecturas
 
 

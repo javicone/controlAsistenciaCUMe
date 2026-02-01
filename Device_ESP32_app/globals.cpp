@@ -6,13 +6,13 @@
 // ============================================
 
 // ID del dispositivo y API Key segura
-String deviceId = "node-001";  // ← CAMBIA ESTO SEGÚN TU ESP32
+String deviceId = "node-002";  // ← CAMBIA ESTO SEGÚN TU ESP32
 
 // Aula (mutable, puede ser cargada/guardada en NVS)
-String aula = "Aula 1";  // ← Y ESTO TAMBIÉN
+String aula = "Aula 2";  // ← Y ESTO TAMBIÉN
 
 // Cada nodo tendrá su propia api_key en la bbdd.
-String apiKey = "A2fP7zU4tD1sH6kE9wR0mN3cQ5vB8xYgO";
+String apiKey = "V3cC5xZ8mN1bB4vL9kH2jG7fD6sA0pQ";
 
 // WiFi y servidor
 const char* ssid = "SERVER";
