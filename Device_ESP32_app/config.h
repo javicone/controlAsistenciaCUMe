@@ -51,6 +51,12 @@ extern String aula;
 #define LED_VERDE_PIN       27
 #define LED_AMARILLO_PIN    14
 
+#define OLED_SDA_PIN        21
+#define OLED_SCL_PIN        22
+#define OLED_RESET_PIN      -1  // -1 si no tiene pin RESET (compartido con ESP32)
+// Dirección I2C de la pantalla (típicamente 0x3C o 0x3D)
+#define OLED_I2C_ADDRESS    0x3C
+
 // Constantes de sensores
 #define SEALEVELPRESSURE_HPA (1013.25)
 #define RADAR_RX_PIN 16

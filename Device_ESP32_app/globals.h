@@ -7,7 +7,7 @@
 #include <Adafruit_PN532.h> 
 #include <ld2410.h>
 #include <WebSocketsClient.h>
-
+#include <Adafruit_SSD1306.h>
 // ============================================
 // DECLARACIONES EXTERNAS (definidas en globals.cpp)
 // ============================================
@@ -29,6 +29,9 @@ extern const char* clases_actual;
 extern const char* server_certificate;
 extern const char* tzInfo;
 extern String aula;
+
+
+
 
 // variables para la gestión de clases
 extern String claseActual;
@@ -55,10 +58,14 @@ struct SensorStatus {
   bool bh1750_ok = false;
   bool ld2410_ok = false;
   bool pn532_ok = false;
+  bool display_ok = false;  // ⬅️ NUEVO
+
   uint8_t bme280_errores = 0;
   uint8_t bh1750_errores = 0;
   uint8_t ld2410_errores = 0;
   uint8_t pn532_errores = 0;
+  uint8_t display_errores = 0;  // ⬅️ NUEVO
+
 };
 
 struct BME280Data {
@@ -94,7 +101,7 @@ extern BH1750 lightMeter;
 extern ld2410 radar;
 extern Adafruit_PN532 nfc;
 extern WebSocketsClient webSocket;
-
+extern Adafruit_SSD1306 display;
 // ============================================
 // VARIABLES DE ESTADO (definidas en globals.cpp)
 // ============================================

@@ -23,6 +23,7 @@ void initSensores() {
   setupRadar();  //Inicializamos el radar de presencia
   setupBME();  //Inicializamos el sensor de temperatura, humedad y presión
   setupLightMeter();  //Inicializamos el sensor de luz
+  setupDisplay();  // ⬅️ NUEVO
   Serial.setDebugOutput(false); // Desactivar salida de depuración para evitar interferencias I2C
 
     // Mostrar resumen
@@ -31,6 +32,7 @@ void initSensores() {
   Serial.printf("BH1750: %s\n", sensores.bh1750_ok ? "✅" : "❌");
   Serial.printf("LD2410: %s\n", sensores.ld2410_ok ? "✅" : "❌");
   Serial.printf("PN532:  %s\n", sensores.pn532_ok ? "✅" : "❌");
+  Serial.printf("OLED:   %s\n", sensores.display_ok ? "✅" : "❌");  // ⬅️ NUEVO
   Serial.println("==============================\n");
 
 

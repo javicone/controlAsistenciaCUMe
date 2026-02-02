@@ -11,6 +11,7 @@
 #include <ArduinoJson.h>
 #include <WebSocketsClient.h>  
 //#include "Freenove_WS2812_Lib_for_ESP32.h"
+#include <Adafruit_SSD1306.h>  // ⬅️ NUEVO
 //-----------------------------------
 #include <Wire.h>
 #include <SPI.h>         //Librería para comunicación SPI
@@ -46,7 +47,13 @@ bool fetchDeviceToken();
 void connectWS();                
 void checkWiFiConnection();      
 void processQueue();             
-RadarData leerRadar();         
+RadarData leerRadar(); 
+
+bool setupDisplay();           // ⬅️ NUEVO
+void updateDisplay();          // ⬅️ NUEVO
+void displayMessage(String mensaje, int duracion_ms);  // ⬅️ NUEVO
+void displayFichajeExito(String uid);  // ⬅️ NUEVO
+void displayFichajeError();    // ⬅️ NUEVO        
 
 
 //Handle del hilo de ejecución que vamos a fijar en el core 0 para llevar el tema de comunicaciones
@@ -181,6 +188,7 @@ void loop() {
             
             if (fichajeExitoso) {
                 secuenciaExito();
+                displayFichajeExito(nfc_data.uid);  // ⬅️ NUEVO
                 fichajeClaseCompletado = true;  // Deshabilitar NFC
                 Serial.println("✅ Fichaje verificado. NFC deshabilitado hasta fin de clase.");
                 
@@ -189,6 +197,7 @@ void loop() {
             }
             else {
                 secuenciaError();
+                displayFichajeError();  // ⬅️ NUEVO
                 Serial.println("❌ Fichaje fallido. Intente nuevamente.");
             }
             
@@ -245,6 +254,9 @@ if (millis() - lastTokenCheck > TOKEN_CHECK_INTERVAL) {
         Serial.println("❌ Error renovando JWT");
     }
 }
-
+  // ============================================
+  // ACTUALIZAR PANTALLA
+  // ============================================
+  updateDisplay();  // ⬅️ NUEVO
 }
 

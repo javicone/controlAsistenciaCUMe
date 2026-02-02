@@ -86,7 +86,7 @@ BH1750 lightMeter;
 ld2410 radar;
 Adafruit_PN532 nfc(PN532_SS);  // Solo necesita CS, SPI ya inicializado
 WebSocketsClient webSocket;
-
+Adafruit_SSD1306 display(128, 64, &Wire, OLED_RESET_PIN);
 // ============================================
 // VARIABLES DE ESTADO
 // ============================================
