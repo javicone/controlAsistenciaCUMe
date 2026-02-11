@@ -7,12 +7,16 @@ import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 # Cargar variables de entorno primero
 load_dotenv()
 
 # Configuración
 from middleware.cors import setup_cors
+from middleware.input_validation import InputValidationMiddleware
 from routers import auth, asistencias, aulas, clases, websockets, views
 from utils.database_pool import close_db_pool, get_db_pool
 
@@ -81,8 +85,21 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# Configurar Rate Limiting
+limiter = Limiter(key_func=get_remote_address, default_limits=["200/minute"])
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 # Configurar CORS
 setup_cors(app)
+
+# Middleware de validación de inputs (SEGURIDAD)
+# Previene: SQL Injection, XSS, Command Injection, Prompt Injection
+app.add_middleware(
+    InputValidationMiddleware,
+    enable_strict_mode=True  # Cambiar a False para solo logging sin bloqueo
+)
+logger.info("🛡️  Middleware de validación de inputs activado (strict_mode=True)")
 
 # Archivos estáticos
 BASE_DIR = Path(__file__).parent

@@ -1,0 +1,192 @@
+/* ==============================================
+   CONSERJES — Panel de Control de Aulas
+   Paleta: UEx Institucional (variables.css)
+   ============================================== */
+
+body {
+    font-family: var(--font-body);
+    margin: 0;
+    padding: 20px;
+    background-color: var(--fondo-pagina);
+    color: var(--texto-principal);
+}
+
+/* — Header — */
+.header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 20px 24px;
+    background: var(--fondo-tarjeta);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--sombra-md);
+    border: 1px solid var(--borde-light);
+    animation: fadeUp 0.4s var(--ease-out) both;
+}
+
+.header-bar h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--uex-verde);
+    margin: 0;
+}
+
+.header-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* — WebSocket Status — */
+.status-connected {
+    color: var(--success-text);
+    background: var(--success-bg);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.status-disconnected {
+    color: var(--danger-text);
+    background: var(--danger-bg);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* — Panel Grid de Aulas — */
+#panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+/* — Tarjeta de Aula — */
+.aula {
+    background: var(--fondo-tarjeta);
+    border: 1px solid var(--borde-light);
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--sombra-sm);
+    transition: all var(--transition-base);
+    animation: fadeUp 0.4s var(--ease-out) both;
+}
+
+.aula:nth-child(1) { animation-delay: 0.05s; }
+.aula:nth-child(2) { animation-delay: 0.10s; }
+.aula:nth-child(3) { animation-delay: 0.15s; }
+.aula:nth-child(4) { animation-delay: 0.20s; }
+
+.aula:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sombra-lg);
+    border-color: var(--uex-verde-20);
+}
+
+.aula h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--uex-verde);
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--uex-verde-10);
+}
+
+.aula p {
+    margin: 6px 0;
+    color: var(--texto-secundario);
+    line-height: 1.5;
+    font-size: 0.9em;
+}
+
+.aula p strong {
+    color: var(--texto-principal);
+    font-weight: 600;
+}
+
+/* — Relay Controls — */
+.relay-controls {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--borde-light);
+}
+
+.relay-controls p {
+    margin: 8px 0;
+}
+
+.relay-controls button {
+    margin: 5px 0;
+}
+
+/* — Botones — */
+.button {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--font-body);
+    transition: all var(--transition-base);
+}
+
+.button-on {
+    background-color: var(--uex-verde);
+    color: white;
+}
+
+.button-on:hover {
+    background-color: var(--uex-verde-oscuro);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--uex-verde-20);
+}
+
+.button-off {
+    background-color: var(--danger);
+    color: white;
+}
+
+.button-off:hover {
+    background-color: #a02828;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(197, 48, 48, 0.25);
+}
+
+button:focus {
+    outline: 2px solid var(--uex-verde);
+    outline-offset: 2px;
+}
+
+/* — Responsive — */
+@media (max-width: 768px) {
+    .header-bar {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .header-bar h1 {
+        font-size: 1.2rem;
+    }
+
+    #panel {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 12px;
+    }
+
+    .aula {
+        padding: 16px;
+    }
+}

@@ -14,15 +14,21 @@ from utils.database_pool import get_db_pool
 import logging
 from repositories.usuarioRepository import get_usuario_por_mail
 from fastapi import APIRouter, Form, HTTPException, Depends, Request, status
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
 router = APIRouter()
 security = HTTPBearer()
 logger = logging.getLogger(__name__)
+limiter = Limiter(key_func=get_remote_address)
 
 @router.post("/auth/device", response_model=TokenResponse)
-async def authenticate_device(auth_request: DeviceAuthRequest):
+@limiter.limit("10/minute")  # Dispositivos: 10 intentos por minuto por IP
+async def authenticate_device(request: Request, auth_request: DeviceAuthRequest):
     """
-    Autenticar dispositivo ESP32 y generar token JWT
+    Autenticar dispositivo ESP32 y generar token JWT.
+    
+    Rate limit: 10 intentos por minuto por IP.
     """
     logger.info(f"🔐 Autenticación solicitada para: {auth_request.device_id}")
     try:
@@ -82,8 +88,13 @@ async def test_auth():
     return {"status": "ok", "message": "Auth endpoint funcionando"}
 
 @router.post("/auth/login")
-async def login_usuario(correo:str= Form(...), password:str= Form(...)):
-    """Login de usuarios web (admin/conserje)"""
+@limiter.limit("5/minute")  # Login web: 5 intentos por minuto por IP
+async def login_usuario(request: Request, correo:str= Form(...), password:str= Form(...)):
+    """
+    Login de usuarios web (admin/conserje/profesor).
+    
+    Rate limit: 5 intentos por minuto por IP para prevenir ataques de fuerza bruta.
+    """
     try:
         # ✅ authenticate_user devuelve UserInDB (Pydantic model)
         user = await authenticate_user(correo, password)

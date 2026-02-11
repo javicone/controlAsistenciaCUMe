@@ -4,30 +4,15 @@
   <meta charset="UTF-8">
   <title>Panel de Conserjes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
-  <style>
-    .status-connected { color: #28a745; font-weight: bold; }
-    .status-disconnected { color: #dc3545; font-weight: bold; }
-    .relay-controls { margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd; }
-    .relay-controls p { margin: 8px 0; }
-    .relay-controls button { margin: 5px 0; }
-    #panel { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-    .aula { border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #f9f9f9; }
-    .aula h3 { margin-top: 0; color: #333; }
-    .button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
-    .button-on { background-color: #28a745; color: white; }
-    .button-on:hover { background-color: #218838; }
-    .button-off { background-color: #dc3545; color: white; }
-    .button-off:hover { background-color: #c82333; }
-    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/variables.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/conserjes.css') }}">
 </head>
 <body>
   <div class="header-bar">
-    <h1>Panel de Conserjes - Estado de las Aulas</h1>
-    <div>
+    <h1>Panel de Conserjes — Estado de las Aulas</h1>
+    <div class="header-bar-actions">
       <span id="ws-status" class="status-disconnected">🔴 Desconectado</span>
-      <button class="button button-on" onclick="cerrarSesion()" style="margin-left: 20px;">Cerrar Sesión</button>
+      <button class="button button-on" onclick="cerrarSesion()">Cerrar Sesión</button>
     </div>
   </div>
   

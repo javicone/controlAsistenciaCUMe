@@ -1,13 +1,5 @@
-:root {
-    --uex-verde: #005942;
-    --uex-verde-oscuro: #004a37;
-    --texto-principal: #333;
-    --texto-secundario: #555;
-    --fondo-pagina: #f4f7f6;
-    --fondo-tarjeta: rgba(255, 255, 255, 0.95);
-    --borde-input: #ccc;
-    --foco-input: #005942;
-}
+/* Variables locales heredadas de variables.css —
+   Se mantienen como fallback por si se carga sin variables.css */
 
 * {
     box-sizing: border-box;
@@ -20,7 +12,7 @@ html, body {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--font-body, 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif);
     background: 
         linear-gradient(rgba(244, 247, 246, 0.85), rgba(244, 247, 246, 0.85)),
         url('https://merida.es/wp-content/uploads/2024/04/Centro-Universitario-Merida-scaled.jpg') center/cover no-repeat fixed;
@@ -96,8 +88,8 @@ body {
 }
 
 .form-control:focus {
-    border-color: var(--foco-input);
-    box-shadow: 0 0 0 3px rgba(0, 89, 66, 0.2);
+    border-color: var(--uex-verde);
+    box-shadow: 0 0 0 3px var(--uex-verde-20, rgba(0, 89, 66, 0.2));
     outline: none;
     background-color: rgba(255, 255, 255, 1);
 }
@@ -120,7 +112,7 @@ body {
 .btn-login:hover, .btn-login:focus {
     background-color: var(--uex-verde-oscuro);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 89, 66, 0.4);
+    box-shadow: 0 6px 16px var(--uex-verde-30, rgba(0, 89, 66, 0.4));
     outline: none;
 }
 
