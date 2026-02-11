@@ -1,231 +1,728 @@
-# Control de Asistencia y Monitorización de Aulas (IoT)
+# 🏫 Control de Asistencia y Monitorización de Aulas (IoT)
 
-![Logo de la aplicación](imagenes/image.png)  
-https://wokwi.com/projects/446089574014956545
+**Sistema integrado para registro de asistencia, monitorización ambiental y control domótico de espacios educativos.**
 
-Repositorio con el backend en Python (Flask/FastAPI + WebSockets) y el código para dispositivos ESP32 que permiten:
-- Registrar asistencia vía NFC.
-- Monitorizar temperatura, iluminación y presencia en aulas.
-- Control remoto de relés por aula.
-Este README recoge: estructura del repo, cómo configurar y ejecutar el backend, y notas útiles para trabajar con el firmware.
+![Logo de la aplicación](imagenes/image.png)
 
-## Estado actual (resumen)
-- Migración en curso del monolito Flask a FastAPI con routers, middlewares y WebSockets (ver `Server/appFastApi.py` y `Server/routers/*`).
-- La base de datos MySQL se ha movido a Docker. Ya no necesitas instalar MySQL localmente si usas el contenedor.
-- El código antiguo de Flask se conserva en `Server/antiguasVersiones/` como referencia.
+**Estado:** ✅ En producción | **Arquitectura:** FastAPI + WebSockets + ESP32 | **Base de datos:** MySQL (Docker)
 
-## Estructura principal
-- `Database/` — Dump SQL: `backupControlAsistencia.sql` y utilidades (`docker comando.txt`).
-- `DatosAnalisisHorario/` — Script `clases.py` y salidas (CSV/XLSX) con estadísticas por aula, carrera, día/hora y cuatrimestre.
-- `Device_ESP32_app/` — Firmware para ESP32 (PN532 NFC, BME280, BH1750, radar LD2410, LEDs, buzzer, relé, WebSocket). Archivos clave: `Device_ESP32_app.ino`, `NFC_module.ino`, `BME_module.ino`, `LightMeter_module.ino`, `radar_module.ino`, `setupSensores.ino`, `webSocketEvent.ino`, `api_rest.ino`, `funciones_auxiliares.ino`, `UNIT_PN532.*`, `globals.h/.cpp`, `indicators.ino`.
-- `Server/` — Backend Python (FastAPI + WebSockets):
-  - `appFastApi.py` — servidor principal actual (endpoints REST, websockets y templates).
-  - `routers/`, `models/`, `services/`, `middleware/`, `utils/`, `static/`, `templates/` — nueva arquitectura modular.
-  - `antiguasVersiones/` — versiones previas en Flask (por compatibilidad/histórico).
-- `imagenes/` — recursos estáticos (por ejemplo, `imagenes/image.png`).
-- `README.md` — (este fichero)
-- `Sensor para Aula.docx` — documentación adicional.
+---
 
-## Estructura del repositorio (actual)
+## 📋 Descripción General
+
+Sistema IoT completo para gestionar aulas inteligentes con:
+
+- **📍 Registro de Asistencia**: Lectura de tarjetas NFC PN532 para captura automática de presencia
+- **🌡️ Monitorización Ambiental**: Sensores de temperatura (BME280), iluminación (BH1750), presencia (LD2410)
+- **🔌 Control Domótico**: Toggle remoto de relés para calefacción, iluminación y sistemas HVAC
+- **📡 Comunicación en Tiempo Real**: WebSockets para actualizaciones instantáneas a administradores y personal
+- **🔐 Autenticación JWT**: Sistema de tokens para ESP32, administradores y personal de soporte
+- **🗂️ Gestión completa**: Dashboard web, análisis de datos, histórico de asistencia
+
+---
+
+## 🏗️ Arquitectura del Sistema
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│                       CAPAS DEL SISTEMA                        │
+├────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  FRONTEND:  Navegador → HTML/CSS (Templates)                   │
+│  BACKEND:   FastAPI + Uvicorn (Python 3.10+)                   │
+│  WEBSOCKET: Comunicación RT (Aulas ↔ Admin/Conserjes)         │
+│  DATABASE:  MySQL 8.0 (Contenedor Docker)                      │
+│  DEVICES:   ESP32 + Sensores + Actuadores                      │
+│                                                                 │
+└────────────────────────────────────────────────────────────────┘
+```
+
+### 🔀 Flujo de Datos
+
+```
+ESP32 NFC Lee Tarjeta
+    ↓
+API REST: POST /registro (UID, aula)
+    ↓
+Backend: Valida JWT, consulta BD
+    ↓
+Si válida: Registra asistencia ✅
+    ↓
+WebSocket: Notifica a admins en RT
+    ↓
+Dashboard actualizado en vivo
+```
+
+---
+
+## 📦 Estructura del Proyecto
 
 ```
 ControlAsistencia/
-├── cert.pem
-├── key.pem
+├── README.md                          # Este fichero
+├── keys/
+│   ├── cert_https.pem                # Certificado SSL/TLS
+│   └── key_https.pem                 # Clave privada HTTPS
+│
+├── Database/
+│   ├── backupControlAsistencia.sql   # Dump completo de la BD
+│   └── docker_comando.txt            # Script para levantar MySQL
+│
+├── DatosAnalisisHorario/             # Scripts de análisis
+│   ├── clases.py                     # Importador de horarios
+│   ├── resultados/*.csv              # Estadísticas generadas
+│   └── estad_*.csv                   # Ocupación por periodo
+│
+├── Device_ESP32_app/                 # Firmware ESP32 (CORE)
+│   ├── Device_ESP32_app.ino          # Programa principal
+│   ├── config.h                      # Configuración: WiFi, BD, etc
+│   ├── globals.h / globals.cpp       # Variables globales
+│   │
+│   ├── NFC_module.ino                # Lectura PN532
+│   ├── BME_module.ino                # Temperatura/Presión
+│   ├── LightMeter_module.ino         # Iluminación BH1750
+│   ├── radar_module.ino              # Presencia LD2410
+│   ├── indicators.ino                # LEDs y buzzer
+│   │
+│   ├── setupSensores.ino             # Inicialización del HW
+│   ├── webSocketEvent.ino            # Comunicación WebSocket
+│   ├── api_rest.ino                  # Endpoints REST
+│   ├── auth_device_jwt.ino           # JWT para ESP32
+│   ├── cola_envio_offline.ino        # Buffer offline
+│   ├── wifi_manager.ino              # Manejo WiFi
+│   ├── display_module.ino            # Panel OLED SSD1306
+│   ├── funciones_auxiliares.ino      # Utilities
+│   └── UNIT_PN532.h / UNIT_PN532.cpp # Libería NFC custom
+│
+├── Server/                           # Backend Python (CORE)
+│   ├── appFastApi.py                 # Punto de entrada
+│   ├── requirements.txt              # Dependencias pip
+│   ├── config.py                     # Configuración (variables env)
+│   ├── database.py                   # Pool conexiones MySQL
+│   ├── .env                          # Variables de entorno (gitignored)
+│   │
+│   ├── routers/                      # Endpoints FastAPI
+│   │   ├── auth.py                   # Autenticación (/login, /token)
+│   │   ├── asistencias.py            # Registro (/registro, /historial)
+│   │   ├── aulas.py                  # Estado aulas (/estado, /control_relay)
+│   │   ├── clases.py                 # Horarios (/clases, /proxima)
+│   │   ├── views.py                  # Vistas HTML (/dashboard, etc)
+│   │   └── websockets.py             # Canales WS (/ws, /ws/admin, /ws/conserje)
+│   │
+│   ├── services/                     # Lógica de negocio
+│   │   ├── auth_service.py           # JWT, login, tokens
+│   │   ├── asistencia_service.py     # Registro, historial
+│   │   ├── aula_service.py           # Estado, relés
+│   │   └── clase_service.py          # Horarios, próxima clase
+│   │
+│   ├── models/                       # Modelos Pydantic + SQLAlchemy
+│   │   ├── user.py
+│   │   ├── aula.py
+│   │   ├── asistencia.py
+│   │   ├── clase.py
+│   │   └── webTokens.py
+│   │
+│   ├── middleware/                   # Middlewares personalizados
+│   │   ├── cors.py                   # CORS headers
+│   │   └── logging.py                # Logging centralizado
+│   │
+│   ├── utils/                        # Funciones auxiliares
+│   │   ├── database_pool.py          # Gestión pool MySQL
+│   │   └── websocket_manager.py      # Manager singleton WS
+│   │
+│   ├── security/                     # Autenticación y autorización
+│   │   └── jwt_utils.py              # Funciones JWT
+│   │
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── styles.css
+│   │   └── js/                       # JavaScript del dashboard
+│   │
+│   ├── templates/                    # Plantillas Jinja2
+│   │   ├── index.html                # Login
+│   │   ├── dashboard.html            # Panel administrador
+│   │   ├── administrador.html        # Gestión completa
+│   │   ├── conserjes.html            # Vista personal soporte
+│   │   └── gestion_aulas.html        # Control relés
+│   │
+│   ├── antiguasVersiones/            # Código deprecado (referencia)
+│   │   ├── appFlask.py               # Flask monolítico
+│   │   └── appFastApi_MONOLITO.py    # Primera versión FastAPI
+│   │
+│   └── __pycache__/
+│
+├── DOCS/                             # Documentación técnica
+│   ├── RESUMEN_EJECUTIVO.md          # Hardware specs
+│   ├── ARQUITECTURA_WEBSOCKET_3_ROLES.md
+│   ├── PINES_ESP32_DIAGRAMA.md       # Pinout completo
+│   ├── GUIA_CONEXIONADO_FISICO_ESP32.md
+│   ├── ENUMERACION_COMPONENTES_ESP32.md
+│   ├── FORMATO_MENSAJES_WEBSOCKET.md
+│   ├── DIAGNOSTICO_WEBSOCKET.md
+│   ├── LOGS_SEGURIDAD_HTTPS.md
+│   ├── SISTEMA_JWT_UNIFICADO.md
+│   ├── MIGRACION_ARDUINOWEBSOCKETS.md
+│   └── AGREGABLES.md
+│
 ├── imagenes/
 │   └── image.png
-├── Database/
-│   ├── backupControlAsistencia.sql
-│   └── docker comando.txt
-├── DatosAnalisisHorario/
-├── Device_ESP32_app/
-│   ├── Device_ESP32_app.ino
-│   ├── api_rest.ino
-│   ├── BME_module.ino
-│   ├── LightMeter_module.ino
-│   ├── NFC_module.ino
-│   ├── radar_module.ino
-│   ├── setupSensores.ino
-│   ├── webSocketEvent.ino
-│   ├── funciones_auxiliares.ino
-│   ├── globals.h
-│   ├── globals.cpp
-│   ├── indicators.ino
-│   ├── UNIT_PN532.h
-│   └── UNIT_PN532.cpp
-└── Server/
-    ├── appFastApi.py
-    ├── config.py
-    ├── database.py
-    ├── requirements.txt
-    ├── antiguasVersiones/
-    │   ├── appFastApi_MONOLITO.py
-    │   └── appFlask.py
-    ├── middleware/
-    │   ├── __init__.py
-    │   ├── cors.py
-    │   └── logging.py
-    ├── models/
-    │   ├── __init__.py
-    │   ├── asistencia.py
-    │   ├── aula.py
-    │   ├── clase.py
-    │   └── user.py
-    ├── routers/
-    │   ├── __init__.py
-    │   ├── asistencias.py
-    │   ├── aulas.py
-    │   ├── auth.py
-    │   ├── clases.py
-    │   ├── views.py
-    │   └── websockets.py
-    ├── services/
-    │   ├── __init__.py
-    │   ├── asistencia_service.py
-    │   ├── aula_service.py
-    │   ├── auth_service.py
-    │   └── clase_service.py
-    ├── static/
-    │   └── css/
-    │       └── styles.css
-    ├── templates/
-    │   ├── administrador.html
-    │   ├── conserjes.html
-    │   ├── dashboard.html
-    │   ├── gestion_aulas.html
-    │   └── index.html
-    └── utils/
-        ├── __init__.py
-        ├── database_pool.py
-        └── websocket_manager.py
+│
+└── tests_individuales_Componentes/   # Pruebas aisladas
+    ├── PRUEBA_BME280_BH1750/
+    ├── PRUEBA_LD2410/
+    ├── PRUEBAS_HTTPS/
+    ├── PRUEBBA_NFC/
+    └── RELE_PRUEBAS/
 ```
 
-## Base de datos en Docker (MySQL)
+---
 
-La base de datos se ejecuta ahora en un contenedor Docker de MySQL. Desde PowerShell, sitúate en la carpeta `Database` y ejecuta el siguiente comando (Windows):
+## 🔌 Componentes del Dispositivo ESP32
+
+### Sensores (4)
+| Sensor | Modelo | Puerto | Función |
+|--------|--------|--------|---------|
+| **Temperatura/Presión** | BME280 | I2C (0x76) | Monitoreo ambiental |
+| **Iluminación** | BH1750 | I2C (0x23) | Nivel de luz |
+| **Presencia** | LD2410 | UART2 (RX17/TX16) | Radar de movimiento |
+| **NFC/RFID** | PN532 | SPI + IRQ | Lectura tarjetas |
+
+### Actuadores (2)
+| Actuador | GPIO | Función | Control |
+|----------|------|---------|---------|
+| **Relé 1** | 26 | Calefacción/HVAC | Activo LOW |
+| **Relé 2** | 32 | Iluminación | Activo LOW |
+
+### Indicadores (4)
+| Indicador | GPIO | Función |
+|-----------|------|---------|
+| **LED Rojo** | 25 | Error/Alerta |
+| **LED Verde** | 27 | Operación normal |
+| **LED Amarillo** | 14 | Estado WiFi/LD2410 |
+| **Buzzer** | 33 | Confirmación NFC (PWM) |
+| **OLED Display** | I2C (0x3C) | Información visual |
+
+### Pinout Completo
+
+```
+ESP32 (38 pines usables)
+┌─────────────────┐
+│ 3V3 ▓▓ GND      │  Alimentación
+│ EN  ▓▓ D23      │  GPIO23: MOSI (SPI NFC)
+│ D36 ▓▓ D22      │  GPIO22: SCL (I2C sensores)
+│ D39 ▓▓ TXD0     │  UART0 (debug)
+│ D34 ▓▓ RXD0     │
+│ D35 ▓▓ D21      │  GPIO21: SDA (I2C sensores)
+│ D32 ▓▓ D19      │  GPIO32: Relé 2, GPIO19: MISO (SPI)
+│ D33 ▓▓ D18      │  GPIO33: Buzzer, GPIO18: SCK (SPI)
+│ D25 ▓▓ D5       │  GPIO25: LED Rojo, GPIO5: CS NFC
+│ D26 ▓▓ TXD2     │  GPIO26: Relé 1, GPIO17: RX2 LD2410
+│ D27 ▓▓ RXD2     │  GPIO27: LED Verde, GPIO16: TX2 LD2410
+│ D14 ▓▓ D13      │  GPIO14: LED Amarillo, GPIO13: IRQ NFC
+│      ▓▓ D12     │
+│      ▓▓ D4      │
+│      ▓▓ D2      │
+│      ▓▓ D15     │
+└─────────────────┘
+
+I²C Bus: SDA(21) - SCL(22) - GND
+Dispositivos: BME280(0x76), BH1750(0x23), OLED(0x3C)
+
+SPI Bus (NFC): MOSI(23) - MISO(19) - SCK(18) - CS(5) - IRQ(13) - GND
+Velocidad: 1 MHz
+
+Serial2 (LD2410): RX(16) - TX(17) - GND
+Baudrate: 256000 bps
+```
+
+---
+
+## ⚡ Requisitos
+
+### Hardware
+- **Microcontrolador:** ESP32 (DevKit, WROOM-32, etc)
+- **Sensores:** BME280, BH1750, LD2410, PN532
+- **Actuadores:** 2 relés 5V (GPIO activo LOW)
+- **Display:** OLED SSD1306 (opcional)
+- **Alimentación:** Fuente 5V/2A
+
+### Software
+
+#### Backend
+- **Python:** 3.10+ (3.11/3.12 recomendadas)
+- **FastAPI:** Framework HTTP/WebSocket
+- **MySQL:** 8.0+ (se proporciona Dockerfile)
+- **Sistema Operativo:** Windows, Linux, macOS
+
+#### Firmware
+- **Arduino IDE:** 2.0+
+- **PlatformIO:** Recomendado
+- **Board:** ESP32 DEV KIT
+- **Librerías:** Ver [`Device_ESP32_app/requirements.txt` conceptual]*
+
+> *El firmware de Arduino/PlatformIO usa `#include` directas; las dependencias están documentadas en `DOCS/ENUMERACION_COMPONENTES_ESP32.md`
+
+---
+
+## 🚀 Instalación y Configuración
+
+### 1️⃣ Base de Datos (MySQL + Docker)
 
 ```powershell
-# En: D:\UEX\ControlAsistencia\Database
-docker run --name control-asistencia-mysql ^
-  -e MYSQL_ROOT_PASSWORD=1234 ^
-  -e MYSQL_DATABASE=control-asistencia ^
-  -v "%cd%:/docker-entrypoint-initdb.d" ^
-  -p 3306:3306 ^
+# Abrir PowerShell en D:\UEX\ControlAsistencia\Database
+
+cd Database
+
+# Crear contenedor MySQL (Windows)
+docker run --name control-asistencia-mysql `
+  -e MYSQL_ROOT_PASSWORD=1234 `
+  -e MYSQL_DATABASE=control-asistencia `
+  -v "$PWD`:/docker-entrypoint-initdb.d" `
+  -p 3306:3306 `
   -d mysql:latest
+
+# El contenedor ejecutará automáticamente backupControlAsistencia.sql
 ```
 
-Qué hace cada parámetro:
-- `MYSQL_ROOT_PASSWORD`: contraseña del usuario root de MySQL dentro del contenedor.
-- `MYSQL_DATABASE`: crea automáticamente la BD `control-asistencia` si no existe.
-- `-v "%cd%:/docker-entrypoint-initdb.d"`: vincula la carpeta actual (donde está `backupControlAsistencia.sql`) a la ruta de auto-inicialización de MySQL en el contenedor. Cualquier `.sql` en esa carpeta se ejecutará automáticamente en el primer arranque del contenedor.
-- `-p 3306:3306`: expone MySQL en el puerto 3306 del host.
-
-### Cargar el backup de la base de datos
-
-Tienes dos opciones:
-
-1) Auto-inicialización (primer arranque del contenedor)
-- Asegúrate de que `Database/backupControlAsistencia.sql` está en la carpeta `Database` antes de lanzar el `docker run` anterior. MySQL ejecutará ese SQL automáticamente al iniciar por primera vez.
-
-2) Importación manual (si el contenedor ya existe o quieres reimportar)
-- Ejecuta el cliente MySQL dentro del contenedor leyendo el SQL desde el host:
-
-```powershell
-# Desde la raíz del repo o dentro de Database
-# Importa el backup dentro del contenedor MySQL
-Get-Content Database\backupControlAsistencia.sql | docker exec -i control-asistencia-mysql mysql -u root -p1234 control-asistencia
+**Alternativa:** Si MySQL ya está localmente instalado:
+```bash
+mysql -u root -p < backupControlAsistencia.sql
 ```
 
-Comprobación rápida (opcional, si tienes cliente mysql en el host):
+### 2️⃣ Backend (FastAPI)
+
+#### Paso A: Crear entorno virtual
 ```powershell
-mysql -h 127.0.0.1 -P 3306 -u root -p1234 -e "SHOW DATABASES;"
-```
-
-## Requisitos (backend)
-- Python 3.10+ (3.11/3.12 recomendadas).
-- MySQL/MariaDB para la base de datos (recomendado vía Docker, ver sección anterior).
-- Entorno de Arduino/PlatformIO con soporte ESP32 y las librerías para PN532, BME280, BH1750 si se usa el firmware.
-
-He añadido un `requirements.txt` básico con las dependencias del backend.
-## Instalación rápida (Windows / PowerShell)
-
-1) Crear y activar un entorno virtual:
-```powershell
+# Desde la raíz del proyecto
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+
+# Verificar Python
+python --version  # 3.10+
 ```
 
-2) Instalar dependencias:
-
+#### Paso B: Instalar dependencias
 ```powershell
 pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r Server/requirements.txt
 ```
 
-3) Base de datos en Docker: sigue la sección "Base de datos en Docker (MySQL)" de este README. Si prefieres MySQL instalado localmente, puedes seguir usando el cliente y redirigiendo el SQL como alternativa.
+#### Paso C: Configurar variables de entorno
+```powershell
+# Crear archivo .env en Server/
+cat > Server/.env << 'EOF'
+DB_HOST=127.0.0.1
+DB_USER=root
+DB_PASSWORD=1234
+DB_NAME=control-asistencia
+SECRET_KEY=tu_clave_jwt_super_secreta_minimo_32_caracteres_CAMBIAR_EN_PRODUCCION
+TOKEN_EXPIRE_MINUTES=1440
+EOF
+```
 
-## Configuración
+> ⚠️ **NUNCA** subir `.env` a control de versiones. Usar `.gitignore` para excluirlo.
 
-- Edita `Server/config.py` y pon las credenciales correctas en `DB_CONFIG` y una `SECRET_KEY` segura para JWT.
-- Evita dejar credenciales en texto plano en repositorios públicos.
+#### Paso D: Ejecutar servidor
+```powershell
+cd Server
+python appFastApi.py
 
-Ejemplo (no dejar como está en producción):
+# Debería mostrar:
+# ✅ Servidor escuchando en: http://0.0.0.0:8000
+# 🔒 SSL/TLS HABILITADO ✅ (si están los certificados en keys/)
+```
 
-```py
-DB_CONFIG = {
-   'host': 'localhost',
-   'user': 'tu_usuario',
-   'password': 'tu_password',
-   'database': 'control_asistencia',
-   'port': 3306,
+**Acceso:**
+- 🌐 Frontend: http://localhost:8000
+- 🔐 HTTPS: https://localhost:8000 (si los certificados existen)
+- 📚 Docs: http://localhost:8000/docs (Swagger UI)
+- 🧪 ReDoc: http://localhost:8000/redoc (Documentación interactiva)
+
+### 3️⃣ Firmware (ESP32)
+
+#### Requisitos
+1. Arduino IDE 2.0+ o PlatformIO
+2. Board manager: ESP32 1.0.6+
+3. Librerías (instalar vía Arduino IDE Library Manager o PlatformIO):
+   - Adafruit PN532
+   - Adafruit BME280
+   - BH1750 (TinyLux)
+   - LD2410 (esphome)
+   - Adafruit GFX + SSD1306
+   - ArduinoJson
+   - WebSocketsClient
+
+#### Pasos
+1. **Abrir proyecto:**
+   ```
+   File → Open → ControlAsistencia/Device_ESP32_app/Device_ESP32_app.ino
+   ```
+
+2. **Configurar credenciales** en `config.h`:
+   ```cpp
+   #define SSID "TuRedWiFi"
+   #define PASSWORD "TuContraseña"
+   #define SERVER_IP "192.168.X.X"     // IP del backend
+   #define SERVER_PORT 8000            // Puerto FastAPI
+   #define AULA_ID "Aula A-101"        // Identificador del aula
+   ```
+
+3. **Seleccionar placa:**
+   ```
+   Tools → Board → ESP32 → ESP32 Dev Module
+   Tools → COM Port → COMx (el puerto del ESP32)
+   ```
+
+4. **Compilar y cargar:**
+   ```
+   ✔️ → (verificar) o Sketch → Upload
+   ```
+
+5. **Monitor Serial:**
+   ```
+   Tools → Serial Monitor → 115200 baud
+   Observar logs de inicialización
+   ```
+
+---
+
+## 🔗 API Endpoints
+
+### Autenticación
+
+**POST** `/login`
+```json
+Request:
+{
+  "usuario": "admin",
+  "contraseña": "123456"
 }
 
-SECRET_KEY = 'CAMBIA_POR_UNA_CLAVE_LARGA_Y_SECRETA'
+Response (200):
+{
+  "access_token": "eyJhbGc...",
+  "token_type": "bearer",
+  "user_type": "admin"
+}
 ```
 
-## Ejecutar el backend (desarrollo)
+**POST** `/login_aula`
+```json
+Request:
+{
+  "aula_id": "Aula A-101",
+  "device_password": "device_secret_123"
+}
 
-Desde la raíz del repositorio (PowerShell, con el venv activado):
+Response (200):
+{
+  "access_token": "device_jwt_token...",
+  "token_type": "bearer"
+}
+```
+
+### Asistencia
+
+**POST** `/registro`
+- **Headers:** `Authorization: Bearer {token}`
+- **Body:**
+  ```json
+  {
+    "uid": "04B8C2DA5F3B80",
+    "aula": "Aula A-101"
+  }
+  ```
+- **Response:** `{ "status": "registrado", "usuario": "Juan Pérez", "timestamp": "2025-02-11T10:30:00" }`
+
+**GET** `/historial?aula=Aula A-101&fecha=2025-02-11`
+- Retorna lista de registros de asistencia del día
+
+### Estado de Aulas
+
+**GET** `/estado_aulas`
+```json
+Response:
+{
+  "Aula A-101": {
+    "temperatura": 22.5,
+    "humedad": 45,
+    "luz": 450,
+    "personas": 2,
+    "clase_en_curso": true,
+    "relay_1": false,
+    "relay_2": true
+  }
+}
+```
+
+**POST** `/control_relay`
+```json
+{
+  "aula": "Aula A-101",
+  "relay": 1,
+  "estado": true
+}
+```
+
+### Horarios
+
+**GET** `/proxima_clase?aula=Aula A-101`
+```json
+Response:
+{
+  "clase": "Matemáticas II",
+  "profesor": "Dr. García",
+  "inicio": "2025-02-11T11:00:00",
+  "duracion_minutos": 90,
+  "aula": "Aula A-101"
+}
+```
+
+---
+
+## 📡 WebSocket (Comunicación en Tiempo Real)
+
+### Canales
+
+| Endpoint | Rol | Propósito |
+|----------|-----|----------|
+| `/ws` | ESP32 Devices | Envía datos sensores, recibe comandos |
+| `/ws/admin` | Administrador | Monitoreo completo, control total |
+| `/ws/conserje` | Personal soporte | Monitoreo parcial, control limitado |
+
+### Ejemplo: Conexión Device
+
+**Cliente ESP32 → Servidor:**
+```json
+{
+  "tipo": "conexion",
+  "aula": "Aula A-101",
+  "device_id": "ESP32_001"
+}
+```
+
+**Device envía datos cada 30 segundos:**
+```json
+{
+  "tipo": "sensor_data",
+  "aula": "Aula A-101",
+  "temperatura": 22.5,
+  "humedad": 45,
+  "luz": 450,
+  "personas": 2,
+  "clase_en_curso": true
+}
+```
+
+**Servidor envía comandos:**
+```json
+{
+  "tipo": "comando",
+  "accion": "toggle_relay",
+  "relay": 1,
+  "estado": true
+}
+```
+
+### Ejemplo: Conexión Admin
+
+```javascript
+// JavaScript en navegador
+const ws = new WebSocket('wss://localhost:8000/ws/admin?token=eyJ...');
+
+ws.onmessage = (event) => {
+  const msg = JSON.parse(event.data);
+  console.log('Aula actualizada:', msg);
+  // Actualizar UI en tiempo real
+};
+
+ws.send(JSON.stringify({
+  tipo: 'comando',
+  aula: 'Aula A-101',
+  accion: 'toggle_relay',
+  relay: 1
+}));
+```
+
+---
+
+## 🔐 Seguridad
+
+### JWT (JSON Web Tokens)
+
+Sistema unificado de autenticación:
+
+- **Administrador:** `scope="admin"` → Control total
+- **Conserje/Personal:** `scope="conserje"` → Control parcial
+- **Dispositivo:** `scope="device"` → Envío de datos, recepción comandos
+
+**Expiración:** 1440 minutos (24 horas) - configurable en `.env`
+
+### HTTPS/SSL
+
+Si existen certificados en `Server/keys/`:
+```
+cert_https.pem  → Certificado público
+key_https.pem   → Clave privada
+```
+
+El servidor se inicia automáticamente con HTTPS. Para generar certificados autofirmados:
+
+```bash
+openssl req -x509 -newkey rsa:4096 -keyout key_https.pem -out cert_https.pem -days 365 -nodes
+```
+
+### Buenas Prácticas
+
+✅ **Hacer:**
+- Cambiar `SECRET_KEY` en producción
+- Usar HTTPS/TLS en conexiones
+- Validar tokens JWT en cada request
+- Hash de contraseñas (bcrypt/argon2)
+- Rate limiting en endpoints sensibles
+
+❌ **Evitar:**
+- Subir `.env` o credenciales a Git
+- Usar contraseñas por defecto
+- Dejar debug enabled en producción
+- Exponer stack traces en errores
+
+---
+
+## 🐛 Troubleshooting
+
+### Backend no inicia
+
+**Error:** `No module named 'fastapi'`
+```powershell
+pip install -r Server/requirements.txt --force-reinstall
+```
+
+**Error:** `Can't connect to MySQL server on 'localhost:3306'`
+```bash
+# Verificar que el contenedor Docker esté corriendo
+docker ps
+
+# Si no aparece, iniciar:
+docker start control-asistencia-mysql
+```
+
+### ESP32 no conecta a WiFi
+
+1. Verificar SSID y contraseña en `config.h`
+2. Revisar logs en Serial Monitor (115200 baud)
+3. Próbar con AP diferente
+4. Resetear ESP32: `EN` button (1-2 segundos)
+
+### WebSocket desconexiones frecuentes
+
+- Aumentar **timeout** en cliente (ESP32 library)
+- Revisar latencia de red: `ping servidor`
+- Verificar firewall (puerto 8000)
+- Logs en `Server/logs/` (si existen)
+
+### NFC no lee tarjetas
+
+1. Validar conexión SPI:
+   - MOSI(23), MISO(19), SCK(18), CS(5)
+   - GND correcto
+2. Verificar distancia (max 10cm)
+3. Probar con `tests_individuales_Componentes/PRUEBBA_NFC/`
+4. Usar terminal serial para debug
+
+### Sensores reporting "NULL" / "NaN"
+
+| Sensor | Causa | Solución |
+|--------|-------|----------|
+| **BME280** | I2C no responde | Verificar SDA(21), SCL(22), voltaje 3.3V |
+| **BH1750** | Dirección incorrecta (0x23 vs 0x5C) | Revisar pin ADDR en sensor |
+| **LD2410** | Baudrate incorrecto | Serial2 debe estar a 256000 |
+| **PN532** | CS o IRQ desconectados | Verificar pines 5 y 13 |
+
+---
+
+## 📊 Análisis de Datos
+
+### Scripts de Horarios
 
 ```powershell
-python Server\appV4.py
+cd DatosAnalisisHorario
+python clases.py
+
+# Genera:
+# - clases_*.csv (horarios por carrera)
+# - estad_ocupacion_*.csv (estadísticas)
+# - pivot_dia_hora.csv (heatmap ocupación)
 ```
 
-- Flask por defecto escucha en: http://0.0.0.0:5000
-- El servidor WebSocket usa el puerto: 5678 (ajustable en `appV4.py`).
+### Exportar Datos de BD
 
-Notas: `appV4.py` arranca un bucle asyncio para websockets y ejecuta Flask en paralelo. Revisa la variable `loop` en `if __name__ == '__main__'`.
+```bash
+# Backup completo
+mysqldump -u root -p1234 control-asistencia > backup_$(date +%Y%m%d_%H%M%S).sql
 
-## Endpoints útiles
+# Solo tabla asistencias
+mysqldump -u root -p1234 control-asistencia asistencias > asistencias_export.sql
+```
 
-- GET `/` — Página inicial (render `index.html`).
-- POST `/login` — Login de usuario. Devuelve JWT.
-- POST `/login_aula` — Login de aula (genera token para el dispositivo/aula).
-- POST `/registro` — Registrar asistencia desde ESP32. Body JSON: { "uid": "...", "nombre_aula": "Aula 101" }.
-- POST `/datos_aula` — Telemetría periódica del ESP32: { "aula": "Aula 101", "temperatura": 23.5, "luz": 300, "personas": 2, "clase_en_curso": true }.
-- POST `/control_relay` — Cambiar relé: { "aula": "Aula 101", "relay": true }.
-- GET `/estado_aulas` — Estado en memoria de las aulas.
+---
 
-## WebSockets
+## 🤝 Contribución
 
-- El backend mantiene `connected_clients` y difunde eventos (estado inicial, actualizaciones de aula y de relay) en JSON.
-- Puerto por defecto: 5678.
+### Estructura de Ramas
+```
+main                    → Producción estable
+├── develop            → Integración features
+│   ├── feature/ws-ssl  → Nueva funcionalidad
+│   ├── bugfix/nfc      → Correcciones
+│   └── hotfix/jwt      → Urgente a main
+```
 
-## Revisión rápida del proyecto — hallazgos y recomendaciones
+### Checklist antes de Push
 
-He revisado `Server/appV4.py`, `Server/config.py` y la estructura de `Device/` y `Database/`. Puntos relevantes:
+- [ ] Código sigue PEP 8 (Python) / Google Style (C++)
+- [ ] Variables de entorno en `.env.example` (no secrets)
+- [ ] README actualizado
+- [ ] Tests lanzados sin error
+- [ ] Sin credentials en commits
+- [ ] Mensaje de commit descriptivo
 
-1. Seguridad / buenas prácticas
-  - Las contraseñas parecen compararse en texto plano en `/login` y en `/login_aula`. Se recomienda usar hashing (bcrypt/argon2) y verificar con funciones seguras.
-  - `Server/config.py` contiene credenciales y `SECRET_KEY` por defecto; no subir estas claves a repositorios públicos.
+### Documentación
 
-2. Errores y detalles en `appV4.py` (posibles bugs a corregir):
-  - En `registrar_asistencia()` se realizan varias llamadas a `cursor.fetchone()` que parecen fuera de orden; después de obtener `usuario` y luego ejecutar otra consulta, el código hace `profesor = cursor.fetchone()` sin una nueva `execute` previa — esto probablemente devuelve `None` y es innecesario.
-  - `logging.debug("Recibido UID válido", uid)` usa firma de logging incorrecta; debería usar `logging.debug("Recibido UID válido: %s", uid)` o f-strings.
-  - Validación de `uid` solo comprueba longitud y existencia; conviene validar formato y normalizar inputs.
-  - `appV4.py` usa la variable `loop` en varias rutinas; asegúrate que `loop` esté definida antes de cualquier llamada que la use.
+Toda nueva funcionalidad debe ir acompañada de docs en `DOCS/`:
+- Endpoint API → swagger automático
+- WebSocket → `FORMATO_MENSAJES_WEBSOCKET.md`
+- Hardware → `PINES_ESP32_DIAGRAMA.md`
+- Arquitectura → `ARQUITECTURA_*.md`
 
-3. Experiencia de desarrollador
-  - No existe `requirements.txt` (ahora añadido). Considera añadir un `README` separado para firmware con pasos de compilación y librerías necesarias.
-  - Añadir `env.example` o usar variables de entorno para evitar poner secretos en `config.py`.
+---
+
+## 📞 Soporte y Contacto
+
+- **Issues/Bugs:** [Crear issue en repo]
+- **Documentación técnica:** Ver carpeta `DOCS/`
+- **Preguntas frecuentes:** `DOCS/DIAGNOSTICO_WEBSOCKET.md`
+- **Hardware specs:** `DOCS/RESUMEN_EJECUTIVO.md`
+
+---
+
+## 📄 Licencia
+
+Proyecto interno Universidad de Extremadura.
+Uso restringido a propósitos educativos.
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] **v2.0** - Dashboard avanzado (React/Vue)
+- [ ] **v2.1** - App móvil (Flutter)
+- [ ] **v2.2** - Integración con SIS (Sistema académico)
+- [ ] **v2.3** - ML: Predicción ocupación aulas
+- [ ] **v3.0** - Multi-campus
+- [ ] **v3.1** - Módulo de energía (kWh monitoring)
+
+---
+
+**Última actualización:** Febrero 2025 | **Versión:** 1.5.x
 
