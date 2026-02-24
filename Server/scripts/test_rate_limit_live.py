@@ -6,9 +6,16 @@ Este script hace requests reales al servidor para verificar
 que el rate limiting funciona correctamente.
 
 REQUISITO: El servidor debe estar corriendo en http://localhost:8000
+NOTA: Necesita 'requests' instalado: pip install requests
 """
 
-import requests
+try:
+    import requests
+except ImportError:
+    print("❌ Error: 'requests' no está instalado.")
+    print("   Instala con: pip install requests")
+    exit(1)
+
 import time
 from datetime import datetime
 

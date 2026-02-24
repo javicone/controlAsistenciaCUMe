@@ -1,6 +1,6 @@
 # 🏫 Control de Asistencia y Monitorización de Aulas (IoT)
 
-**Sistema integrado para registro de asistencia, monitorización ambiental y control domótico de espacios educativos.**
+**Sistema integrado para registro de asistencia, monitorización ambiental, control domótico y gestión CRUD de datos en espacios educativos.**
 
 ![Logo de la aplicación](imagenes/image.png)
 
@@ -18,6 +18,7 @@ Sistema IoT completo para gestionar aulas inteligentes con:
 - **📡 Comunicación en Tiempo Real**: WebSockets para actualizaciones instantáneas a administradores y personal
 - **🔐 Autenticación JWT**: Sistema de tokens para ESP32, administradores y personal de soporte
 - **🗂️ Gestión completa**: Dashboard web, análisis de datos, histórico de asistencia
+- **📝 Panel CRUD de datos**: Interfaz para crear, leer, actualizar y eliminar registros clave del sistema (usuarios, aulas, horarios, etc.)
 
 ---
 
@@ -28,7 +29,7 @@ Sistema IoT completo para gestionar aulas inteligentes con:
 │                       CAPAS DEL SISTEMA                        │
 ├────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  FRONTEND:  Navegador → HTML/CSS (Templates)                   │
+│  FRONTEND:  Navegador → HTML/CSS (Templates) + Panel CRUD      │
 │  BACKEND:   FastAPI + Uvicorn (Python 3.10+)                   │
 │  WEBSOCKET: Comunicación RT (Aulas ↔ Admin/Conserjes)         │
 │  DATABASE:  MySQL 8.0 (Contenedor Docker)                      │
@@ -36,6 +37,21 @@ Sistema IoT completo para gestionar aulas inteligentes con:
 │                                                                 │
 └────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 📝 Panel CRUD de Datos
+
+El sistema incorpora un **panel CRUD** (Create, Read, Update, Delete) accesible desde el dashboard web para la gestión integral de los datos principales:
+
+- **Usuarios**: Alta, edición, baja y consulta de usuarios del sistema
+- **Aulas**: Gestión de aulas, asignación de dispositivos y configuración
+- **Horarios**: Modificación y carga de horarios de clases
+- **Asistencias**: Consulta y edición de registros de asistencia
+
+El panel cuenta con controles de permisos según el rol (admin/conserje) y validaciones para evitar inconsistencias. Permite búsquedas, filtrado y edición en tiempo real, facilitando la administración sin necesidad de acceder directamente a la base de datos.
+
+Acceso: Desde el dashboard principal, opción "Administrar datos" o similar.
 
 ### 🔀 Flujo de Datos
 
@@ -152,6 +168,7 @@ ControlAsistencia/
 │   └── __pycache__/
 │
 ├── DOCS/                             # Documentación técnica
+│   ├── INDICE.md                     # 📚 ÍNDICE COMPLETO
 │   ├── RESUMEN_EJECUTIVO.md          # Hardware specs
 │   ├── ARQUITECTURA_WEBSOCKET_3_ROLES.md
 │   ├── PINES_ESP32_DIAGRAMA.md       # Pinout completo
@@ -159,6 +176,8 @@ ControlAsistencia/
 │   ├── ENUMERACION_COMPONENTES_ESP32.md
 │   ├── FORMATO_MENSAJES_WEBSOCKET.md
 │   ├── DIAGNOSTICO_WEBSOCKET.md
+│   ├── GUIA_RAPIDA_JWT.md            # ⚡ Intro rápida JWT
+│   ├── ARQUITECTURA_JWT_DUAL.md      # ⭐ JWT: HS256 vs RS256
 │   ├── LOGS_SEGURIDAD_HTTPS.md
 │   ├── SISTEMA_JWT_UNIFICADO.md
 │   ├── MIGRACION_ARDUINOWEBSOCKETS.md
@@ -219,10 +238,10 @@ ESP32 (38 pines usables)
 │ D26 ▓▓ TXD2     │  GPIO26: Relé 1, GPIO17: RX2 LD2410
 │ D27 ▓▓ RXD2     │  GPIO27: LED Verde, GPIO16: TX2 LD2410
 │ D14 ▓▓ D13      │  GPIO14: LED Amarillo, GPIO13: IRQ NFC
-│      ▓▓ D12     │
-│      ▓▓ D4      │
-│      ▓▓ D2      │
-│      ▓▓ D15     │
+│     ▓▓ D12      │
+│     ▓▓  D4      │
+│     ▓▓  D2      │
+│     ▓▓  D15     │
 └─────────────────┘
 
 I²C Bus: SDA(21) - SCL(22) - GND
@@ -550,13 +569,23 @@ ws.send(JSON.stringify({
 
 ### JWT (JSON Web Tokens)
 
-Sistema unificado de autenticación:
+Sistema **dual** de autenticación con dos algoritmos:
 
+- **HS256** (simétrico) → Sesiones web (admin, conserje, profesor)
+- **RS256** (asimétrico) → Dispositivos ESP32 (seguridad física)
+
+**Scopes y permisos:**
 - **Administrador:** `scope="admin"` → Control total
 - **Conserje/Personal:** `scope="conserje"` → Control parcial
 - **Dispositivo:** `scope="device"` → Envío de datos, recepción comandos
 
-**Expiración:** 1440 minutos (24 horas) - configurable en `.env`
+**Expiración:** 
+- Web: 480 minutos (8 horas)
+- Dispositivos: 365 días (1 año)
+
+> 📖 **¿Por qué dos algoritmos JWT?**  
+> - **Introducción rápida (5 min):** [GUIA_RAPIDA_JWT.md](DOCS/GUIA_RAPIDA_JWT.md)  
+> - **Análisis completo:** [ARQUITECTURA_JWT_DUAL.md](DOCS/ARQUITECTURA_JWT_DUAL.md)
 
 ### HTTPS/SSL
 

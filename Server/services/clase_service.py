@@ -53,7 +53,7 @@ async def obtener_clase_actual(aula: str) -> dict:
     }
 
 async def obtener_clase_test(aula: str) -> dict:
-    """    clase_siguiente = await get_clase_from_webservice(aula)
+       clase_siguiente = await get_clase_from_webservice(aula)
     
     # Si el webservice devuelve un mensaje (no hay clases), devolverlo
     if "mensaje" in clase_siguiente:
@@ -67,7 +67,7 @@ async def obtener_clase_test(aula: str) -> dict:
         "hora_inicio": clase_siguiente["hora_inicio"].strftime("%H:%M:%S"),
         "hora_fin": clase_siguiente["hora_fin"].strftime("%H:%M:%S"),
     }
-    """
+    
     # Datos de prueba basados en la hora actual
     ahora = datetime.now()
     hora_inicio = ahora.replace(minute=0, second=0, microsecond=0)

@@ -52,10 +52,15 @@ Navegación rápida por toda la documentación técnica del sistema.
 
 | Documento | Contenido | Público |
 |-----------|----------|---------|
+| [GUIA_RAPIDA_JWT.md](GUIA_RAPIDA_JWT.md) | ⚡ **INICIO RÁPIDO** - Resumen de 1 página del sistema JWT | ✅ |
+| [ARQUITECTURA_JWT_DUAL.md](ARQUITECTURA_JWT_DUAL.md) | HS256 vs RS256, modelo de amenazas, decisiones de diseño (completo) | ✅ |
 | [SISTEMA_JWT_UNIFICADO.md](SISTEMA_JWT_UNIFICADO.md) | JWT, scopes, flujo login, renovación tokens, almacenamiento seguro | ✅ |
 | [LOGS_SEGURIDAD_HTTPS.md](LOGS_SEGURIDAD_HTTPS.md) | SSL/TLS, certificados, HTTPS setup, auditoría de conexiones | ✅ |
 
 **Ir aquí si:**
+- **¿Primera vez?** → Empieza con GUIA_RAPIDA_JWT.md
+- Necesitas entender **por qué usamos dos algoritmos JWT diferentes**
+- Quieres saber la diferencia entre JWT para web vs dispositivos IoT
 - Necesitas entender JWT y cómo loguearse
 - Quieres configurar HTTPS
 - Necesitas revisar logs de seguridad
@@ -84,8 +89,9 @@ Navegación rápida por toda la documentación técnica del sistema.
 1. [README.md](../README.md) - Repositorio
 2. [ARQUITECTURA_WEBSOCKET_3_ROLES.md](ARQUITECTURA_WEBSOCKET_3_ROLES.md) - Diseño
 3. [FORMATO_MENSAJES_WEBSOCKET.md](FORMATO_MENSAJES_WEBSOCKET.md) - API WS
-4. [SISTEMA_JWT_UNIFICADO.md](SISTEMA_JWT_UNIFICADO.md) - Auth
-5. [DIAGNOSTICO_WEBSOCKET.md](DIAGNOSTICO_WEBSOCKET.md) - Debug
+4. [ARQUITECTURA_JWT_DUAL.md](ARQUITECTURA_JWT_DUAL.md) - **JWT HS256 vs RS256**
+5. [SISTEMA_JWT_UNIFICADO.md](SISTEMA_JWT_UNIFICADO.md) - Auth
+6. [DIAGNOSTICO_WEBSOCKET.md](DIAGNOSTICO_WEBSOCKET.md) - Debug
 
 **Carpetas clave:**
 - `Server/routers/` - Endpoints HTTP
@@ -102,7 +108,8 @@ Navegación rápida por toda la documentación técnica del sistema.
 4. [GUIA_CONEXIONADO_FISICO_ESP32.md](GUIA_CONEXIONADO_FISICO_ESP32.md) - Cableado
 5. [ENUMERACION_COMPONENTES_ESP32.md](ENUMERACION_COMPONENTES_ESP32.md) - Librerías
 6. [FORMATO_MENSAJES_WEBSOCKET.md](FORMATO_MENSAJES_WEBSOCKET.md) - Protocolo WS
-7. [SISTEMA_JWT_UNIFICADO.md](SISTEMA_JWT_UNIFICADO.md) - Autenticación
+7. [ARQUITECTURA_JWT_DUAL.md](ARQUITECTURA_JWT_DUAL.md) - **Por qué RS256 en dispositivos**
+8. [SISTEMA_JWT_UNIFICADO.md](SISTEMA_JWT_UNIFICADO.md) - Autenticación
 
 **Carpetas clave:**
 - `Device_ESP32_app/` - Código firmware
@@ -114,9 +121,10 @@ Navegación rápida por toda la documentación técnica del sistema.
 
 1. [README.md](../README.md) - General
 2. [SETUP_WINDOWS.md](../SETUP_WINDOWS.md) - Instalación
-3. [LOGS_SEGURIDAD_HTTPS.md](LOGS_SEGURIDAD_HTTPS.md) - Certificados, HTTPS
-4. [DIAGNOSTICO_WEBSOCKET.md](DIAGNOSTICO_WEBSOCKET.md) - Troubleshooting
-5. [ARQUITECTURA_WEBSOCKET_3_ROLES.md](ARQUITECTURA_WEBSOCKET_3_ROLES.md) - Permisos
+3. [ARQUITECTURA_JWT_DUAL.md](ARQUITECTURA_JWT_DUAL.md) - **Seguridad JWT**
+4. [LOGS_SEGURIDAD_HTTPS.md](LOGS_SEGURIDAD_HTTPS.md) - Certificados, HTTPS
+5. [DIAGNOSTICO_WEBSOCKET.md](DIAGNOSTICO_WEBSOCKET.md) - Troubleshooting
+6. [ARQUITECTURA_WEBSOCKET_3_ROLES.md](ARQUITECTURA_WEBSOCKET_3_ROLES.md) - Permisos
 
 **Carpetas clave:**
 - `Server/.env` - Configuración

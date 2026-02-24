@@ -82,7 +82,6 @@ DROP TABLE IF EXISTS `aulas`;
 CREATE TABLE `aulas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
-  `password_aula` varchar(100) DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

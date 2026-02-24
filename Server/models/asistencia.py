@@ -1,11 +1,11 @@
-from pydantic import BaseModel, Field, constr, validator
+from pydantic import BaseModel, Field, validator
 from datetime import datetime
 from typing import Optional
 import re
 
 class RegistroAsistencia(BaseModel):
-    uid: constr(min_length=8, max_length=20, strip_whitespace=True)
-    device_id: constr(min_length=3, max_length=50, strip_whitespace=True)
+    uid: str = Field(..., min_length=8, max_length=20, strip_whitespace=True)
+    device_id: str = Field(..., min_length=3, max_length=50, strip_whitespace=True)
     timestamp: Optional[datetime] = Field(default=None, description="Timestamp del fichaje (opcional, se usa el del servidor si no se proporciona)")
     
     @validator('uid')

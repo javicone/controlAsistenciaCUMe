@@ -1,0 +1,3 @@
+[     613ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/favicon.ico:0
+[   86206ms] [ERROR] No se encontró token en localStorage @ http://localhost:8000/dashboard:26
+[  148275ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:8000/auth/login:0

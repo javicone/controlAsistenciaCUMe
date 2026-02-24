@@ -10,6 +10,7 @@ Ejecutar para verificar que:
 
 import sys
 from pathlib import Path
+from slowapi.errors import RateLimitExceeded
 
 # Añadir Server/ al path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))

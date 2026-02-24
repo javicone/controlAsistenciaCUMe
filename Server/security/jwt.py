@@ -1,3 +1,17 @@
+"""
+Módulo JWT para Dispositivos IoT - RS256 (Asimétrico)
+
+Este módulo implementa autenticación con RS256 para dispositivos ESP32.
+Para entender por qué usamos RS256 aquí y HS256 en sesiones web,
+consulta: DOCS/ARQUITECTURA_JWT_DUAL.md
+
+RS256 es crítico para dispositivos IoT porque:
+- Dispositivos físicamente vulnerables a robo
+- Solo almacenan la clave PÚBLICA (no pueden firmar tokens falsos)
+- Aunque extraigan el firmware, no comprometen la seguridad
+- La clave PRIVADA permanece segura en el servidor
+"""
+
 from datetime import datetime, timedelta, timezone
 from fastapi import HTTPException, status, Depends
 from jose import jwt, JWTError

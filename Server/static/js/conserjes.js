@@ -1,72 +1,46 @@
+// ================================================================
+// CONSERJES — Panel de Control de Aulas
+// WebSocket connection + real-time room management
+// ================================================================
+
 // ========================================
-// CONFIGURACIÓN Y VARIABLES GLOBALES
+// GLOBAL STATE
 // ========================================
 
 let aulasData = {};
 let ws = null;
 
 // ========================================
-// WEBSOCKET - CONEXIÓN Y MANEJO
+// WEBSOCKET — CONNECTION & HANDLING
 // ========================================
 
 function connectWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/ws/conserje`; 
-    
+    const wsUrl = `${protocol}//${window.location.host}/ws/conserje`;
+
     console.log('🔌 Conectando a:', wsUrl);
-    
     ws = new WebSocket(wsUrl);
-    
+
     ws.onopen = () => {
         console.log('✅ WebSocket conectado (Conserje)');
         updateConnectionStatus(true);
     };
-    
+
     ws.onmessage = (event) => {
         const msg = JSON.parse(event.data);
         console.log('📩 Mensaje:', msg);
-        
+
         switch (msg.tipo) {
-            case 'conserje_bienvenida':
-                console.log('Dispositivos conectados:', msg.dispositivos_conectados);
-                // ✅ Convertir aulas_estado (clave=device_id) a aulasData (clave=nombre_aula)
-                aulasData = {};
-                if (msg.aulas_estado) {
-                    Object.keys(msg.aulas_estado).forEach(deviceId => {
-                        const aulaData = msg.aulas_estado[deviceId];
-                        const aulaNombre = aulaData.aula || aulaData.nombre || deviceId;
-                        aulasData[aulaNombre] = { ...aulaData, device_id: deviceId };
-                    });
-                }
-                console.log('📊 aulasData convertido:', aulasData);
-                renderAulas();
-                break;
-            
-            case 'comando_enviado':
-                console.log(`✅ Comando ${msg.accion} enviado a ${msg.aula}`);
-                break;
-            
             case 'error':
                 console.error('❌ Error:', msg.mensaje);
                 alert('Error: ' + msg.mensaje);
+                if (msg.mensaje.includes('autenticado') || msg.mensaje.includes('autorizado') || msg.mensaje.includes('Token')) {
+                    setTimeout(() => { window.location.href = '/'; }, 2000);
+                }
                 break;
-            
-            case 'actualizacion_aula':
-                // Actualización en tiempo real del estado de un aula
-                actualizarAulaEnTiempoReal(msg);
-                break;
-            
-            case 'confirmacion_relay':
-                // ✅ NUEVO: Confirmación del ESP32 de que el relé cambió
-                console.log(`✅ Relé confirmado: ${msg.aula} relay${msg.relay_num}=${msg.relay_state}`);
-                console.log('📊 Estado actual de aulasData antes de actualizar:', aulasData);
-                actualizarRelayEnUI(msg.aula, msg.relay_num, msg.relay_state);
-                console.log('📊 Estado actual de aulasData después de actualizar:', aulasData);
-                break;
-            
-            case 'lista_dispositivos':
-                console.log('Dispositivos conectados:', msg.dispositivos_conectados);
-                // ✅ Convertir también aquí
+
+            case 'conserje_bienvenida':
+                updateDeviceCount(msg.dispositivos_conectados || 0);
                 aulasData = {};
                 if (msg.aulas_estado) {
                     Object.keys(msg.aulas_estado).forEach(deviceId => {
@@ -75,35 +49,75 @@ function connectWebSocket() {
                         aulasData[aulaNombre] = { ...aulaData, device_id: deviceId };
                     });
                 }
-                console.log('📊 aulasData convertido:', aulasData);
+                renderAulas();
+                break;
+
+            case 'comando_enviado':
+                console.log(`✅ Comando ${msg.accion} enviado a ${msg.aula}`);
+                break;
+
+            case 'actualizacion_aula':
+                actualizarAulaEnTiempoReal(msg);
+                break;
+
+            case 'confirmacion_relay':
+                console.log(`✅ Relé confirmado: ${msg.aula} relay${msg.relay_num}=${msg.relay_state}`);
+                actualizarRelayEnUI(msg.aula, msg.relay_num, msg.relay_state);
+                break;
+
+            case 'lista_dispositivos':
+                updateDeviceCount(msg.dispositivos_conectados || 0);
+                aulasData = {};
+                if (msg.aulas_estado) {
+                    Object.keys(msg.aulas_estado).forEach(deviceId => {
+                        const aulaData = msg.aulas_estado[deviceId];
+                        const aulaNombre = aulaData.aula || aulaData.nombre || deviceId;
+                        aulasData[aulaNombre] = { ...aulaData, device_id: deviceId };
+                    });
+                }
                 renderAulas();
                 break;
         }
     };
-    
+
     ws.onerror = (error) => {
         console.error('❌ Error WebSocket:', error);
         updateConnectionStatus(false);
     };
-    
+
     ws.onclose = () => {
         console.log('❌ WebSocket cerrado');
         updateConnectionStatus(false);
-        // Reconectar en 5 segundos
         setTimeout(connectWebSocket, 5000);
     };
 }
 
+// ========================================
+// UI STATUS UPDATES
+// ========================================
+
 function updateConnectionStatus(connected) {
-    const statusEl = document.getElementById('ws-status');
-    if (statusEl) {
-        statusEl.textContent = connected ? '🟢 Conectado' : '🔴 Desconectado';
-        statusEl.className = connected ? 'status-connected' : 'status-disconnected';
+    const el = document.getElementById('ws-status');
+    if (!el) return;
+
+    if (connected) {
+        el.innerHTML = '<i class="bi bi-circle-fill"></i> Conectado';
+        el.className = 'ws-badge ws-badge--on';
+    } else {
+        el.innerHTML = '<i class="bi bi-circle-fill"></i> Desconectado';
+        el.className = 'ws-badge ws-badge--off';
+    }
+}
+
+function updateDeviceCount(count) {
+    const el = document.getElementById('device-count-text');
+    if (el) {
+        el.textContent = `${count} dispositivo${count !== 1 ? 's' : ''}`;
     }
 }
 
 // ========================================
-// FUNCIONES DE ENVÍO
+// WEBSOCKET ACTIONS
 // ========================================
 
 function cambiarRelay(aulaName, relayNum, nuevoEstado) {
@@ -111,15 +125,14 @@ function cambiarRelay(aulaName, relayNum, nuevoEstado) {
         alert('WebSocket no conectado');
         return false;
     }
-    
-    // ✅ FIX: Enviar por NOMBRE DE AULA, el servidor resuelve el device_id
+
     const mensaje = {
         action: 'toggle_relay',
-        aula: aulaName,          // ← Enviamos el nombre del aula
-        relay_num: relayNum,     // ← 1 = calefacción, 2 = iluminación
-        relay_state: nuevoEstado // ← true/false
+        aula: aulaName,
+        relay_num: relayNum,
+        relay_state: nuevoEstado
     };
-    
+
     ws.send(JSON.stringify(mensaje));
     console.log('📤 Comando toggle_relay enviado:', mensaje);
     return true;
@@ -130,148 +143,187 @@ function actualizarLista() {
         alert('WebSocket no conectado');
         return;
     }
-    
     ws.send(JSON.stringify({ action: 'listar_dispositivos' }));
     console.log('📤 Solicitando lista de dispositivos...');
 }
 
 // ========================================
-// FUNCIONES DE UI
+// STATE UPDATES
 // ========================================
 
 function actualizarRelayEnUI(aulaKey, relayNum, relayState) {
-    // ✅ Ahora aulasData usa el nombre del aula como clave directamente
     if (aulasData[aulaKey]) {
         if (relayNum === 1) aulasData[aulaKey].relay1 = relayState;
         if (relayNum === 2) aulasData[aulaKey].relay2 = relayState;
         console.log(`🔄 UI actualizada: ${aulaKey} relay${relayNum}=${relayState}`);
         renderAulas();
     } else {
-        console.warn(`⚠️ Aula '${aulaKey}' no encontrada en aulasData para actualizar relay`);
+        console.warn(`⚠️ Aula '${aulaKey}' no encontrada en aulasData`);
     }
 }
 
 function actualizarAulaEnTiempoReal(msg) {
     const aulaKey = msg.aula;
-    
-    if (!aulasData[aulaKey]) {
-        aulasData[aulaKey] = {};
-    }
-    
-    // Actualizar campos del aula
-    if (msg.temperatura !== undefined) aulasData[aulaKey].temperatura = msg.temperatura;
-    if (msg.humedad !== undefined) aulasData[aulaKey].humedad = msg.humedad;
-    if (msg.luz !== undefined) aulasData[aulaKey].luz = msg.luz;
-    if (msg.personas !== undefined) aulasData[aulaKey].personas = msg.personas;
-    if (msg.estado !== undefined) aulasData[aulaKey].estado = msg.estado;
-    if (msg.relay1 !== undefined) aulasData[aulaKey].relay1 = msg.relay1;
-    if (msg.relay2 !== undefined) aulasData[aulaKey].relay2 = msg.relay2;
-    if (msg.clase_en_curso !== undefined) aulasData[aulaKey].clase_en_curso = msg.clase_en_curso;
-    
-    console.log(`🔄 Aula actualizada en tiempo real: ${aulaKey}`, aulasData[aulaKey]);
+    if (!aulasData[aulaKey]) aulasData[aulaKey] = {};
+
+    const fields = ['temperatura', 'humedad', 'luz', 'personas', 'estado', 'relay1', 'relay2', 'clase_en_curso', 'presion'];
+    fields.forEach(f => {
+        if (msg[f] !== undefined) aulasData[aulaKey][f] = msg[f];
+    });
+
+    console.log(`🔄 Aula actualizada en tiempo real: ${aulaKey}`);
     renderAulas();
 }
+
+// ========================================
+// RENDER — Room Cards
+// ========================================
 
 function renderAulas() {
     const panel = document.getElementById('panel');
     if (!panel) return;
-    
-    panel.innerHTML = '';
-    
-    if (Object.keys(aulasData).length === 0) {
-        panel.innerHTML = '<p>No hay aulas disponibles</p>';
+
+    const keys = Object.keys(aulasData);
+
+    if (keys.length === 0) {
+        panel.innerHTML = `
+            <div class="panel-empty">
+                <i class="bi bi-router"></i>
+                <h3>Sin dispositivos conectados</h3>
+                <p>Los dispositivos ESP32 aparecerán aquí cuando se conecten</p>
+            </div>`;
         return;
     }
-    
-    console.log('🎨 Renderizando aulas:', aulasData);
-    
-    Object.keys(aulasData).forEach(aulaKey => {
+
+    panel.innerHTML = '';
+
+    keys.forEach((aulaKey, index) => {
         const aula = aulasData[aulaKey];
-        const aulaDiv = document.createElement('div');
-        aulaDiv.classList.add('aula');
-        
-        const aulaName = aula.nombre || aula.aula || aulaKey;
-        const temp = aula.temperatura !== undefined ? `${aula.temperatura}°C` : 'N/A';
-        const luz = aula.luz !== undefined ? `${aula.luz} lux` : 'N/A';
-        const humedad = aula.humedad !== undefined ? `${aula.humedad}%` : 'N/A';
-        const presion = aula.presion !== undefined ? `${aula.presion} hPa` : 'N/A';
-        const personas = aula.personas !== undefined ? aula.personas : 'N/A';
-        const claseEnCurso = aula.clase_en_curso ? 'Sí' : 'No';
-        const relay1State = aula.relay1 || false;
-        const relay2State = aula.relay2 || false;
-        
-        console.log(`📊 Renderizando ${aulaName}: relay1=${relay1State}, relay2=${relay2State}`);
-        
-        aulaDiv.innerHTML = `
-            <h3>${aulaName}</h3>
-            <p><strong>Temperatura:</strong> ${temp}</p>
-            <p><strong>Luz:</strong> ${luz}</p>
-            <p><strong>Humedad:</strong> ${humedad}</p>
-            <p><strong>Presión:</strong> ${presion}</p>
-            <p><strong>Personas:</strong> ${personas}</p>
-            <p><strong>Clase en Curso:</strong> ${claseEnCurso}</p>
-            <div class="relay-controls">
-                <p><strong>Calefacción:</strong> ${relay1State ? 'Encendida' : 'Apagada'}</p>
-                <button 
-                    class="button ${relay1State ? 'button-off' : 'button-on'}" 
-                    onclick="cambiarRelay('${aulaName}', 1, ${!relay1State})"
-                >
-                    ${relay1State ? 'Apagar' : 'Encender'} Calefacción
-                </button>
-                
-                <p><strong>Iluminación:</strong> ${relay2State ? 'Encendida' : 'Apagada'}</p>
-                <button 
-                    class="button ${relay2State ? 'button-off' : 'button-on'}" 
-                    onclick="cambiarRelay('${aulaName}', 2, ${!relay2State})"
-                >
-                    ${relay2State ? 'Apagar' : 'Encender'} Iluminación
-                </button>
+        const name = aula.nombre || aula.aula || aulaKey;
+        const escapedName = name.replace(/'/g, "\\'");
+
+        // Sensor values with fallbacks
+        const temp     = aula.temperatura !== undefined ? `${aula.temperatura}°C` : '—';
+        const humedad  = aula.humedad     !== undefined ? `${aula.humedad}%`      : '—';
+        const luz      = aula.luz         !== undefined ? `${aula.luz} lux`       : '—';
+        const presion  = aula.presion     !== undefined ? `${aula.presion} hPa`   : '—';
+        const personas = aula.personas    !== undefined ? `${aula.personas}`      : '—';
+
+        const claseEnCurso = aula.clase_en_curso || false;
+        const relay1 = aula.relay1 || false;
+        const relay2 = aula.relay2 || false;
+
+        const delay = Math.min(index * 0.06, 0.35);
+
+        const card = document.createElement('article');
+        card.className = 'room-card';
+        card.style.animationDelay = `${delay}s`;
+
+        card.innerHTML = `
+            <div class="room-card__header">
+                <h3 class="room-card__name">${name}</h3>
+                <span class="room-card__badge room-card__badge--${claseEnCurso ? 'active' : 'inactive'}">
+                    ${claseEnCurso ? '<i class="bi bi-mortarboard"></i> Clase en curso' : 'Sin clase'}
+                </span>
+            </div>
+
+            <div class="room-card__sensors">
+                <div class="sensor">
+                    <div class="sensor__icon"><i class="bi bi-thermometer-half"></i></div>
+                    <div class="sensor__data">
+                        <span class="sensor__value">${temp}</span>
+                        <span class="sensor__label">Temp</span>
+                    </div>
+                </div>
+                <div class="sensor">
+                    <div class="sensor__icon"><i class="bi bi-droplet-half"></i></div>
+                    <div class="sensor__data">
+                        <span class="sensor__value">${humedad}</span>
+                        <span class="sensor__label">Humedad</span>
+                    </div>
+                </div>
+                <div class="sensor">
+                    <div class="sensor__icon"><i class="bi bi-sun"></i></div>
+                    <div class="sensor__data">
+                        <span class="sensor__value">${luz}</span>
+                        <span class="sensor__label">Luz</span>
+                    </div>
+                </div>
+                <div class="sensor">
+                    <div class="sensor__icon"><i class="bi bi-speedometer2"></i></div>
+                    <div class="sensor__data">
+                        <span class="sensor__value">${presion}</span>
+                        <span class="sensor__label">Presión</span>
+                    </div>
+                </div>
+                <div class="sensor">
+                    <div class="sensor__icon"><i class="bi bi-people"></i></div>
+                    <div class="sensor__data">
+                        <span class="sensor__value">${personas}</span>
+                        <span class="sensor__label">Personas</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="room-card__controls">
+                <div class="relay-row">
+                    <div class="relay-row__info">
+                        <i class="bi bi-fire"></i>
+                        <span>Calefacción</span>
+                        <span class="relay-row__state relay-row__state--${relay1 ? 'on' : 'off'}">${relay1 ? 'ON' : 'OFF'}</span>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" ${relay1 ? 'checked' : ''} onchange="cambiarRelay('${escapedName}', 1, this.checked)">
+                        <span class="toggle__track"></span>
+                    </label>
+                </div>
+                <div class="relay-row">
+                    <div class="relay-row__info">
+                        <i class="bi bi-lightbulb"></i>
+                        <span>Iluminación</span>
+                        <span class="relay-row__state relay-row__state--${relay2 ? 'on' : 'off'}">${relay2 ? 'ON' : 'OFF'}</span>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" ${relay2 ? 'checked' : ''} onchange="cambiarRelay('${escapedName}', 2, this.checked)">
+                        <span class="toggle__track"></span>
+                    </label>
+                </div>
             </div>
         `;
-        
-        panel.appendChild(aulaDiv);
-    });
-}
 
-function cerrarSesion() {
-    // 1. Cerrar WebSocket si está abierto
-    if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.close(1000, 'Logout');
-    }
-     // 2. Limpiar almacenamiento local y de sesión
-    sessionStorage.clear();
-    localStorage.clear();
-
-    // 3. Llamar al endpoint de logout del servidor para borrar la cookie
-    fetch('/logout', {
-        method: 'GET',
-        credentials: 'include'
-    })
-    .then(() => {
-        // 4. Redirigir al usuario al inicio o login
-        window.location.href = '/';
-    })
-    .catch(() => {
-        window.location.href = '/';
+        panel.appendChild(card);
     });
 }
 
 // ========================================
-// INICIALIZACIÓN
+// LOGOUT
+// ========================================
+
+function cerrarSesion() {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close(1000, 'Logout');
+    }
+    sessionStorage.clear();
+    localStorage.clear();
+
+    fetch('/logout', { method: 'GET', credentials: 'include' })
+        .then(() => { window.location.href = '/'; })
+        .catch(() => { window.location.href = '/'; });
+}
+
+// ========================================
+// INITIALIZATION
 // ========================================
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Inicializando panel conserjes');
     connectWebSocket();
-    
-    // Botón actualizar lista (si existe)
+
     const btnActualizar = document.getElementById('btn-actualizar');
     if (btnActualizar) {
         btnActualizar.addEventListener('click', actualizarLista);
     }
-});
-document.addEventListener('DOMContentLoaded', () => {
-    // ...existing code...
+
     const btnLogout = document.getElementById('btn-logout');
     if (btnLogout) {
         btnLogout.addEventListener('click', (e) => {

@@ -1,8 +1,8 @@
-from pydantic import BaseModel, constr, validator, Field
+from pydantic import BaseModel, validator, Field
 from typing import Optional
 
 class DatosAula(BaseModel):
-    aula: constr(min_length=3, max_length=50, strip_whitespace=True)
+    aula: str = Field(..., min_length=3, max_length=50, strip_whitespace=True)
     temperatura: float = Field(..., ge=-50.0, le=100.0, description="Temperatura en °C")
     luz: float = Field(..., ge=0.0, le=100000.0, description="Iluminación en lux")
     presion: float = Field(..., ge=800.0, le=1200.0, description="Presión en hPa")
@@ -36,7 +36,7 @@ class DatosAula(BaseModel):
         }
 
 class ControlRelay(BaseModel):
-    aula: constr(min_length=3, max_length=50, strip_whitespace=True)
+    aula: str = Field(..., min_length=3, max_length=50, strip_whitespace=True)
     aerotermia: bool
     iluminacion: bool
     

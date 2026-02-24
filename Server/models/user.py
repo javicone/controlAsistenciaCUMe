@@ -1,10 +1,10 @@
-from pydantic import BaseModel, EmailStr, constr, validator, Field
+from pydantic import BaseModel, EmailStr, validator, Field
 from typing import Optional
 import re
 
 class UserLogin(BaseModel):
     correo: EmailStr
-    password: constr(min_length=8, max_length=100)
+    password: str = Field(..., min_length=8, max_length=100)
     
     @validator('correo')
     def email_lowercase(cls, v):
@@ -27,10 +27,6 @@ class UserLogin(BaseModel):
             raise ValueError('Password contiene caracteres no permitidos')
         return v
 
-class AulaLogin(BaseModel):
-    nombre_aula: str
-    password_aula: str
-
 class TokenData(BaseModel):
     id: str | None = None
     rol: str | None = None
@@ -42,4 +38,41 @@ class UserInDB(BaseModel):
     rol: str
     password: str
 
-    
+class UserBase(BaseModel):
+    nombre: str = Field(..., strip_whitespace=True, min_length=3, max_length=100)
+    correo: EmailStr
+    rol: str = Field(default='profesor', strip_whitespace=True)
+    uid_tarjeta: Optional[str] = Field(None, strip_whitespace=True, max_length=50)
+
+    @validator('rol')
+    def rol_must_be_valid(cls, v):
+        valid_roles = {'profesor', 'conserje', 'administrador'}
+        if v not in valid_roles:
+            raise ValueError(f'Rol debe ser uno de: {", ".join(valid_roles)}')
+        return v
+
+class UserCreate(UserBase):
+    password: str = Field(..., min_length=8, max_length=100)
+
+class UserUpdate(BaseModel):
+    nombre: Optional[str] = Field(None, strip_whitespace=True, min_length=3, max_length=100)
+    correo: Optional[EmailStr] = None
+    rol: Optional[str] = Field(None, strip_whitespace=True)
+    uid_tarjeta: Optional[str] = Field(None, strip_whitespace=True, max_length=50)
+    password: Optional[str] = Field(None, min_length=8, max_length=100)
+
+    @validator('rol')
+    def rol_must_be_valid(cls, v):
+        if v is None:
+            return v
+        valid_roles = {'profesor', 'conserje', 'administrador'}
+        if v not in valid_roles:
+            raise ValueError(f'Rol debe ser uno de: {", ".join(valid_roles)}')
+        return v
+
+class UserViewModel(UserBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+

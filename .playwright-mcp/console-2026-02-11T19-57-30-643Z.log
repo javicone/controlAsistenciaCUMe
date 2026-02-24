@@ -1,0 +1,10 @@
+[  426352ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/admin' failed:  @ http://localhost:8000/static/js/administrador.js:18
+[  426352ms] [ERROR] ❌ Error WebSocket: Event @ http://localhost:8000/static/js/administrador.js:114
+[  431674ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/admin' failed:  @ http://localhost:8000/static/js/administrador.js:18
+[  431675ms] [ERROR] ❌ Error WebSocket: Event @ http://localhost:8000/static/js/administrador.js:114
+[  436992ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/admin' failed:  @ http://localhost:8000/static/js/administrador.js:18
+[  436992ms] [ERROR] ❌ Error WebSocket: Event @ http://localhost:8000/static/js/administrador.js:114
+[  442320ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/admin' failed:  @ http://localhost:8000/static/js/administrador.js:18
+[  442320ms] [ERROR] ❌ Error WebSocket: Event @ http://localhost:8000/static/js/administrador.js:114
+[  447656ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/admin' failed:  @ http://localhost:8000/static/js/administrador.js:18
+[  447656ms] [ERROR] ❌ Error WebSocket: Event @ http://localhost:8000/static/js/administrador.js:114

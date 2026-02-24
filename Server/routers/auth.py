@@ -1,7 +1,20 @@
+"""
+Router de Autenticación - Sistema Dual JWT
+
+Este módulo implementa autenticación con HS256 (simétrico) para sesiones web.
+Para entender por qué usamos HS256 aquí y RS256 en dispositivos IoT,
+consulta: DOCS/ARQUITECTURA_JWT_DUAL.md
+
+HS256 es apropiado para autenticación web porque:
+- La clave secreta nunca sale del servidor
+- Mayor velocidad de verificación
+- Menor overhead computacional
+"""
+
 from fastapi import APIRouter, Form, HTTPException, Depends
 from fastapi.responses import RedirectResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jose import JWTError
+from jose import jwt as jose_jwt, JWTError
 from config import ALGORITHM, SECRET_KEY
 from security import jwt
 from models.user import UserLogin
@@ -18,7 +31,7 @@ from slowapi import Limiter
 from slowapi.util import get_remote_address
 
 router = APIRouter()
-security = HTTPBearer()
+security = HTTPBearer(auto_error=False)  # auto_error=False hace que sea opcional
 logger = logging.getLogger(__name__)
 limiter = Limiter(key_func=get_remote_address)
 
@@ -197,3 +210,72 @@ async def logout(request: Request):
     response = RedirectResponse(url="/", status_code=303)
     response.delete_cookie("access_token", path="/")
     return response
+
+
+async def get_current_active_admin(request: Request, credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """
+    Dependencia para verificar que el usuario es un administrador activo.
+    Acepta el token JWT desde el header Authorization o desde la cookie HttpOnly.
+    """
+    token = None
+    
+    # 1. Intentar extraer token del header Authorization (Bearer)
+    try:
+        if credentials and hasattr(credentials, 'credentials'):
+            token = credentials.credentials
+            logger.info("🔑 Token obtenido del header Authorization")
+    except:
+        pass
+    
+    # 2. Si no hay header, intentar extraer de la cookie
+    if not token:
+        token = request.cookies.get("access_token")
+        if token:
+            logger.info("🔑 Token obtenido de la cookie HttpOnly")
+    
+    # 3. Si no hay token en ningún lado, rechazar
+    if not token:
+        logger.warning("❌ No se encontró token en header ni en cookie")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="No se encontró el token de autenticación (ni header ni cookie)"
+        )
+    
+    payload = None
+    
+    # Intentar primero HS256 (tokens de login/sesión)
+    try:
+        payload = jose_jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    except JWTError:
+        # Si falla HS256, intentar RS256 (tokens de dispositivos nuevos)
+        try:
+            payload = verify_token(token, required_scope="admin")
+        except HTTPException:
+            # Último intento: RS256 sin validar scope específico
+            try:
+                from security.jwt import PUB, ALG, AUDIENCE
+                payload = jose_jwt.decode(token, PUB, algorithms=[ALG], audience=AUDIENCE)
+            except JWTError:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Token inválido o expirado"
+                )
+    
+    # Permitir compatibilidad con tokens antiguos que usan 'rol' en vez de 'scope'
+    rol = payload.get("rol") or payload.get("scope")
+    if rol != "administrador" and rol != "admin":
+        logger.warning(f"⛔ Rol insuficiente: {rol}")
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Acceso denegado: se requiere rol de administrador."
+        )
+    
+    # Buscar usuario por correo o sub
+    user_email = payload.get("correo") or payload.get("sub")
+    user = await get_usuario_por_mail(user_email)
+    if not user:
+        logger.warning(f"❌ Usuario no encontrado: {user_email}")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuario no encontrado")
+    
+    logger.info(f"✅ Admin autenticado: {user_email}")
+    return user

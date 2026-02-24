@@ -28,6 +28,17 @@ function connectWebSocket() {
         console.log('📩 Mensaje:', msg);
         
         switch (msg.tipo) {
+            case 'error':
+                console.error('❌ Error:', msg.mensaje);
+                mostrarNotificacion('error', msg.mensaje);
+                // Si el error es de autenticación, redirigir al login
+                if (msg.mensaje.includes('autenticado') || msg.mensaje.includes('autorizado') || msg.mensaje.includes('Token')) {
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 2000);
+                }
+                break;
+                
             case 'admin_bienvenida':
                 console.log('Dispositivos conectados:', msg.dispositivos_conectados);
                 // ✅ Convertir aulas_estado (clave=device_id) a aulasData
@@ -47,11 +58,6 @@ function connectWebSocket() {
             case 'comando_enviado':
                 console.log(`✅ Comando ${msg.accion} enviado a ${msg.device_id}`);
                 mostrarNotificacion('success', `Comando ${msg.accion} enviado correctamente`);
-                break;
-            
-            case 'error':
-                console.error('❌ Error:', msg.mensaje);
-                mostrarNotificacion('error', msg.mensaje);
                 break;
             
             case 'test_respuesta':
@@ -719,3 +725,205 @@ function refrescarSensores() {
     
     mostrarNotificacion('info', 'Solicitando actualización de sensores...');
 }
+
+// =================================================================
+// UTILIDADES
+// =================================================================
+
+function escapeHTML(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+}
+
+function showToast(mensaje, tipo) {
+    mostrarNotificacion(tipo, mensaje);
+}
+
+// =================================================================
+// GESTIÓN DE USUARIOS
+// =================================================================
+
+const userManagementModal = document.getElementById('user-management-modal');
+const userFormModal = document.getElementById('user-form-modal');
+const btnGestionarUsuarios = document.getElementById('btn-gestionar-usuarios');
+const modalCloseBtn = document.getElementById('modal-close-btn');
+const userFormCloseBtn = document.getElementById('user-form-close-btn');
+const btnAddUser = document.getElementById('btn-add-user');
+const userListTbody = document.getElementById('user-list-tbody');
+const userForm = document.getElementById('user-form');
+const userFormTitle = document.getElementById('user-form-title');
+const btnCancelUserForm = document.getElementById('btn-cancel-user-form');
+
+// Form fields
+const userIdInput = document.getElementById('user-id');
+const userNameInput = document.getElementById('user-nombre');
+const userEmailInput = document.getElementById('user-correo');
+const userRolInput = document.getElementById('user-rol');
+const userUidInput = document.getElementById('user-uid');
+const userPasswordInput = document.getElementById('user-password');
+
+
+// --- API Calls ---
+const apiFetch = async (url, options = {}) => {
+    // Intentar obtener token de localStorage o de la cookie (HttpOnly se envía automáticamente)
+    const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
+    const headers = {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        ...options.headers,
+    };
+
+    const response = await fetch(url, { ...options, headers });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ detail: 'Error desconocido' }));
+        const errorMessage = errorData.detail || `Error ${response.status}`;
+        mostrarNotificacion('error', errorMessage);
+        throw new Error(errorMessage);
+    }
+    // For 204 No Content
+    if (response.status === 204) {
+        return null;
+    }
+    return response.json();
+};
+
+const getUsers = () => apiFetch('/api/v1/usuarios');
+const createUser = (data) => apiFetch('/api/v1/usuarios', { method: 'POST', body: JSON.stringify(data) });
+const updateUser = (id, data) => apiFetch(`/api/v1/usuarios/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+const deleteUser = (id) => apiFetch(`/api/v1/usuarios/${id}`, { method: 'DELETE' });
+
+
+// --- Modal Control ---
+const openUserListModal = async () => {
+    try {
+        const users = await getUsers();
+        renderUserList(users);
+        userManagementModal.style.display = 'flex';
+    } catch (error) {
+        console.error('Error al abrir modal de usuarios:', error);
+    }
+};
+
+const openUserFormModal = (user = null) => {
+    userForm.reset();
+    if (user) {
+        userFormTitle.textContent = 'Editar Usuario';
+        userIdInput.value = user.id;
+        userNameInput.value = user.nombre;
+        userEmailInput.value = user.correo;
+        userRolInput.value = user.rol;
+        userUidInput.value = user.uid_tarjeta || '';
+        userPasswordInput.placeholder = 'Dejar en blanco para no cambiar';
+    } else {
+        userFormTitle.textContent = 'Añadir Usuario';
+        userIdInput.value = '';
+        userPasswordInput.placeholder = 'Mínimo 8 caracteres';
+    }
+    userFormModal.style.display = 'flex';
+};
+
+const closeModals = () => {
+    userManagementModal.style.display = 'none';
+    userFormModal.style.display = 'none';
+};
+
+// --- Rendering ---
+const renderUserList = (users) => {
+    userListTbody.innerHTML = '';
+    if (users.length === 0) {
+        userListTbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No hay usuarios registrados.</td></tr>';
+        return;
+    }
+    users.forEach(user => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${escapeHTML(user.nombre)}</td>
+            <td>${escapeHTML(user.correo)}</td>
+            <td>${escapeHTML(user.rol)}</td>
+            <td class="user-actions">
+                <button class="btn btn-secondary btn-edit-user" data-user-id="${user.id}">Editar</button>
+                <button class="btn btn-danger btn-delete-user" data-user-id="${user.id}">Eliminar</button>
+            </td>
+        `;
+        userListTbody.appendChild(tr);
+    });
+};
+
+
+// --- Event Listeners ---
+btnGestionarUsuarios.addEventListener('click', openUserListModal);
+modalCloseBtn.addEventListener('click', closeModals);
+userFormCloseBtn.addEventListener('click', closeModals);
+btnCancelUserForm.addEventListener('click', () => userFormModal.style.display = 'none');
+btnAddUser.addEventListener('click', () => openUserFormModal());
+
+userListTbody.addEventListener('click', async (e) => {
+    const target = e.target;
+    const userId = target.dataset.userId;
+
+    if (target.classList.contains('btn-edit-user')) {
+        try {
+            const user = await apiFetch(`/api/v1/usuarios/${userId}`);
+            openUserFormModal(user);
+        } catch (error) {
+            console.error(`Error al obtener datos del usuario ${userId}:`, error);
+        }
+    }
+
+    if (target.classList.contains('btn-delete-user')) {
+        if (confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.')) {
+            try {
+                await deleteUser(userId);
+                showToast('Usuario eliminado correctamente.', 'success');
+                openUserListModal(); // Recargar lista
+            } catch (error) {
+                console.error(`Error al eliminar usuario ${userId}:`, error);
+            }
+        }
+    }
+});
+
+userForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = userIdInput.value;
+    const isUpdating = !!id;
+
+    const userData = {
+        nombre: userNameInput.value,
+        correo: userEmailInput.value,
+        rol: userRolInput.value,
+        uid_tarjeta: userUidInput.value || null,
+    };
+
+    if (userPasswordInput.value) {
+        userData.password = userPasswordInput.value;
+    } else if (!isUpdating) {
+        showToast('La contraseña es obligatoria para nuevos usuarios.', 'error');
+        return;
+    }
+
+    try {
+        if (isUpdating) {
+            await updateUser(id, userData);
+            showToast('Usuario actualizado correctamente.', 'success');
+        } else {
+            await createUser(userData);
+            showToast('Usuario creado correctamente.', 'success');
+        }
+        closeModals();
+        openUserListModal(); // Recargar lista
+    } catch (error) {
+        console.error('Error al guardar usuario:', error);
+        // El error ya se muestra en el toast desde apiFetch
+    }
+});
+
+// Cerrar modal al hacer clic fuera
+window.addEventListener('click', (e) => {
+    if (e.target === userManagementModal || e.target === userFormModal) {
+        closeModals();
+    }
+});

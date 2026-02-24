@@ -4,20 +4,27 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 import uvicorn
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, status
+from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from dotenv import load_dotenv
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
 
 # Cargar variables de entorno primero
 load_dotenv()
 
+# Directorio base del proyecto
+BASE_DIR = Path(__file__).resolve().parent
+
 # Configuración
 from middleware.cors import setup_cors
-from middleware.input_validation import InputValidationMiddleware
-from routers import auth, asistencias, aulas, clases, websockets, views
+from middleware.rate_limit import rate_limit_exceeded_handler
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from routers import auth, asistencias, aulas, clases, websockets, views, usuarios, gestion_crud
 from utils.database_pool import close_db_pool, get_db_pool
 
 # Configuración de logging
@@ -85,21 +92,64 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Configurar Rate Limiting
-limiter = Limiter(key_func=get_remote_address, default_limits=["200/minute"])
+# Configurar rate limiter
+limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
 
 # Configurar CORS
 setup_cors(app)
 
-# Middleware de validación de inputs (SEGURIDAD)
-# Previene: SQL Injection, XSS, Command Injection, Prompt Injection
-app.add_middleware(
-    InputValidationMiddleware,
-    enable_strict_mode=True  # Cambiar a False para solo logging sin bloqueo
-)
-logger.info("🛡️  Middleware de validación de inputs activado (strict_mode=True)")
+# Templates para páginas de error
+TEMPLATES_DIR = BASE_DIR / "templates"
+templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
+
+# Manejadores de excepciones personalizados
+@app.exception_handler(StarletteHTTPException)
+async def custom_http_exception_handler(request: Request, exc: StarletteHTTPException):
+    """Maneja errores HTTP (404, 403, etc.) mostrando error.html"""
+    
+    # Mapeo de códigos de error comunes
+    error_messages = {
+        404: "No hemos podido encontrar la página que buscas.",
+        403: "No tienes permiso para acceder a este recurso.",
+        401: "Debes iniciar sesión para acceder a este recurso.",
+        500: "Ha ocurrido un error interno en el servidor.",
+        503: "El servicio no está disponible temporalmente."
+    }
+    
+    # Obtener mensaje personalizado o usar el del error
+    message = error_messages.get(exc.status_code, exc.detail or "Ha ocurrido un error.")
+    
+    # Renderizar directamente error.html
+    return templates.TemplateResponse(
+        "error.html",
+        {"request": request},
+        status_code=exc.status_code,
+        headers={"X-Error-Code": str(exc.status_code), "X-Error-Message": message}
+    )
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    """Maneja errores de validación de datos"""
+    logger.error(f"Error de validación: {exc}")
+    return templates.TemplateResponse(
+        "error.html",
+        {"request": request},
+        status_code=400,
+        headers={"X-Error-Code": "400", "X-Error-Message": "Los datos enviados no son válidos."}
+    )
+
+@app.exception_handler(Exception)
+async def general_exception_handler(request: Request, exc: Exception):
+    """Maneja excepciones no controladas"""
+    logger.error(f"Error no controlado: {exc}", exc_info=True)
+    return templates.TemplateResponse(
+        "error.html",
+        {"request": request},
+        status_code=500,
+        headers={"X-Error-Code": "500", "X-Error-Message": "Ha ocurrido un error inesperado."}
+    )
 
 # Archivos estáticos
 BASE_DIR = Path(__file__).parent
@@ -114,6 +164,8 @@ app.include_router(auth.router, prefix="")
 app.include_router(asistencias.router)
 app.include_router(aulas.router)
 app.include_router(clases.router)
+app.include_router(usuarios.router)
+app.include_router(gestion_crud.router)
 app.include_router(websockets.router)
 
 # Health check mejorado

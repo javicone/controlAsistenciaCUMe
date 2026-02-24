@@ -63,9 +63,13 @@ async def _obtener_identidad_dispositivo(websocket: WebSocket, token: str) -> st
 
 async def _obtener_identidad_staff(websocket: WebSocket, roles_permitidos: list) -> tuple[str, str]:
     """Valida cookie y rol. Retorna (user_id, rol) o (None, None)."""
+    # ✅ PRIMERO aceptar la conexión WebSocket
+    await websocket.accept()
+    
     token = websocket.cookies.get("access_token")
     if not token:
         logging.warning("❌ Staff: Falta cookie 'access_token'")
+        await websocket.send_json({"tipo": "error", "mensaje": "No autenticado. Recarga la página."})
         await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
         return None, None
 
@@ -76,12 +80,15 @@ async def _obtener_identidad_staff(websocket: WebSocket, roles_permitidos: list)
 
         if rol not in roles_permitidos:
             logging.warning(f"⛔ Rol {rol} no autorizado.")
+            await websocket.send_json({"tipo": "error", "mensaje": "Rol no autorizado"})
             await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
             return None, None
             
+        logging.info(f"✅ Staff autenticado: {user_id} (rol: {rol})")
         return user_id, rol
-    except JWTError:
-        logging.error("❌ Staff: Token inválido")
+    except JWTError as e:
+        logging.error(f"❌ Staff: Token inválido - {e}")
+        await websocket.send_json({"tipo": "error", "mensaje": "Token inválido. Inicia sesión nuevamente."})
         await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
         return None, None
 
@@ -432,7 +439,8 @@ async def websocket_endpoint_device(websocket: WebSocket, token: str = Query(...
 async def websocket_endpoint_admin(websocket: WebSocket):
     """Endpoint para panel de administración."""
     user_id, rol = await _obtener_identidad_staff(websocket, ["administrador"])
-    if not user_id: return
+    if not user_id: 
+        return  # La conexión ya fue cerrada por _obtener_identidad_staff
 
     await manager.connect(websocket, client_type="admin")
     
@@ -466,7 +474,8 @@ async def websocket_endpoint_conserje(websocket: WebSocket):
     """Endpoint para panel de conserjería (restringido)."""
     # Permitimos admin también aquí por si quiere probar la vista de conserje
     user_id, rol = await _obtener_identidad_staff(websocket, ["conserje", "administrador"]) 
-    if not user_id: return
+    if not user_id: 
+        return  # La conexión ya fue cerrada por _obtener_identidad_staff
 
     await manager.connect(websocket, client_type="conserje")
     
